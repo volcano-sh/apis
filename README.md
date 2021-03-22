@@ -6,6 +6,7 @@ need by separating api package with main repository.
 ```shell
 git clone https://github.com/openshift-evangelists/crd-code-generation.git
 ```
+
 2. Update the Kubernetes version in go.mod to what you want. Current release is taking v0.19.6 as an example.
 ```go
 module volcano.sh/apis
@@ -29,11 +30,12 @@ replace (
 	k8s.io/klog => k8s.io/klog v1.0.0
 )
 ```
+
 3. Update the vendor.
 ```shell
 go mod vendor
 ```
-```
+
 4. Execute the script hack/update-codegen.sh and you will get the CRD clientset in github.com/volcano-sh/apis/pkg/client,
 which is under $GOPATH/src
 ```shell
