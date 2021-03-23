@@ -31,12 +31,10 @@ import (
 type Config struct {
 	// Legacy field from pkg/api/types.go TypeMeta.
 	// TODO(jlowdermilk): remove this after eliminating downstream dependencies.
-	// +k8s:conversion-gen=false
 	// +optional
 	Kind string `json:"kind,omitempty"`
 	// Legacy field from pkg/api/types.go TypeMeta.
 	// TODO(jlowdermilk): remove this after eliminating downstream dependencies.
-	// +k8s:conversion-gen=false
 	// +optional
 	APIVersion string `json:"apiVersion,omitempty"`
 	// Preferences holds general information to be use for cli interactions
@@ -66,13 +64,9 @@ type Preferences struct {
 // Cluster contains information about how to communicate with a kubernetes cluster
 type Cluster struct {
 	// LocationOfOrigin indicates where this object came from.  It is used for round tripping config post-merge, but never serialized.
-	// +k8s:conversion-gen=false
 	LocationOfOrigin string
 	// Server is the address of the kubernetes cluster (https://hostname:port).
 	Server string `json:"server"`
-	// TLSServerName is used to check server certificate. If TLSServerName is empty, the hostname used to contact the server is used.
-	// +optional
-	TLSServerName string `json:"tls-server-name,omitempty"`
 	// InsecureSkipTLSVerify skips the validity check for the server's certificate. This will make your HTTPS connections insecure.
 	// +optional
 	InsecureSkipTLSVerify bool `json:"insecure-skip-tls-verify,omitempty"`
@@ -82,17 +76,6 @@ type Cluster struct {
 	// CertificateAuthorityData contains PEM-encoded certificate authority certificates. Overrides CertificateAuthority
 	// +optional
 	CertificateAuthorityData []byte `json:"certificate-authority-data,omitempty"`
-	// ProxyURL is the URL to the proxy to be used for all requests made by this
-	// client. URLs with "http", "https", and "socks5" schemes are supported.  If
-	// this configuration is not provided or the empty string, the client
-	// attempts to construct a proxy configuration from http_proxy and
-	// https_proxy environment variables. If these environment variables are not
-	// set, the client does not attempt to proxy requests.
-	//
-	// socks5 proxying does not currently support spdy streaming endpoints (exec,
-	// attach, port forward).
-	// +optional
-	ProxyURL string `json:"proxy-url,omitempty"`
 	// Extensions holds additional information. This is useful for extenders so that reads and writes don't clobber unknown fields
 	// +optional
 	Extensions map[string]runtime.Object `json:"extensions,omitempty"`
@@ -101,7 +84,6 @@ type Cluster struct {
 // AuthInfo contains information that describes identity information.  This is use to tell the kubernetes cluster who you are.
 type AuthInfo struct {
 	// LocationOfOrigin indicates where this object came from.  It is used for round tripping config post-merge, but never serialized.
-	// +k8s:conversion-gen=false
 	LocationOfOrigin string
 	// ClientCertificate is the path to a client cert file for TLS.
 	// +optional
@@ -150,7 +132,6 @@ type AuthInfo struct {
 // Context is a tuple of references to a cluster (how do I communicate with a kubernetes cluster), a user (how do I identify myself), and a namespace (what subset of resources do I want to work with)
 type Context struct {
 	// LocationOfOrigin indicates where this object came from.  It is used for round tripping config post-merge, but never serialized.
-	// +k8s:conversion-gen=false
 	LocationOfOrigin string
 	// Cluster is the name of the cluster for this context
 	Cluster string `json:"cluster"`
@@ -193,7 +174,7 @@ func (c AuthProviderConfig) String() string {
 // ExecConfig specifies a command to provide client credentials. The command is exec'd
 // and outputs structured stdout holding credentials.
 //
-// See the client.authentication.k8s.io API group for specifications of the exact input
+// See the client.authentiction.k8s.io API group for specifications of the exact input
 // and output format
 type ExecConfig struct {
 	// Command to execute.
@@ -210,11 +191,6 @@ type ExecConfig struct {
 	// Preferred input version of the ExecInfo. The returned ExecCredentials MUST use
 	// the same encoding version as the input.
 	APIVersion string `json:"apiVersion,omitempty"`
-
-	// This text is shown to the user when the executable doesn't seem to be
-	// present. For example, `brew install foo-cli` might be a good InstallHint for
-	// foo-cli on Mac OS systems.
-	InstallHint string `json:"installHint,omitempty"`
 }
 
 var _ fmt.Stringer = new(ExecConfig)

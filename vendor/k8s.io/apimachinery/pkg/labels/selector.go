@@ -26,7 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/validation"
-	"k8s.io/klog/v2"
+	"k8s.io/klog"
 )
 
 // Requirements is AND of all requirements.
@@ -54,11 +54,6 @@ type Selector interface {
 
 	// Make a deep copy of the selector.
 	DeepCopySelector() Selector
-
-	// RequiresExactMatch allows a caller to introspect whether a given selector
-	// requires a single specific label to be set, and if so returns the value it
-	// requires.
-	RequiresExactMatch(label string) (value string, found bool)
 }
 
 // Everything returns a selector that matches all labels.
@@ -74,9 +69,6 @@ func (n nothingSelector) String() string                     { return "" }
 func (n nothingSelector) Add(_ ...Requirement) Selector      { return n }
 func (n nothingSelector) Requirements() (Requirements, bool) { return nil, false }
 func (n nothingSelector) DeepCopySelector() Selector         { return n }
-func (n nothingSelector) RequiresExactMatch(label string) (value string, found bool) {
-	return "", false
-}
 
 // Nothing returns a selector that matches no labels
 func Nothing() Selector {
@@ -223,7 +215,7 @@ func (r *Requirement) Matches(ls Labels) bool {
 			return false
 		}
 
-		// There should be only one strValue in r.strValues, and can be converted to an integer.
+		// There should be only one strValue in r.strValues, and can be converted to a integer.
 		if len(r.strValues) != 1 {
 			klog.V(10).Infof("Invalid values count %+v of requirement %#v, for 'Gt', 'Lt' operators, exactly one value is required", len(r.strValues), r)
 			return false
@@ -364,23 +356,6 @@ func (lsel internalSelector) String() string {
 		reqs = append(reqs, lsel[ix].String())
 	}
 	return strings.Join(reqs, ",")
-}
-
-// RequiresExactMatch introspect whether a given selector requires a single specific field
-// to be set, and if so returns the value it requires.
-func (lsel internalSelector) RequiresExactMatch(label string) (value string, found bool) {
-	for ix := range lsel {
-		if lsel[ix].key == label {
-			switch lsel[ix].operator {
-			case selection.Equals, selection.DoubleEquals, selection.In:
-				if len(lsel[ix].strValues) == 1 {
-					return lsel[ix].strValues[0], true
-				}
-			}
-			return "", false
-		}
-	}
-	return "", false
 }
 
 // Token represents constant definition for lexer token
@@ -871,30 +846,23 @@ func validateLabelValue(k, v string) error {
 
 // SelectorFromSet returns a Selector which will match exactly the given Set. A
 // nil and empty Sets are considered equivalent to Everything().
-// It does not perform any validation, which means the server will reject
-// the request if the Set contains invalid values.
 func SelectorFromSet(ls Set) Selector {
-	return SelectorFromValidatedSet(ls)
-}
-
-// ValidatedSelectorFromSet returns a Selector which will match exactly the given Set. A
-// nil and empty Sets are considered equivalent to Everything().
-// The Set is validated client-side, which allows to catch errors early.
-func ValidatedSelectorFromSet(ls Set) (Selector, error) {
 	if ls == nil || len(ls) == 0 {
-		return internalSelector{}, nil
+		return internalSelector{}
 	}
-	requirements := make([]Requirement, 0, len(ls))
+	var requirements internalSelector
 	for label, value := range ls {
 		r, err := NewRequirement(label, selection.Equals, []string{value})
-		if err != nil {
-			return nil, err
+		if err == nil {
+			requirements = append(requirements, *r)
+		} else {
+			//TODO: double check errors when input comes from serialization?
+			return internalSelector{}
 		}
-		requirements = append(requirements, *r)
 	}
 	// sort to have deterministic string representation
 	sort.Sort(ByKey(requirements))
-	return internalSelector(requirements), nil
+	return requirements
 }
 
 // SelectorFromValidatedSet returns a Selector which will match exactly the given Set.
@@ -904,13 +872,13 @@ func SelectorFromValidatedSet(ls Set) Selector {
 	if ls == nil || len(ls) == 0 {
 		return internalSelector{}
 	}
-	requirements := make([]Requirement, 0, len(ls))
+	var requirements internalSelector
 	for label, value := range ls {
 		requirements = append(requirements, Requirement{key: label, operator: selection.Equals, strValues: []string{value}})
 	}
 	// sort to have deterministic string representation
 	sort.Sort(ByKey(requirements))
-	return internalSelector(requirements)
+	return requirements
 }
 
 // ParseToRequirements takes a string representing a selector and returns a list of

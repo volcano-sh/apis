@@ -28,9 +28,8 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/apiserver/pkg/endpoints/metrics"
 	"k8s.io/apiserver/pkg/server/httplog"
-	"k8s.io/klog/v2"
+	"k8s.io/klog"
 )
 
 // HealthChecker is a named healthz checker.
@@ -161,17 +160,7 @@ func InstallPathHandler(mux mux, path string, checks ...HealthChecker) {
 
 	klog.V(5).Infof("Installing health checkers for (%v): %v", path, formatQuoted(checkerNames(checks...)...))
 
-	mux.Handle(path,
-		metrics.InstrumentHandlerFunc("GET",
-			/* group = */ "",
-			/* version = */ "",
-			/* resource = */ "",
-			/* subresource = */ path,
-			/* scope = */ "",
-			/* component = */ "",
-			/* deprecated */ false,
-			/* removedRelease */ "",
-			handleRootHealthz(checks...)))
+	mux.Handle(path, handleRootHealthz(checks...))
 	for _, check := range checks {
 		mux.Handle(fmt.Sprintf("%s/%v", path, check.Name()), adaptCheckToHandler(check.Check))
 	}
@@ -210,38 +199,35 @@ func getExcludedChecks(r *http.Request) sets.String {
 // handleRootHealthz returns an http.HandlerFunc that serves the provided checks.
 func handleRootHealthz(checks ...HealthChecker) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		failed := false
 		excluded := getExcludedChecks(r)
-		// failedVerboseLogOutput is for output to the log.  It indicates detailed failed output information for the log.
-		var failedVerboseLogOutput bytes.Buffer
-		var failedChecks []string
-		var individualCheckOutput bytes.Buffer
+		var verboseOut bytes.Buffer
 		for _, check := range checks {
 			// no-op the check if we've specified we want to exclude the check
 			if excluded.Has(check.Name()) {
 				excluded.Delete(check.Name())
-				fmt.Fprintf(&individualCheckOutput, "[+]%s excluded: ok\n", check.Name())
+				fmt.Fprintf(&verboseOut, "[+]%v excluded: ok\n", check.Name())
 				continue
 			}
 			if err := check.Check(r); err != nil {
 				// don't include the error since this endpoint is public.  If someone wants more detail
 				// they should have explicit permission to the detailed checks.
-				fmt.Fprintf(&individualCheckOutput, "[-]%s failed: reason withheld\n", check.Name())
-				// but we do want detailed information for our log
-				fmt.Fprintf(&failedVerboseLogOutput, "[-]%s failed: %v\n", check.Name(), err)
-				failedChecks = append(failedChecks, check.Name())
+				klog.V(4).Infof("healthz check %v failed: %v", check.Name(), err)
+				fmt.Fprintf(&verboseOut, "[-]%v failed: reason withheld\n", check.Name())
+				failed = true
 			} else {
-				fmt.Fprintf(&individualCheckOutput, "[+]%s ok\n", check.Name())
+				fmt.Fprintf(&verboseOut, "[+]%v ok\n", check.Name())
 			}
 		}
 		if excluded.Len() > 0 {
-			fmt.Fprintf(&individualCheckOutput, "warn: some health checks cannot be excluded: no matches for %s\n", formatQuoted(excluded.List()...))
-			klog.Warningf("cannot exclude some health checks, no health checks are installed matching %s",
+			fmt.Fprintf(&verboseOut, "warn: some health checks cannot be excluded: no matches for %v\n", formatQuoted(excluded.List()...))
+			klog.Warningf("cannot exclude some health checks, no health checks are installed matching %v",
 				formatQuoted(excluded.List()...))
 		}
 		// always be verbose on failure
-		if len(failedChecks) > 0 {
-			klog.V(2).Infof("healthz check failed: %s\n%v", strings.Join(failedChecks, ","), failedVerboseLogOutput.String())
-			http.Error(httplog.Unlogged(r, w), fmt.Sprintf("%shealthz check failed", individualCheckOutput.String()), http.StatusInternalServerError)
+		if failed {
+			klog.V(2).Infof("%vhealthz check failed", verboseOut.String())
+			http.Error(httplog.Unlogged(r, w), fmt.Sprintf("%vhealthz check failed", verboseOut.String()), http.StatusInternalServerError)
 			return
 		}
 
@@ -252,7 +238,7 @@ func handleRootHealthz(checks ...HealthChecker) http.HandlerFunc {
 			return
 		}
 
-		individualCheckOutput.WriteTo(w)
+		verboseOut.WriteTo(w)
 		fmt.Fprint(w, "healthz check passed\n")
 	})
 }
