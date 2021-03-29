@@ -18,7 +18,6 @@ limitations under the License.
 package v1beta1
 
 import (
-	"context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -61,13 +60,13 @@ func NewFilteredPodGroupInformer(client versioned.Interface, namespace string, r
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.SchedulingV1beta1().PodGroups(namespace).List(context.TODO(), options)
+				return client.SchedulingV1beta1().PodGroups(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.SchedulingV1beta1().PodGroups(namespace).Watch(context.TODO(), options)
+				return client.SchedulingV1beta1().PodGroups(namespace).Watch(options)
 			},
 		},
 		&schedulingv1beta1.PodGroup{},
