@@ -18,7 +18,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -61,13 +60,13 @@ func NewFilteredJobInformer(client versioned.Interface, namespace string, resync
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.BatchV1alpha1().Jobs(namespace).List(context.TODO(), options)
+				return client.BatchV1alpha1().Jobs(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.BatchV1alpha1().Jobs(namespace).Watch(context.TODO(), options)
+				return client.BatchV1alpha1().Jobs(namespace).Watch(options)
 			},
 		},
 		&batchv1alpha1.Job{},
