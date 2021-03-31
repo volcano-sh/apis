@@ -18,6 +18,6 @@ limitations under the License.
 // +kubebuilder:object:generate=true
 // +groupName=scheduling.volcano.sh
 // +k8s:deepcopy-gen=package
-// +k8s:conversion-gen=volcano.sh/volcano/pkg/apis/scheduling
+// +k8s:conversion-gen=volcano.sh/apis/pkg/apis/scheduling
 
 package v1beta1
