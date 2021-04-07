@@ -26,6 +26,12 @@ import (
 	clientset "volcano.sh/apis/pkg/client/clientset/versioned"
 	batchv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/batch/v1alpha1"
 	fakebatchv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/batch/v1alpha1/fake"
+	busv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1"
+	fakebusv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1/fake"
+	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
+	fakenodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1/fake"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
+	fakeschedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1/fake"
 )
 
 // NewSimpleClientset returns a clientset that will respond with the provided objects.
@@ -78,4 +84,19 @@ var _ clientset.Interface = &Clientset{}
 // BatchV1alpha1 retrieves the BatchV1alpha1Client
 func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
 	return &fakebatchv1alpha1.FakeBatchV1alpha1{Fake: &c.Fake}
+}
+
+// BusV1alpha1 retrieves the BusV1alpha1Client
+func (c *Clientset) BusV1alpha1() busv1alpha1.BusV1alpha1Interface {
+	return &fakebusv1alpha1.FakeBusV1alpha1{Fake: &c.Fake}
+}
+
+// NodeinfoV1alpha1 retrieves the NodeinfoV1alpha1Client
+func (c *Clientset) NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interface {
+	return &fakenodeinfov1alpha1.FakeNodeinfoV1alpha1{Fake: &c.Fake}
+}
+
+// SchedulingV1beta1 retrieves the SchedulingV1beta1Client
+func (c *Clientset) SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface {
+	return &fakeschedulingv1beta1.FakeSchedulingV1beta1{Fake: &c.Fake}
 }
