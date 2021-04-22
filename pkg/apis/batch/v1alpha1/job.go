@@ -169,6 +169,20 @@ type LifecyclePolicy struct {
 	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,4,opt,name=timeout"`
 }
 
+// NumaPolicy - TopologyPolicy type
+type NumaPolicy string
+
+const (
+	// None is same as the policy "none" of the topology manager
+	None NumaPolicy = "none"
+	// BestEffort is same as the policy "best-effort" of the topology manager
+	BestEffort NumaPolicy = "best-effort"
+	// Restricted is same as the policy "restricted" of the topology manager
+	Restricted NumaPolicy = "restricted"
+	// SingleNumaNode is same as the policy "single-numa-node" of the topology manager
+	SingleNumaNode NumaPolicy = "single-numa-node"
+)
+
 // TaskSpec specifies the task specification of Job.
 type TaskSpec struct {
 	// Name specifies the name of tasks
@@ -187,6 +201,10 @@ type TaskSpec struct {
 	// Specifies the lifecycle of task
 	// +optional
 	Policies []LifecyclePolicy `json:"policies,omitempty" protobuf:"bytes,4,opt,name=policies"`
+
+	// Specifies the topology policy of task
+	// +optional
+	TopologyPolicy NumaPolicy `json:"topologyPolicy,omitempty" protobuf:"bytes,5,opt,name=topologyPolicy"`
 }
 
 // JobPhase defines the phase of the job.
