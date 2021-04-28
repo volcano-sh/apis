@@ -117,4 +117,3 @@ Has deep understanding of Volcano and related domain and facilitates major agree
 
 
 [two-factor authentication]: https://help.github.com/articles/about-two-factor-authentication
-
