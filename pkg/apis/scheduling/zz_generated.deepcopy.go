@@ -170,6 +170,17 @@ func (in *PodGroupSpec) DeepCopyInto(out *PodGroupSpec) {
 			}
 		}
 	}
+	if in.MinQuotas != nil {
+		in, out := &in.MinQuotas, &out.MinQuotas
+		*out = new(v1.ResourceList)
+		if **in != nil {
+			in, out := *in, *out
+			*out = make(map[v1.ResourceName]resource.Quantity, len(*in))
+			for key, val := range *in {
+				(*out)[key] = val.DeepCopy()
+			}
+		}
+	}
 	return
 }
 
