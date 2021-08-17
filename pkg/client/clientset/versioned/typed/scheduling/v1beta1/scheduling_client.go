@@ -27,6 +27,7 @@ type SchedulingV1beta1Interface interface {
 	RESTClient() rest.Interface
 	PodGroupsGetter
 	QueuesGetter
+	TaskFlowsGetter
 }
 
 // SchedulingV1beta1Client is used to interact with features provided by the scheduling.volcano.sh group.
@@ -40,6 +41,10 @@ func (c *SchedulingV1beta1Client) PodGroups(namespace string) PodGroupInterface 
 
 func (c *SchedulingV1beta1Client) Queues() QueueInterface {
 	return newQueues(c)
+}
+
+func (c *SchedulingV1beta1Client) TaskFlows(namespace string) TaskFlowInterface {
+	return newTaskFlows(c, namespace)
 }
 
 // NewForConfig creates a new SchedulingV1beta1Client for the given config.

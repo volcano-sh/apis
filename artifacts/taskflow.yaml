@@ -1,0 +1,37 @@
+apiVersion: batch.volcano.sh/v1alpha1
+kind: TaskFlow
+metadata:
+  name: taskflow
+spec:
+  tasks:
+  - name: A
+  - name: B
+    depends: 
+      target: ['A']
+      probe:
+        exec:
+          command:
+          - ls
+          - /data/training.npy
+  - name: C
+    depends: 
+      target: ['B']
+    probe:
+      httpGet:
+          path: /healthz
+          port: 8080
+          httpHeaders:
+          - name: Custom-Header
+            value: Awesome
+  - name: D
+    depends:
+      target: ['B']
+      probe:
+        tcpSocket:
+          port: 8080
+  - name: E
+    depends:
+      target: ['C', 'D']
+      probe:
+        taskStatus: Running
+      iteration: any/all

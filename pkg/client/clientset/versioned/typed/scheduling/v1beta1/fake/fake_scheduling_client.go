@@ -35,6 +35,10 @@ func (c *FakeSchedulingV1beta1) Queues() v1beta1.QueueInterface {
 	return &FakeQueues{c}
 }
 
+func (c *FakeSchedulingV1beta1) TaskFlows(namespace string) v1beta1.TaskFlowInterface {
+	return &FakeTaskFlows{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeSchedulingV1beta1) RESTClient() rest.Interface {

@@ -296,8 +296,8 @@ type QueueStatus struct {
 
 // CluterSpec represents the template of Cluster
 type Cluster struct {
-	Name string              `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
-	Weight int32             `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	Name     string          `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	Weight   int32           `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
 	Capacity v1.ResourceList `json:"capacity,omitempty" protobuf:"bytes,3,opt,name=capacity"`
 }
 
@@ -309,7 +309,7 @@ type QueueSpec struct {
 	// Reclaimable indicate whether the queue can be reclaimed by other queue
 	Reclaimable *bool `json:"reclaimable,omitempty" protobuf:"bytes,3,opt,name=reclaimable"`
 
-    // extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
+	// extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
 	ExtendClusters []Cluster `json:"extendClusters,omitempty" protobuf:"bytes,4,opt,name=extendClusters"`
 
 	// Guarantee indicate configuration about resource reservation
@@ -329,4 +329,100 @@ type QueueList struct {
 
 	// items is the list of PodGroup
 	Items []Queue `json:"items" protobuf:"bytes,2,rep,name=items"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
+// +kubebuilder:resource:path=taskflows,shortName=tf;taskflow-v1beta1
+
+type TaskFlow struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Spec is specification of the desired behavior of the taskflow
+	Spec TaskFlowSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+
+	// Status is status of taskflow
+	Status TaskFlowStatus `json:"status,omitempty" protobuf:"bytes,3,rep,name=status"`
+}
+
+type TaskFlowSpec struct {
+	// TaskDependencies indicates the dependencies between tasks
+	TaskDependencies []TaskDependency `json:"taskDependencies" protobuf:"bytes,1,rep,name=taskDependencies"`
+}
+
+type TaskDependency struct {
+	// Name is name of task
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	// DependOns is dependency of task
+	DependOns DependOns `json:"dependOns,omitempty" protobuf:"bytes,2,opt,name=dependOns"`
+}
+
+type Iteration string
+
+const (
+	// Dependency approach when multiple tasks exist
+
+	// As long as one task satisfies the set status,
+	// the trigger condition is considered to be satisfied
+	AnyIteration Iteration = "any"
+	// All tasks meet the set state, that is, it is considered
+	// to meet the trigger conditions
+	AllIteration Iteration = "all"
+)
+
+type DependOns struct {
+	// Targets indicates the name of the task that this task depends on,
+	// It can be multiple
+	Targets []string `json:"targets" protobuf:"bytes,1,rep,name=targets"`
+	// Probe indicates the way to probe the task status
+	Probe Probe `json:"probe,omitempty" protobuf:"bytes,2,opt,name=probe"`
+	// Iteration represents the way of dependency when multiple tasks exist
+	Iteration Iteration `json:"iteration,omitempty" protobuf:"bytes,3,opt,name=iteration"`
+}
+
+type TaskStatusType string
+
+const (
+	// TaskStatusRunning indicates that the task is running
+	TaskStatusRunning TaskStatusType = "Running"
+	// TaskStatusComplete indicates that the task has been completed
+	TaskStatusComplete TaskStatusType = "Complete"
+)
+
+type Probe struct {
+	// One and only one of the following should be specified.
+	// Exec specifies the action to take.
+	// +optional
+	Exec *v1.ExecAction `json:"exec,omitempty" protobuf:"bytes,1,opt,name=exec"`
+	// HTTPGet specifies the http request to perform.
+	// +optional
+	HTTPGet *v1.HTTPGetAction `json:"httpGet,omitempty" protobuf:"bytes,2,opt,name=httpGet"`
+	// TCPSocket specifies an action involving a TCP port.
+	// TCP hooks not yet supported
+	// TODO: implement a realistic TCP lifecycle hook
+	// +optional
+	TCPSocket *v1.TCPSocketAction `json:"tcpSocket,omitempty" protobuf:"bytes,3,opt,name=tcpSocket"`
+
+	// TaskStatus is status of task
+	// +optional
+	TaskStatus *TaskStatusType `json:"taskStatus,omitempty" protobuf:"bytes,4,opt,name=taskStatus"`
+}
+
+type TaskFlowStatus struct {
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
+
+// TaskFlowList is a collection of taskflows.
+type TaskFlowList struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard list metadata
+	// +optional
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// items is the list of TaskFlow
+	Items []TaskFlow `json:"items" protobuf:"bytes,2,rep,name=items"`
 }

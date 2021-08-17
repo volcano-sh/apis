@@ -71,6 +71,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().PodGroups().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("queues"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().Queues().Informer()}, nil
+	case v1beta1.SchemeGroupVersion.WithResource("taskflows"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().TaskFlows().Informer()}, nil
 
 	}
 

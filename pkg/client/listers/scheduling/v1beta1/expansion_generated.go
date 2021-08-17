@@ -28,3 +28,11 @@ type PodGroupNamespaceListerExpansion interface{}
 // QueueListerExpansion allows custom methods to be added to
 // QueueLister.
 type QueueListerExpansion interface{}
+
+// TaskFlowListerExpansion allows custom methods to be added to
+// TaskFlowLister.
+type TaskFlowListerExpansion interface{}
+
+// TaskFlowNamespaceListerExpansion allows custom methods to be added to
+// TaskFlowNamespaceLister.
+type TaskFlowNamespaceListerExpansion interface{}
