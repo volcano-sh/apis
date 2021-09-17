@@ -317,6 +317,14 @@ type JobStatus struct {
 	// The resources that controlled by this job, e.g. Service, ConfigMap
 	// +optional
 	ControlledResources map[string]string `json:"controlledResources,omitempty" protobuf:"bytes,11,opt,name=controlledResources"`
+
+	// The time when the job starts running
+	// +optional
+	JobStartTime metav1.Time `json:"jobStartTime,omitempty" protobuf:"bytes,12,opt,name=jobStartTime"`
+
+	// The time when the job phase turn to completed or failed
+	// +optional
+	JobEndTime metav1.Time `json:"jobEndTime,omitempty" protobuf:"bytes,13,opt,name=jobEndTime"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
