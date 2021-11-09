@@ -363,15 +363,16 @@ const (
 	IterationAll Iteration = "all"
 )
 
+// DependsOn represents the tasks that this task depends on and their dependencies
 type DependsOn struct {
 	// Indicates the name of the tasks that this task depends on,
 	// which can depend on multiple tasks
 	// +optional
-	Name []string
+	Name []string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	// This field specifies that when there are multiple dependent tasks,
 	// as long as one task becomes the specified state,
 	// the task scheduling is triggered or
 	// all tasks must be changed to the specified state to trigger the task scheduling
 	// +optional
-	Iteration Iteration
+	Iteration Iteration `json:"iteration,omitempty" protobuf:"bytes,2,opt,name=iteration"`
 }
