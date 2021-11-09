@@ -213,7 +213,7 @@ type TaskSpec struct {
 
 	// Specifies the tasks that this task depends on.
 	// +optional
-	DependsOn DependsOn `json:"dependentTasks,omitempty" protobuf:"bytes,8,opt,name=dependentTasks"`
+	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
 }
 
 // JobPhase defines the phase of the job.

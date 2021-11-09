@@ -303,7 +303,11 @@ func (in *TaskSpec) DeepCopyInto(out *TaskSpec) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	in.DependsOn.DeepCopyInto(&out.DependsOn)
+	if in.DependsOn != nil {
+		in, out := &in.DependsOn, &out.DependsOn
+		*out = new(DependsOn)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
