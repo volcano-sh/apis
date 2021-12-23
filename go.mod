@@ -3,7 +3,16 @@ module volcano.sh/apis
 go 1.17
 
 require (
-        github.com/PuerkitoBio/purell v1.1.1 // indirect
+	k8s.io/api v0.23.0
+	k8s.io/apimachinery v0.23.0
+	k8s.io/apiserver v0.23.0
+	k8s.io/client-go v0.23.0
+	k8s.io/code-generator v0.19.6
+	k8s.io/klog v1.0.0
+)
+
+require (
+	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
@@ -55,13 +64,6 @@ require (
 	sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.2 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
-
-	k8s.io/api v0.23.0
-	k8s.io/apimachinery v0.23.0
-	k8s.io/apiserver v0.23.0
-	k8s.io/client-go v0.23.0
-	k8s.io/code-generator v0.23.0
-	k8s.io/klog v1.0.0
 )
 
 replace (
