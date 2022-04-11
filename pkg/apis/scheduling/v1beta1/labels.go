@@ -42,6 +42,9 @@ const QueueNameAnnotationKey = GroupName + "/queue-name"
 // PodPreemptable is the key of preemptable
 const PodPreemptable = "volcano.sh/preemptable"
 
+// PodPreemptStableTime is the key of preempt-stable-time, value's unit is second
+const PodPreemptStableTime = "volcano.sh/preempt-stable-time"
+
 //RevocableZone is the key of revocable-zone
 const RevocableZone = "volcano.sh/revocable-zone"
 
