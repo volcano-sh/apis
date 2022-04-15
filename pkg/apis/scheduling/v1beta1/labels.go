@@ -44,7 +44,7 @@ const PodPreemptable = "volcano.sh/preemptable"
 
 // PodPreemptStableTime is the key of preempt-stable-time, value's format "600s","10m" 
 // Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". 
-const PodPreemptStableTime = "volcano.sh/preempt-stable-time"
+const PreemptStableTime = "volcano.sh/preempt-stable-time"
 
 //RevocableZone is the key of revocable-zone
 const RevocableZone = "volcano.sh/revocable-zone"
