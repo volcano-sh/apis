@@ -136,6 +136,10 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // PodGroup is a collection of Pod; used for batch workload.
+// +kubebuilder:printcolumn:name="STATUS",type=string,JSONPath=`.status.phase`
+// +kubebuilder:printcolumn:name="minMember",type=integer,JSONPath=`.spec.minMember`
+// +kubebuilder:printcolumn:name="RUNNINGS",type=integer,JSONPath=`.status.running`
+// +kubebuilder:printcolumn:name="AGE",type=date,JSONPath=`.metadata.creationTimestamp`
 type PodGroup struct {
 	metav1.TypeMeta
 	// Standard object's metadata.
