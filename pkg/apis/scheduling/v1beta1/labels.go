@@ -42,6 +42,10 @@ const QueueNameAnnotationKey = GroupName + "/queue-name"
 // PodPreemptable is the key of preemptable
 const PodPreemptable = "volcano.sh/preemptable"
 
+// PodPreemptStableTime is the key of preempt-stable-time, value's format "600s","10m" 
+// Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". 
+const PreemptStableTime = "volcano.sh/preempt-stable-time"
+
 //RevocableZone is the key of revocable-zone
 const RevocableZone = "volcano.sh/revocable-zone"
 
