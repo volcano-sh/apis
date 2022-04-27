@@ -1,5 +1,4 @@
 /*
-Copyright 2020 The Kubernetes Authors.
 Copyright 2021 The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +17,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -38,42 +36,17 @@ type CPUInfo struct {
 	CoreID     int `json:"core,omitempty"`
 }
 
-// MemoryTable contains memory information
-type MemoryTable struct {
-	TotalMemSize   uint64 `json:"total,omitempty"`
-	SystemReserved uint64 `json:"systemReserved,omitempty"`
-	Allocatable    uint64 `json:"allocatable,omitempty"`
-	Reserved       uint64 `json:"reserved,omitempty"`
-	Free           uint64 `json:"free,omitempty"`
-}
-
-// MemoryNode describes the node memory distribution
-type MemoryNode struct {
-	// NumberOfAssignments contains a number memory assignments from this node
-	// When the container requires memory and hugepages it will increase number of assignments by two
-	NumberOfAssignments int `json:"numberOfAssignments"`
-	// MemoryTable contains NUMA node memory related information
-	MemoryTable map[v1.ResourceName]*MemoryTable `json:"memoryMap,omitempty"`
-	// Cells contains the current NUMA node and all other nodes that are in a group with current NUMA node
-	// This parameter indicates if the current node is used for the multiple NUMA node memory allocation
-	// For example if some container has pinning 0,1,2, NUMA nodes 0,1,2 under the state will have
-	// this parameter equals to [0, 1, 2]
-	Cells []int `json:"cells,omitempty"`
-}
-
 // PolicyName is the policy name type
 type PolicyName string
 
 const (
 	// CPUManagerPolicy shows cpu manager policy type
 	CPUManagerPolicy PolicyName = "CPUManagerPolicy"
-	// MemoryManagerPolicy represents memory manager policy type
-	MemoryManagerPolicy PolicyName = "MemoryManagerPolicy"
 	// TopologyManagerPolicy shows topology manager policy type
 	TopologyManagerPolicy PolicyName = "TopologyManagerPolicy"
 )
 
-// NumatopoSpec defines the desired state of NumaTopology
+// NumatopoSpec defines the desired state of Numatopology
 type NumatopoSpec struct {
 	// Specifies the policy of the manager
 	// +optional
@@ -93,12 +66,6 @@ type NumatopoSpec struct {
 	// Key is cpu id
 	// +optional
 	CPUDetail map[string]CPUInfo `json:"cpuDetail,omitempty"`
-
-	// Represents the memory topology info
-	// mostly same as k8s/NUMANodeMap
-	// key is numa node id
-	// +optional
-	MemoryDetail map[int]*MemoryNode `json:"MemoryDetail,omitempty"`
 }
 
 // +genclient
