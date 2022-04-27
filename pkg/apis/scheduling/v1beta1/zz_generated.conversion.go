@@ -451,6 +451,7 @@ func autoConvert_v1beta1_QueueStatus_To_scheduling_QueueStatus(in *QueueStatus, 
 	out.Pending = in.Pending
 	out.Running = in.Running
 	out.Inqueue = in.Inqueue
+	out.Completed = in.Completed
 	if err := Convert_v1beta1_Reservation_To_scheduling_Reservation(&in.Reservation, &out.Reservation, s); err != nil {
 		return err
 	}
@@ -468,6 +469,7 @@ func autoConvert_scheduling_QueueStatus_To_v1beta1_QueueStatus(in *scheduling.Qu
 	out.Pending = in.Pending
 	out.Running = in.Running
 	out.Inqueue = in.Inqueue
+	out.Completed = in.Completed
 	if err := Convert_scheduling_Reservation_To_v1beta1_Reservation(&in.Reservation, &out.Reservation, s); err != nil {
 		return err
 	}
