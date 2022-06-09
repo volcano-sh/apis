@@ -126,6 +126,8 @@ type Condition struct {
 	TaskStatusCount map[string]v1alpha1.TaskState `json:"taskStatusCount,omitempty"`
 }
 
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 //+kubebuilder:object:root=true
 //+kubebuilder:printcolumn:name="Status",type="string",JSONPath=".status.state.phase"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
@@ -141,6 +143,7 @@ type JobFlow struct {
 	Status JobFlowStatus `json:"status,omitempty"`
 }
 
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 //+kubebuilder:object:root=true
 
 // JobFlowList contains a list of JobFlow
@@ -148,8 +151,4 @@ type JobFlowList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []JobFlow `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&JobFlow{}, &JobFlowList{})
 }

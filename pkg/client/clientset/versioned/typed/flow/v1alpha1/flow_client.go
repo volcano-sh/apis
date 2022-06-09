@@ -27,11 +27,21 @@ import (
 
 type FlowV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	JobFlowsGetter
+	JobTemplatesGetter
 }
 
-// FlowV1alpha1Client is used to interact with features provided by the flow group.
+// FlowV1alpha1Client is used to interact with features provided by the flow.volcano.sh group.
 type FlowV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *FlowV1alpha1Client) JobFlows(namespace string) JobFlowInterface {
+	return newJobFlows(c, namespace)
+}
+
+func (c *FlowV1alpha1Client) JobTemplates(namespace string) JobTemplateInterface {
+	return newJobTemplates(c, namespace)
 }
 
 // NewForConfig creates a new FlowV1alpha1Client for the given config.

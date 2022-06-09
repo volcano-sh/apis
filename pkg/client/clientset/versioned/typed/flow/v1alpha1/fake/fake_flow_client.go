@@ -20,10 +20,19 @@ package fake
 import (
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
+	v1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
 )
 
 type FakeFlowV1alpha1 struct {
 	*testing.Fake
+}
+
+func (c *FakeFlowV1alpha1) JobFlows(namespace string) v1alpha1.JobFlowInterface {
+	return &FakeJobFlows{c, namespace}
+}
+
+func (c *FakeFlowV1alpha1) JobTemplates(namespace string) v1alpha1.JobTemplateInterface {
+	return &FakeJobTemplates{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
