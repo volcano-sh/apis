@@ -42,6 +42,8 @@ type JobTemplateStatus struct {
 	JobDependsOnList []string `json:"jobDependsOnList,omitempty"`
 }
 
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 //+kubebuilder:object:root=true
 // +kubebuilder:resource:path=jobtemplates,shortName=jt
 //+kubebuilder:subresource:status
@@ -55,6 +57,7 @@ type JobTemplate struct {
 	Status JobTemplateStatus `json:"status,omitempty"`
 }
 
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 //+kubebuilder:object:root=true
 
 // JobTemplateList contains a list of JobTemplate
@@ -62,8 +65,4 @@ type JobTemplateList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []JobTemplate `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&JobTemplate{}, &JobTemplateList{})
 }
