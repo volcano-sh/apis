@@ -143,6 +143,7 @@ const (
 // +kubebuilder:printcolumn:name="minMember",type=integer,JSONPath=`.spec.minMember`
 // +kubebuilder:printcolumn:name="RUNNINGS",type=integer,JSONPath=`.status.running`
 // +kubebuilder:printcolumn:name="AGE",type=date,JSONPath=`.metadata.creationTimestamp`
+// +kubebuilder:printcolumn:name="QUEUE",type=string,priority=1,JSONPath=`.spec.queue`
 type PodGroup struct {
 	metav1.TypeMeta
 	// Standard object's metadata.
@@ -289,8 +290,8 @@ type QueueStatus struct {
 
 // CluterSpec represents the template of Cluster
 type Cluster struct {
-	Name string
-	Weight int32
+	Name     string
+	Weight   int32
 	Capacity v1.ResourceList
 }
 
