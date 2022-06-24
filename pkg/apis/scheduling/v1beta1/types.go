@@ -145,6 +145,11 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:path=podgroups,shortName=pg;podgroup-v1beta1
+// +kubebuilder:printcolumn:name="STATUS",type=string,JSONPath=`.status.phase`
+// +kubebuilder:printcolumn:name="minMember",type=integer,JSONPath=`.spec.minMember`
+// +kubebuilder:printcolumn:name="RUNNINGS",type=integer,JSONPath=`.status.running`
+// +kubebuilder:printcolumn:name="AGE",type=date,JSONPath=`.metadata.creationTimestamp`
+// +kubebuilder:printcolumn:name="QUEUE",type=string,priority=1,JSONPath=`.spec.queue`
 
 // PodGroup is a collection of Pod; used for batch workload.
 type PodGroup struct {
@@ -301,8 +306,8 @@ type QueueStatus struct {
 
 // CluterSpec represents the template of Cluster
 type Cluster struct {
-	Name string              `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
-	Weight int32             `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	Name     string          `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	Weight   int32           `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
 	Capacity v1.ResourceList `json:"capacity,omitempty" protobuf:"bytes,3,opt,name=capacity"`
 }
 
@@ -314,7 +319,7 @@ type QueueSpec struct {
 	// Reclaimable indicate whether the queue can be reclaimed by other queue
 	Reclaimable *bool `json:"reclaimable,omitempty" protobuf:"bytes,3,opt,name=reclaimable"`
 
-    // extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
+	// extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
 	ExtendClusters []Cluster `json:"extendClusters,omitempty" protobuf:"bytes,4,opt,name=extendClusters"`
 
 	// Guarantee indicate configuration about resource reservation
