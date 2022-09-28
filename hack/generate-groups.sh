@@ -46,7 +46,7 @@ APIS_PKG="$3"
 GROUPS_WITH_VERSIONS="$4"
 shift 4
 
-go get k8s.io/code-generator/cmd/{defaulter-gen,client-gen,lister-gen,informer-gen,deepcopy-gen}@v0.19.6
+go get k8s.io/code-generator/cmd/{defaulter-gen,client-gen,lister-gen,informer-gen,deepcopy-gen,conversion-gen}@v0.19.6
 
 # Go installs the above commands to get installed in $GOBIN if defined, and $GOPATH/bin otherwise:
 GOBIN="$(go env GOBIN)"
@@ -88,4 +88,9 @@ if [ "${GENS}" = "all" ] || grep -qw "informer" <<<"${GENS}"; then
            --listers-package "${OUTPUT_PKG}/listers" \
            --output-package "${OUTPUT_PKG}/informers" \
            "$@"
+fi
+
+if grep -qw "conversion" <<<"${GENS}"; then
+  echo "Generating conversion funcs"
+  "${gobin}/conversion-gen" --input-dirs "$(codegen::join , "${FQ_APIS[@]}")" -O zz_generated.conversion "$@"
 fi
