@@ -35,7 +35,7 @@ const QueueNameAnnotationKey = GroupName + "/queue-name"
 // PodPreemptable is the key of preemptable
 const PodPreemptable = "volcano.sh/preemptable"
 
-//RevocableZone is the key of revocable-zone
+// RevocableZone is the key of revocable-zone
 const RevocableZone = "volcano.sh/revocable-zone"
 
 // JDBMinAvailable is the key of min available pod number
@@ -49,3 +49,7 @@ const NumaPolicyKey = "volcano.sh/numa-topology-policy"
 
 // TopologyDecisionAnnotation is the key of topology decision about pod request resource
 const TopologyDecisionAnnotation = "volcano.sh/topology-decision"
+
+// NodeGroupLabelKey is the label key of Node to identify
+// which resource pool it belongs to
+const NodeGroupLabelKey = "volcano.sh/nodegroup-name"
