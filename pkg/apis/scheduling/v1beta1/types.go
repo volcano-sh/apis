@@ -138,6 +138,13 @@ const (
 	CloseQueueAction QueueAction = "CloseQueue"
 )
 
+const (
+	// SharedQueueType is the type of queue that could use share resource pool
+	SharedQueueType = "share"
+	// ExclusiveQueueType is the type of queue that could use exclusive resource pool
+	ExclusiveQueueType = "exclusive"
+)
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
