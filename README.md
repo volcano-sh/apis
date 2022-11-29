@@ -12,5 +12,6 @@ git clone https://github.com/volcano-sh/apis.git
 ## generate
 
 ```shell
-bash ./hack/generate-groups.sh all volcano.sh/apis/pkg/client volcano.sh/apis/pkg/apis "batch:v1alpha1 bus:v1alpha1 flow:v1alpha1 nodeinfo:v1alpha1 scheduling:v1beta1 autoscaling:v1alpha1" --go-header-file ./hack/boilerplate.go.txt
+bash ./hack/generate-groups.sh all volcano.sh/apis/pkg/client volcano.sh/apis/pkg/apis "batch:v1alpha1 bus:v1alpha1 nodeinfo:v1alpha1 scheduling:v1beta1" --go-header-file ./hack/boilerplate.go.txt
+bash ./hack/generate-groups.sh conversion volcano.sh/apis/pkg/client volcano.sh/apis/pkg/apis "scheduling:v1beta1" --go-header-file ./hack/boilerplate.go.txt
 ```
