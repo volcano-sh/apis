@@ -28,14 +28,14 @@ SCRIPT_ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 bash ${SCRIPT_ROOT}/hack/generate-groups.sh "deepcopy,client,informer,lister" \
   volcano.sh/apis/pkg/client volcano.sh/apis/pkg/apis \
-  "batch:v1alpha1 bus:v1alpha1 scheduling:v1beta1 nodeinfo:v1alpha1 flow:v1alpha1" \
+  "batch:v1alpha1 bus:v1alpha1 scheduling:v1beta1 nodeinfo:v1alpha1 flow:v1alpha1 batch:v1 bus:v1 scheduling:v1" \
   --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.go.txt
 
 echo "--------------------"
 
 bash ${SCRIPT_ROOT}/hack/generate-internal-groups.sh "deepcopy,conversion" \
   volcano.sh/apis/pkg/apis/ volcano.sh/apis/pkg/apis volcano.sh/apis/pkg/apis \
-  "scheduling:v1beta1"   \
+  "scheduling:v1beta1 scheduling:v1"   \
   --output-base "$(dirname "${BASH_SOURCE[0]}")/../../.." \
   --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.go.txt
 

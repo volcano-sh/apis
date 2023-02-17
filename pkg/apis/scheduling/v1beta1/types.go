@@ -144,6 +144,7 @@ const (
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
+
 // +kubebuilder:resource:path=podgroups,shortName=pg;podgroup-v1beta1
 // +kubebuilder:printcolumn:name="STATUS",type=string,JSONPath=`.status.phase`
 // +kubebuilder:printcolumn:name="minMember",type=integer,JSONPath=`.spec.minMember`
