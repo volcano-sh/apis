@@ -226,6 +226,7 @@ func runServer(server *http.Server, ln net.Listener) error {
 
 	go func() {
 		<-stopCh
+		close(stopCh)
 		ctx, cancel := context.WithTimeout(context.Background(), 0)
 		server.Shutdown(ctx)
 		cancel()
