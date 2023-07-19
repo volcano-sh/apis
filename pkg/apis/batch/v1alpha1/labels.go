@@ -19,6 +19,8 @@ package v1alpha1
 const (
 	// TaskSpecKey task spec key used in pod annotation
 	TaskSpecKey = "volcano.sh/task-spec"
+	// TaskIndexKey task index key used in pod annotation
+	TaskIndexKey = "volcano.sh/task-index"
 	// JobNameKey job name key used in pod annotation / labels
 	JobNameKey = "volcano.sh/job-name"
 	// QueueNameKey queue name key used in pod annotation / labels
