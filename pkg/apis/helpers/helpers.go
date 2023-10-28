@@ -19,6 +19,7 @@ package helpers
 import (
 	"context"
 	"crypto/tls"
+	"crypto/x509"
 	"fmt"
 	"net"
 	"net/http"
@@ -189,7 +190,7 @@ func GeneratePodgroupName(pod *v1.Pod) string {
 }
 
 // StartHealthz register healthz interface.
-func StartHealthz(healthzBindAddress, name string, certData, certKeyData []byte) error {
+func StartHealthz(healthzBindAddress, name string, caCertData, certData, certKeyData []byte) error {
 	listener, err := net.Listen("tcp", healthzBindAddress)
 	if err != nil {
 		return fmt.Errorf("failed to create listener: %v", err)
@@ -203,13 +204,24 @@ func StartHealthz(healthzBindAddress, name string, certData, certKeyData []byte)
 		Handler:        pathRecorderMux,
 		MaxHeaderBytes: 1 << 20,
 	}
-	if len(certData) != 0 && len(certKeyData) != 0 {
+	if len(caCertData) != 0 && len(certData) != 0 && len(certKeyData) != 0 {
+		certPool := x509.NewCertPool()
+		certPool.AppendCertsFromPEM(caCertData)
+
 		sCert, err := tls.X509KeyPair(certData, certKeyData)
 		if err != nil {
 			return fmt.Errorf("failed to parse certData: %v", err)
 		}
 		server.TLSConfig = &tls.Config{
 			Certificates: []tls.Certificate{sCert},
+			RootCAs:      certPool,
+			MinVersion:   tls.VersionTLS12,
+			ClientAuth:   tls.VerifyClientCertIfGiven,
+			CipherSuites: []uint16{
+				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+			},
 		}
 	}
 
