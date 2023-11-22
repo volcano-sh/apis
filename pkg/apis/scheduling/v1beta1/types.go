@@ -359,6 +359,9 @@ type QueueSpec struct {
 
 	// Type define the type of queue
 	Type string `json:"type,omitempty" protobuf:"bytes,7,opt,name=type"`
+	// Parent define the parent of queue
+	// +optional
+	Parent string `json:"parent,omitempty" protobuf:"bytes,8,opt,name=parent"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
