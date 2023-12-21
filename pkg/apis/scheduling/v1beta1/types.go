@@ -362,6 +362,10 @@ type QueueSpec struct {
 	// Parent define the parent of queue
 	// +optional
 	Parent string `json:"parent,omitempty" protobuf:"bytes,8,opt,name=parent"`
+
+	// The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.
+	// +optional
+	Deserved v1.ResourceList `json:"deserved,omitempty" protobuf:"bytes,9,opt,name=deserved"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

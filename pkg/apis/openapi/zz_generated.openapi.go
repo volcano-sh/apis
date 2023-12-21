@@ -3841,6 +3841,20 @@ func schema_pkg_apis_scheduling_v1beta1_QueueSpec(ref common.ReferenceCallback) 
 							Format:      "",
 						},
 					},
+					"deserved": {
+						SchemaProps: spec.SchemaProps{
+							Description: "The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref("k8s.io/apimachinery/pkg/api/resource.Quantity"),
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},

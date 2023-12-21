@@ -374,6 +374,13 @@ func (in *QueueSpec) DeepCopyInto(out *QueueSpec) {
 		*out = new(Affinity)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Deserved != nil {
+		in, out := &in.Deserved, &out.Deserved
+		*out = make(v1.ResourceList, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val.DeepCopy()
+		}
+	}
 	return
 }
 
