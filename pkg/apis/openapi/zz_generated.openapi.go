@@ -3851,6 +3851,28 @@ func schema_pkg_apis_scheduling_v1beta1_QueueSpec(ref common.ReferenceCallback) 
 							Format:      "",
 						},
 					},
+					"parent": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Parent define the parent of queue",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"deserved": {
+						SchemaProps: spec.SchemaProps{
+							Description: "The deserved quota by resource type. This part of resources are allowed to be shared to other queues and can be reclaimed back.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("k8s.io/apimachinery/pkg/api/resource.Quantity"),
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},

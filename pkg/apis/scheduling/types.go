@@ -349,6 +349,10 @@ type QueueSpec struct {
 	// Parent define the parent of queue
 	// +optional
 	Parent string `json:"parent,omitempty" protobuf:"bytes,8,opt,name=parent"`
+
+	// The deserved quota by resource type. This part of resources are allowed to be shared to other queues and can be reclaimed back.
+	// +optional
+	Deserved v1.ResourceList `json:"deserved,omitempty" protobuf:"bytes,9,opt,name=deserved"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
