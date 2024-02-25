@@ -28,6 +28,7 @@ func Convert_scheduling_QueueSpec_To_v1beta1_QueueSpec(in *scheduling.QueueSpec,
 	out.Weight = in.Weight
 	out.Capability = *(*v1.ResourceList)(unsafe.Pointer(&in.Capability))
 	out.Reclaimable = (*bool)(unsafe.Pointer(in.Reclaimable))
+	out.Parent = in.Parent
 
 	return nil
 }
