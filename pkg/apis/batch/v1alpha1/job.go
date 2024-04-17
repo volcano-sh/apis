@@ -247,6 +247,42 @@ const (
 	Failed JobPhase = "Failed"
 )
 
+// PendingReason is an enum that represent possible pending reason
+type PendingReason string
+
+const (
+	// Can't find enough resources for pg tasks
+	NotEnoughResourcesInCluster PendingReason = "NotEnoughResourcesInCluster"
+	// Find node, but the node returned an error
+	NodeFitError PendingReason = "NodeFitError"
+	// Internal error occurred, for instance, a request to kubeapi returned an error
+	InternalError PendingReason = "InternalError"
+	// Pg was created by the controller, but hasn't been processed by the scheduler yet
+	NotProcessedByScheduler PendingReason = "NotProcessedByScheduler"
+	// Job was preempted by another job
+	JobPreempted PendingReason = "JobPreempted"
+	// Cannot enqueue job because of the upper limit of resources in the quota
+	NotEnoughResourcesInQuota PendingReason = "NoResourcesInTheQuota"
+)
+
+// PendingReasonInfo describes why a podgroup is in Pending state
+type PendingReasonInfo struct {
+	// Name of the action that rejected the pg
+	// +optional
+	Action string `json:"action,omitempty" protobuf:"bytes,1,opt,name=action"`
+
+	// Name of the plugin that rejected the pg
+	// +optional
+	Plugin string `json:"plugin,omitempty" protobuf:"bytes,2,opt,name=plugin"`
+
+	// Reason why plugin/action decided to reject the pg
+	Reason PendingReason `json:"reason,omitempty" protobuf:"bytes,3,opt,name=reason"`
+
+	// Human readable message with detailed description why this Reason was set
+	// +optional
+	Message string `json:"message,omitempty" protobuf:"bytes,4,opt,name=message"`
+}
+
 // JobState contains details for the current state of the job.
 type JobState struct {
 	// The phase of Job.
@@ -256,6 +292,11 @@ type JobState struct {
 	// Unique, one-word, CamelCase reason for the phase's last transition.
 	// +optional
 	Reason string `json:"reason,omitempty" protobuf:"bytes,2,opt,name=reason"`
+
+	// The reason why pod is in the pending state
+	// Presents if the pod is in the pending state
+	// +optional
+	PendingReasonInfo PendingReasonInfo `json:"pendingReasonInfo,omitempty" protobuf:"bytes,2,opt,name=pendingReasonInfo"`
 
 	// Human-readable message indicating details about last transition.
 	// +optional

@@ -193,10 +193,51 @@ type PodGroupSpec struct {
 	MinResources *v1.ResourceList
 }
 
+// PendingReason is an enum that represent possible pending reason
+type PendingReason string
+
+const (
+	// Can't find enough resources for pg tasks
+	NotEnoughResourcesInCluster PendingReason = "NotEnoughResourcesInCluster"
+	// Find node, but the node returned an error
+	NodeFitError PendingReason = "NodeFitError"
+	// Internal error occurred, for instance, a request to kubeapi returned an error
+	InternalError PendingReason = "InternalError"
+	// Pg was created by the controller, but hasn't been processed by the scheduler yet
+	NotProcessedByScheduler PendingReason = "NotProcessedByScheduler"
+	// Job was preempted by another job
+	JobPreempted PendingReason = "JobPreempted"
+	// Cannot enqueue job because of the upper limit of resources in the quota
+	NotEnoughResourcesInQuota PendingReason = "NoResourcesInTheQuota"
+)
+
+// PendingReason describes why a podgroup is in Pending state
+type PendingReasonInfo struct {
+	// Name of the action that rejected the pg
+	// +optional
+	Action string
+
+	// Name of the plugin that rejected the pg
+	// +optional
+	Plugin string
+
+	// Reason why plugin/action decided to reject the pg
+	Reason PendingReason
+
+	// Human readable message with detailed description why this Reason was set
+	// +optional
+	Message string
+}
+
 // PodGroupStatus represents the current state of a pod group.
 type PodGroupStatus struct {
 	// Current phase of PodGroup.
 	Phase PodGroupPhase
+
+	// The reason why pod is in the pending state
+	// Presents if the pod is in the pending state
+	// +optional
+	PendingReasonInfo PendingReasonInfo
 
 	// The conditions of PodGroup.
 	// +optional

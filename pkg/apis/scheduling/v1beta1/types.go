@@ -201,26 +201,67 @@ type PodGroupSpec struct {
 	MinResources *v1.ResourceList `json:"minResources,omitempty" protobuf:"bytes,4,opt,name=minResources"`
 }
 
+// PendingReason is an enum that represent possible pending reason
+type PendingReason string
+
+const (
+	// Can't find enough resources for pg tasks
+	NotEnoughResourcesInCluster PendingReason = "NotEnoughResourcesInCluster"
+	// Find node, but the node returned an error
+	NodeFitError PendingReason = "NodeFitError"
+	// Internal error occurred, for instance, a request to kubeapi returned an error
+	InternalError PendingReason = "InternalError"
+	// Pg was created by the controller, but hasn't been processed by the scheduler yet
+	NotProcessedByScheduler PendingReason = "NotProcessedByScheduler"
+	// Job was preempted by another job
+	JobPreempted PendingReason = "JobPreempted"
+	// Cannot enqueue job because of the upper limit of resources in the quota
+	NotEnoughResourcesInQuota PendingReason = "NoResourcesInTheQuota"
+)
+
+// PendingReasonInfo describes why a podgroup is in Pending state
+type PendingReasonInfo struct {
+	// Name of the action that rejected the pg
+	// +optional
+	Action string `json:"action,omitempty" protobuf:"bytes,1,opt,name=action"`
+
+	// Name of the plugin that rejected the pg
+	// +optional
+	Plugin string `json:"plugin,omitempty" protobuf:"bytes,2,opt,name=plugin"`
+
+	// Reason why plugin/action decided to reject the pg
+	Reason PendingReason `json:"reason,omitempty" protobuf:"bytes,3,opt,name=reason"`
+
+	// Human readable message with detailed description why this Reason was set
+	// +optional
+	Message string `json:"message,omitempty" protobuf:"bytes,4,opt,name=message"`
+}
+
 // PodGroupStatus represents the current state of a pod group.
 type PodGroupStatus struct {
 	// Current phase of PodGroup.
 	Phase PodGroupPhase `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
 
+	// The reason why pod is in the pending state
+	// Presents if the pod is in the pending state
+	// +optional
+	PendingReasonInfo PendingReasonInfo `json:"pendingReasonInfo,omitempty" protobuf:"bytes,2,opt,name=pendingReasonInfo"`
+
 	// The conditions of PodGroup.
 	// +optional
-	Conditions []PodGroupCondition `json:"conditions,omitempty" protobuf:"bytes,2,opt,name=conditions"`
+	Conditions []PodGroupCondition `json:"conditions,omitempty" protobuf:"bytes,3,opt,name=conditions"`
 
 	// The number of actively running pods.
 	// +optional
-	Running int32 `json:"running,omitempty" protobuf:"bytes,3,opt,name=running"`
+	Running int32 `json:"running,omitempty" protobuf:"bytes,4,opt,name=running"`
 
 	// The number of pods which reached phase Succeeded.
 	// +optional
-	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,4,opt,name=succeeded"`
+	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,5,opt,name=succeeded"`
 
 	// The number of pods which reached phase Failed.
 	// +optional
-	Failed int32 `json:"failed,omitempty" protobuf:"bytes,5,opt,name=failed"`
+	Failed int32 `json:"failed,omitempty" protobuf:"bytes,6,opt,name=failed"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
