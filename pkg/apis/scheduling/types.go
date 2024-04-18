@@ -199,8 +199,6 @@ type PendingReason string
 const (
 	// Can't find enough resources for pg tasks
 	NotEnoughResourcesInCluster PendingReason = "NotEnoughResourcesInCluster"
-	// Find node, but the node returned an error
-	NodeFitError PendingReason = "NodeFitError"
 	// Internal error occurred, for instance, a request to kubeapi returned an error
 	InternalError PendingReason = "InternalError"
 	// Pg was created by the controller, but hasn't been processed by the scheduler yet
