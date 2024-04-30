@@ -22,7 +22,6 @@ import (
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -35,9 +34,9 @@ type FakeJobTemplates struct {
 	ns   string
 }
 
-var jobtemplatesResource = schema.GroupVersionResource{Group: "flow.volcano.sh", Version: "v1alpha1", Resource: "jobtemplates"}
+var jobtemplatesResource = v1alpha1.SchemeGroupVersion.WithResource("jobtemplates")
 
-var jobtemplatesKind = schema.GroupVersionKind{Group: "flow.volcano.sh", Version: "v1alpha1", Kind: "JobTemplate"}
+var jobtemplatesKind = v1alpha1.SchemeGroupVersion.WithKind("JobTemplate")
 
 // Get takes name of the jobTemplate, and returns the corresponding jobTemplate object, and an error if there is any.
 func (c *FakeJobTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.JobTemplate, err error) {
