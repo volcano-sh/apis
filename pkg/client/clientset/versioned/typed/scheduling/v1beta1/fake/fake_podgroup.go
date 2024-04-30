@@ -22,7 +22,6 @@ import (
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -35,9 +34,9 @@ type FakePodGroups struct {
 	ns   string
 }
 
-var podgroupsResource = schema.GroupVersionResource{Group: "scheduling.volcano.sh", Version: "v1beta1", Resource: "podgroups"}
+var podgroupsResource = v1beta1.SchemeGroupVersion.WithResource("podgroups")
 
-var podgroupsKind = schema.GroupVersionKind{Group: "scheduling.volcano.sh", Version: "v1beta1", Kind: "PodGroup"}
+var podgroupsKind = v1beta1.SchemeGroupVersion.WithKind("PodGroup")
 
 // Get takes name of the podGroup, and returns the corresponding podGroup object, and an error if there is any.
 func (c *FakePodGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.PodGroup, err error) {

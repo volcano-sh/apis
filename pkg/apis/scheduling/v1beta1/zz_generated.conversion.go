@@ -543,6 +543,7 @@ func autoConvert_scheduling_QueueSpec_To_v1beta1_QueueSpec(in *scheduling.QueueS
 	}
 	out.Affinity = (*Affinity)(unsafe.Pointer(in.Affinity))
 	out.Type = in.Type
+	out.Parent = in.Parent
 	return nil
 }
 
