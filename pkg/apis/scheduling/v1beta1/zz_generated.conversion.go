@@ -314,6 +314,7 @@ func autoConvert_v1beta1_PendingReasonInfo_To_scheduling_PendingReasonInfo(in *P
 	out.Plugin = in.Plugin
 	out.Reason = scheduling.PendingReason(in.Reason)
 	out.Message = in.Message
+	out.LastTransitionTime = in.LastTransitionTime
 	return nil
 }
 
@@ -327,6 +328,7 @@ func autoConvert_scheduling_PendingReasonInfo_To_v1beta1_PendingReasonInfo(in *s
 	out.Plugin = in.Plugin
 	out.Reason = PendingReason(in.Reason)
 	out.Message = in.Message
+	out.LastTransitionTime = in.LastTransitionTime
 	return nil
 }
 

@@ -211,6 +211,8 @@ const (
 	InternalError PendingReason = "InternalError"
 	// Pg was created by the controller, but hasn't been processed by the scheduler yet
 	NotProcessedByScheduler PendingReason = "NotProcessedByScheduler"
+	// Job was submitted to the cluster, but haven't yet processed by volcano controller
+	NotProcessedByController PendingReason = "NotProcessedByController"
 	// Job was preempted by another job
 	JobPreempted PendingReason = "JobPreempted"
 	// Cannot enqueue job because of the upper limit of resources in the quota
@@ -233,6 +235,10 @@ type PendingReasonInfo struct {
 	// Human readable message with detailed description why this Reason was set
 	// +optional
 	Message string `json:"message,omitempty" protobuf:"bytes,4,opt,name=message"`
+
+	// Time when the pending reason have been updated
+	// +optional
+	LastTransitionTime metav1.Time `json:"lastTransitionTime,omitempty" protobuf:"bytes,5,opt,name=lastTransitionTime"`
 }
 
 // PodGroupStatus represents the current state of a pod group.
