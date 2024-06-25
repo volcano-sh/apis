@@ -33,6 +33,8 @@ const (
 	JobVersion = "volcano.sh/job-version"
 	// JobTypeKey job type key used in labels
 	JobTypeKey = "volcano.sh/job-type"
+	// JobRetryCountKey job retry count key used in pod annotation
+	JobRetryCountKey = "volcano.sh/job-retry-count"
 	// PodgroupNamePrefix podgroup name prefix
 	PodgroupNamePrefix = "podgroup-"
 	// PodTemplateKey type specify a equivalence pod class
