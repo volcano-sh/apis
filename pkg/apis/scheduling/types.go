@@ -52,6 +52,10 @@ const (
 	// is a new state between PodGroupPending and PodGroupRunning
 	PodGroupInqueue PodGroupPhase = "Inqueue"
 
+	// PodGroupSchGated means the spec.schedulingGates of at least one of the Pods of the job is not empty.
+	// PodGroupSchGated is transitioned from Inqueue. When spec.schedulingGates is empty, the state goes back to Inqueue.
+	PodGroupSchGated PodGroupPhase = "SchGated"
+
 	// PodGroupCompleted means all the pods of PodGroup are completed
 	PodGroupCompleted PodGroupPhase = "Completed"
 )
