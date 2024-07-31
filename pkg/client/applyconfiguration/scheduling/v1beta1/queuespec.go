@@ -33,6 +33,7 @@ type QueueSpecApplyConfiguration struct {
 	Type           *string                      `json:"type,omitempty"`
 	Parent         *string                      `json:"parent,omitempty"`
 	Deserved       *v1.ResourceList             `json:"deserved,omitempty"`
+	Priority       *int32                       `json:"priority,omitempty"`
 }
 
 // QueueSpecApplyConfiguration constructs an declarative configuration of the QueueSpec type for use with
@@ -115,5 +116,13 @@ func (b *QueueSpecApplyConfiguration) WithParent(value string) *QueueSpecApplyCo
 // If called multiple times, the Deserved field is set to the value of the last call.
 func (b *QueueSpecApplyConfiguration) WithDeserved(value v1.ResourceList) *QueueSpecApplyConfiguration {
 	b.Deserved = &value
+	return b
+}
+
+// WithPriority sets the Priority field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Priority field is set to the value of the last call.
+func (b *QueueSpecApplyConfiguration) WithPriority(value int32) *QueueSpecApplyConfiguration {
+	b.Priority = &value
 	return b
 }
