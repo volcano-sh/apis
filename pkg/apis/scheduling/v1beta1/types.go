@@ -366,6 +366,10 @@ type QueueSpec struct {
 	// The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.
 	// +optional
 	Deserved v1.ResourceList `json:"deserved,omitempty" protobuf:"bytes,9,opt,name=deserved"`
+
+	// Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
+	// +optional
+	Priority int32 `json:"priority,omitempty" protobuf:"bytes,10,opt,name=priority"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

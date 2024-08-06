@@ -525,6 +525,7 @@ func autoConvert_v1beta1_QueueSpec_To_scheduling_QueueSpec(in *QueueSpec, out *s
 	out.Type = in.Type
 	out.Parent = in.Parent
 	out.Deserved = *(*v1.ResourceList)(unsafe.Pointer(&in.Deserved))
+	out.Priority = in.Priority
 	return nil
 }
 
@@ -546,6 +547,7 @@ func autoConvert_scheduling_QueueSpec_To_v1beta1_QueueSpec(in *scheduling.QueueS
 	out.Type = in.Type
 	out.Parent = in.Parent
 	out.Deserved = *(*v1.ResourceList)(unsafe.Pointer(&in.Deserved))
+	out.Priority = in.Priority
 	return nil
 }
 
