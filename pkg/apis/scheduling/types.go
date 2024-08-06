@@ -354,7 +354,7 @@ type QueueSpec struct {
 	// +optional
 	Deserved v1.ResourceList `json:"deserved,omitempty" protobuf:"bytes,9,opt,name=deserved"`
 
-	// Priority define the importance of queue
+	// Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
 	// +optional
 	Priority int32 `json:"priority,omitempty" protobuf:"bytes,10,opt,name=priority"`
 }
