@@ -19,6 +19,8 @@ package v1beta1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -46,6 +49,8 @@ type QueueInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.QueueList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Queue, err error)
+	Apply(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error)
+	ApplyStatus(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error)
 	QueueExpansion
 }
 
@@ -176,6 +181,60 @@ func (c *queues) Patch(ctx context.Context, name string, pt types.PatchType, dat
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied queue.
+func (c *queues) Apply(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error) {
+	if queue == nil {
+		return nil, fmt.Errorf("queue provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(queue)
+	if err != nil {
+		return nil, err
+	}
+	name := queue.Name
+	if name == nil {
+		return nil, fmt.Errorf("queue.Name must be provided to Apply")
+	}
+	result = &v1beta1.Queue{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Resource("queues").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *queues) ApplyStatus(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error) {
+	if queue == nil {
+		return nil, fmt.Errorf("queue provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(queue)
+	if err != nil {
+		return nil, err
+	}
+
+	name := queue.Name
+	if name == nil {
+		return nil, fmt.Errorf("queue.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.Queue{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Resource("queues").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)

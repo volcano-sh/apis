@@ -19,6 +19,8 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
 	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 )
 
 // FakeCommands implements CommandInterface
@@ -120,6 +123,28 @@ func (c *FakeCommands) DeleteCollection(ctx context.Context, opts v1.DeleteOptio
 func (c *FakeCommands) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Command, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(commandsResource, c.ns, name, pt, data, subresources...), &v1alpha1.Command{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.Command), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied command.
+func (c *FakeCommands) Apply(ctx context.Context, command *busv1alpha1.CommandApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Command, err error) {
+	if command == nil {
+		return nil, fmt.Errorf("command provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(command)
+	if err != nil {
+		return nil, err
+	}
+	name := command.Name
+	if name == nil {
+		return nil, fmt.Errorf("command.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(commandsResource, c.ns, *name, types.ApplyPatchType, data), &v1alpha1.Command{})
 
 	if obj == nil {
 		return nil, err
