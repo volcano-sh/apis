@@ -19,6 +19,8 @@ package v1alpha1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
 	v1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
+	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/nodeinfo/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -45,6 +48,7 @@ type NumatopologyInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.NumatopologyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Numatopology, err error)
+	Apply(ctx context.Context, numatopology *nodeinfov1alpha1.NumatopologyApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Numatopology, err error)
 	NumatopologyExpansion
 }
 
@@ -160,6 +164,31 @@ func (c *numatopologies) Patch(ctx context.Context, name string, pt types.PatchT
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied numatopology.
+func (c *numatopologies) Apply(ctx context.Context, numatopology *nodeinfov1alpha1.NumatopologyApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Numatopology, err error) {
+	if numatopology == nil {
+		return nil, fmt.Errorf("numatopology provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(numatopology)
+	if err != nil {
+		return nil, err
+	}
+	name := numatopology.Name
+	if name == nil {
+		return nil, fmt.Errorf("numatopology.Name must be provided to Apply")
+	}
+	result = &v1alpha1.Numatopology{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Resource("numatopologies").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)
