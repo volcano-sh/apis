@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Copyright 2014 The Kubernetes Authors.
+# Copyright 2017 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,22 +20,20 @@ set -o pipefail
 
 echo $(dirname "${BASH_SOURCE[0]}")
 
-SCRIPT_ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
+SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 
-# generate the code with:
-# --output-base    because this script should also be able to run inside the vendor dir of
-#                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
-#                  instead of the $GOPATH directly. For normal projects this can be dropped.
-bash ${SCRIPT_ROOT}/hack/generate-groups.sh "deepcopy,client,informer,lister" \
-  volcano.sh/apis/pkg/client volcano.sh/apis/pkg/apis \
-  "batch:v1alpha1 bus:v1alpha1 scheduling:v1beta1 nodeinfo:v1alpha1 flow:v1alpha1" \
-  --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.go.txt
+source "${SCRIPT_ROOT}/hack/kube_codegen.sh"
 
-echo "--------------------"
+THIS_PKG="volcano.sh/apis"
 
-bash ${SCRIPT_ROOT}/hack/generate-internal-groups.sh "deepcopy,conversion,openapi" \
-  volcano.sh/apis/pkg/apis/ volcano.sh/apis/pkg/apis volcano.sh/apis/pkg/apis \
-  "batch:v1alpha1 scheduling:v1beta1"   \
-  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../.." \
-  --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.go.txt
+kube::codegen::gen_helpers \
+    --boilerplate "${SCRIPT_ROOT}/hack/boilerplate.go.txt" \
+    "${SCRIPT_ROOT}/pkg/apis"
 
+kube::codegen::gen_client \
+    --with-watch \
+    --with-applyconfig \
+    --output-dir "${SCRIPT_ROOT}/pkg/client" \
+    --output-pkg "${THIS_PKG}/pkg/client" \
+    --boilerplate "${SCRIPT_ROOT}/hack/boilerplate.go.txt" \
+    "${SCRIPT_ROOT}/pkg/apis"

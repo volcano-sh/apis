@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 )
 
 // FakePodGroups implements PodGroupInterface
@@ -132,6 +135,51 @@ func (c *FakePodGroups) DeleteCollection(ctx context.Context, opts v1.DeleteOpti
 func (c *FakePodGroups) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PodGroup, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(podgroupsResource, c.ns, name, pt, data, subresources...), &v1beta1.PodGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PodGroup), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied podGroup.
+func (c *FakePodGroups) Apply(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error) {
+	if podGroup == nil {
+		return nil, fmt.Errorf("podGroup provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(podGroup)
+	if err != nil {
+		return nil, err
+	}
+	name := podGroup.Name
+	if name == nil {
+		return nil, fmt.Errorf("podGroup.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(podgroupsResource, c.ns, *name, types.ApplyPatchType, data), &v1beta1.PodGroup{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PodGroup), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakePodGroups) ApplyStatus(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error) {
+	if podGroup == nil {
+		return nil, fmt.Errorf("podGroup provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(podGroup)
+	if err != nil {
+		return nil, err
+	}
+	name := podGroup.Name
+	if name == nil {
+		return nil, fmt.Errorf("podGroup.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(podgroupsResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1beta1.PodGroup{})
 
 	if obj == nil {
 		return nil, err

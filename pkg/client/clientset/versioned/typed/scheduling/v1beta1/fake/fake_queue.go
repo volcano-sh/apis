@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 )
 
 // FakeQueues implements QueueInterface
@@ -124,6 +127,49 @@ func (c *FakeQueues) DeleteCollection(ctx context.Context, opts v1.DeleteOptions
 func (c *FakeQueues) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Queue, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootPatchSubresourceAction(queuesResource, name, pt, data, subresources...), &v1beta1.Queue{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.Queue), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied queue.
+func (c *FakeQueues) Apply(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error) {
+	if queue == nil {
+		return nil, fmt.Errorf("queue provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(queue)
+	if err != nil {
+		return nil, err
+	}
+	name := queue.Name
+	if name == nil {
+		return nil, fmt.Errorf("queue.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewRootPatchSubresourceAction(queuesResource, *name, types.ApplyPatchType, data), &v1beta1.Queue{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.Queue), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeQueues) ApplyStatus(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error) {
+	if queue == nil {
+		return nil, fmt.Errorf("queue provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(queue)
+	if err != nil {
+		return nil, err
+	}
+	name := queue.Name
+	if name == nil {
+		return nil, fmt.Errorf("queue.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewRootPatchSubresourceAction(queuesResource, *name, types.ApplyPatchType, data, "status"), &v1beta1.Queue{})
 	if obj == nil {
 		return nil, err
 	}

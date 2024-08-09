@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package v1alpha1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -46,6 +49,8 @@ type JobInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.JobList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Job, err error)
+	Apply(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error)
+	ApplyStatus(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error)
 	JobExpansion
 }
 
@@ -187,6 +192,62 @@ func (c *jobs) Patch(ctx context.Context, name string, pt types.PatchType, data 
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied job.
+func (c *jobs) Apply(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error) {
+	if job == nil {
+		return nil, fmt.Errorf("job provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(job)
+	if err != nil {
+		return nil, err
+	}
+	name := job.Name
+	if name == nil {
+		return nil, fmt.Errorf("job.Name must be provided to Apply")
+	}
+	result = &v1alpha1.Job{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("jobs").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *jobs) ApplyStatus(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error) {
+	if job == nil {
+		return nil, fmt.Errorf("job provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(job)
+	if err != nil {
+		return nil, err
+	}
+
+	name := job.Name
+	if name == nil {
+		return nil, fmt.Errorf("job.Name must be provided to Apply")
+	}
+
+	result = &v1alpha1.Job{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("jobs").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)
