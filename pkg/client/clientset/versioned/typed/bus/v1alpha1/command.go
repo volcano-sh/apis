@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package v1alpha1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
 	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -45,6 +48,7 @@ type CommandInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.CommandList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Command, err error)
+	Apply(ctx context.Context, command *busv1alpha1.CommandApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Command, err error)
 	CommandExpansion
 }
 
@@ -170,6 +174,32 @@ func (c *commands) Patch(ctx context.Context, name string, pt types.PatchType, d
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied command.
+func (c *commands) Apply(ctx context.Context, command *busv1alpha1.CommandApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Command, err error) {
+	if command == nil {
+		return nil, fmt.Errorf("command provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(command)
+	if err != nil {
+		return nil, err
+	}
+	name := command.Name
+	if name == nil {
+		return nil, fmt.Errorf("command.Name must be provided to Apply")
+	}
+	result = &v1alpha1.Command{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("commands").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)

@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package v1beta1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -46,6 +49,8 @@ type PodGroupInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.PodGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PodGroup, err error)
+	Apply(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error)
+	ApplyStatus(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error)
 	PodGroupExpansion
 }
 
@@ -187,6 +192,62 @@ func (c *podGroups) Patch(ctx context.Context, name string, pt types.PatchType, 
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied podGroup.
+func (c *podGroups) Apply(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error) {
+	if podGroup == nil {
+		return nil, fmt.Errorf("podGroup provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(podGroup)
+	if err != nil {
+		return nil, err
+	}
+	name := podGroup.Name
+	if name == nil {
+		return nil, fmt.Errorf("podGroup.Name must be provided to Apply")
+	}
+	result = &v1beta1.PodGroup{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("podgroups").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *podGroups) ApplyStatus(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error) {
+	if podGroup == nil {
+		return nil, fmt.Errorf("podGroup provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(podGroup)
+	if err != nil {
+		return nil, err
+	}
+
+	name := podGroup.Name
+	if name == nil {
+		return nil, fmt.Errorf("podGroup.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.PodGroup{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("podgroups").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)
