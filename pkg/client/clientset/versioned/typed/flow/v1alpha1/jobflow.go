@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package v1alpha1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
 	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -46,6 +49,8 @@ type JobFlowInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.JobFlowList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.JobFlow, err error)
+	Apply(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error)
+	ApplyStatus(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error)
 	JobFlowExpansion
 }
 
@@ -187,6 +192,62 @@ func (c *jobFlows) Patch(ctx context.Context, name string, pt types.PatchType, d
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied jobFlow.
+func (c *jobFlows) Apply(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error) {
+	if jobFlow == nil {
+		return nil, fmt.Errorf("jobFlow provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(jobFlow)
+	if err != nil {
+		return nil, err
+	}
+	name := jobFlow.Name
+	if name == nil {
+		return nil, fmt.Errorf("jobFlow.Name must be provided to Apply")
+	}
+	result = &v1alpha1.JobFlow{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("jobflows").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *jobFlows) ApplyStatus(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error) {
+	if jobFlow == nil {
+		return nil, fmt.Errorf("jobFlow provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(jobFlow)
+	if err != nil {
+		return nil, err
+	}
+
+	name := jobFlow.Name
+	if name == nil {
+		return nil, fmt.Errorf("jobFlow.Name must be provided to Apply")
+	}
+
+	result = &v1alpha1.JobFlow{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("jobflows").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)

@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Volcano Authors.
+Copyright The Volcano Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -26,6 +28,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 )
 
 // FakeJobs implements JobInterface
@@ -132,6 +135,51 @@ func (c *FakeJobs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, 
 func (c *FakeJobs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Job, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(jobsResource, c.ns, name, pt, data, subresources...), &v1alpha1.Job{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.Job), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied job.
+func (c *FakeJobs) Apply(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error) {
+	if job == nil {
+		return nil, fmt.Errorf("job provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(job)
+	if err != nil {
+		return nil, err
+	}
+	name := job.Name
+	if name == nil {
+		return nil, fmt.Errorf("job.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(jobsResource, c.ns, *name, types.ApplyPatchType, data), &v1alpha1.Job{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1alpha1.Job), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeJobs) ApplyStatus(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error) {
+	if job == nil {
+		return nil, fmt.Errorf("job provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(job)
+	if err != nil {
+		return nil, err
+	}
+	name := job.Name
+	if name == nil {
+		return nil, fmt.Errorf("job.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(jobsResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1alpha1.Job{})
 
 	if obj == nil {
 		return nil, err
