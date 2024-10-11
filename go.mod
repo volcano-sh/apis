@@ -1,6 +1,6 @@
 module volcano.sh/apis
 
-go 1.23.0
+go 1.22.0
 
 require (
 	k8s.io/api v0.31.1
