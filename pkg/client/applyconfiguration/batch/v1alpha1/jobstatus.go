@@ -38,6 +38,7 @@ type JobStatusApplyConfiguration struct {
 	RunningDuration     *v1.Duration                           `json:"runningDuration,omitempty"`
 	ControlledResources map[string]string                      `json:"controlledResources,omitempty"`
 	Conditions          []JobConditionApplyConfiguration       `json:"conditions,omitempty"`
+	StartTime           *v1.Time                               `json:"startTime,omitempty"`
 }
 
 // JobStatusApplyConfiguration constructs a declarative configuration of the JobStatus type for use with
@@ -172,5 +173,13 @@ func (b *JobStatusApplyConfiguration) WithConditions(values ...*JobConditionAppl
 		}
 		b.Conditions = append(b.Conditions, *values[i])
 	}
+	return b
+}
+
+// WithStartTime sets the StartTime field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the StartTime field is set to the value of the last call.
+func (b *JobStatusApplyConfiguration) WithStartTime(value v1.Time) *JobStatusApplyConfiguration {
+	b.StartTime = &value
 	return b
 }

@@ -183,6 +183,11 @@ func (in *JobSpec) DeepCopyInto(out *JobSpec) {
 		*out = new(int32)
 		**out = **in
 	}
+	if in.ActiveDeadlineSeconds != nil {
+		in, out := &in.ActiveDeadlineSeconds, &out.ActiveDeadlineSeconds
+		*out = new(int64)
+		**out = **in
+	}
 	return
 }
 
@@ -242,6 +247,10 @@ func (in *JobStatus) DeepCopyInto(out *JobStatus) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.StartTime != nil {
+		in, out := &in.StartTime, &out.StartTime
+		*out = (*in).DeepCopy()
 	}
 	return
 }
