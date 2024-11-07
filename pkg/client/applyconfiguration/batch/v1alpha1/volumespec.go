@@ -21,7 +21,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// VolumeSpecApplyConfiguration represents an declarative configuration of the VolumeSpec type for use
+// VolumeSpecApplyConfiguration represents a declarative configuration of the VolumeSpec type for use
 // with apply.
 type VolumeSpecApplyConfiguration struct {
 	MountPath       *string                       `json:"mountPath,omitempty"`
@@ -29,7 +29,7 @@ type VolumeSpecApplyConfiguration struct {
 	VolumeClaim     *v1.PersistentVolumeClaimSpec `json:"volumeClaim,omitempty"`
 }
 
-// VolumeSpecApplyConfiguration constructs an declarative configuration of the VolumeSpec type for use with
+// VolumeSpecApplyConfiguration constructs a declarative configuration of the VolumeSpec type for use with
 // apply.
 func VolumeSpec() *VolumeSpecApplyConfiguration {
 	return &VolumeSpecApplyConfiguration{}

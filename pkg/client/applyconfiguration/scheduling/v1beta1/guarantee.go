@@ -21,13 +21,13 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// GuaranteeApplyConfiguration represents an declarative configuration of the Guarantee type for use
+// GuaranteeApplyConfiguration represents a declarative configuration of the Guarantee type for use
 // with apply.
 type GuaranteeApplyConfiguration struct {
 	Resource *v1.ResourceList `json:"resource,omitempty"`
 }
 
-// GuaranteeApplyConfiguration constructs an declarative configuration of the Guarantee type for use with
+// GuaranteeApplyConfiguration constructs a declarative configuration of the Guarantee type for use with
 // apply.
 func Guarantee() *GuaranteeApplyConfiguration {
 	return &GuaranteeApplyConfiguration{}

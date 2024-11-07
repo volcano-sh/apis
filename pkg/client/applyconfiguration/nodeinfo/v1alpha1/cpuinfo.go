@@ -17,7 +17,7 @@ limitations under the License.
 
 package v1alpha1
 
-// CPUInfoApplyConfiguration represents an declarative configuration of the CPUInfo type for use
+// CPUInfoApplyConfiguration represents a declarative configuration of the CPUInfo type for use
 // with apply.
 type CPUInfoApplyConfiguration struct {
 	NUMANodeID *int `json:"numa,omitempty"`
@@ -25,7 +25,7 @@ type CPUInfoApplyConfiguration struct {
 	CoreID     *int `json:"core,omitempty"`
 }
 
-// CPUInfoApplyConfiguration constructs an declarative configuration of the CPUInfo type for use with
+// CPUInfoApplyConfiguration constructs a declarative configuration of the CPUInfo type for use with
 // apply.
 func CPUInfo() *CPUInfoApplyConfiguration {
 	return &CPUInfoApplyConfiguration{}

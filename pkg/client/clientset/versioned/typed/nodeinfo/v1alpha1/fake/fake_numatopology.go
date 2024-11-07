@@ -42,20 +42,22 @@ var numatopologiesKind = v1alpha1.SchemeGroupVersion.WithKind("Numatopology")
 
 // Get takes name of the numatopology, and returns the corresponding numatopology object, and an error if there is any.
 func (c *FakeNumatopologies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.Numatopology, err error) {
+	emptyResult := &v1alpha1.Numatopology{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootGetAction(numatopologiesResource, name), &v1alpha1.Numatopology{})
+		Invokes(testing.NewRootGetActionWithOptions(numatopologiesResource, name, options), emptyResult)
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.Numatopology), err
 }
 
 // List takes label and field selectors, and returns the list of Numatopologies that match those selectors.
 func (c *FakeNumatopologies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NumatopologyList, err error) {
+	emptyResult := &v1alpha1.NumatopologyList{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootListAction(numatopologiesResource, numatopologiesKind, opts), &v1alpha1.NumatopologyList{})
+		Invokes(testing.NewRootListActionWithOptions(numatopologiesResource, numatopologiesKind, opts), emptyResult)
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 
 	label, _, _ := testing.ExtractFromListOptions(opts)
@@ -74,25 +76,27 @@ func (c *FakeNumatopologies) List(ctx context.Context, opts v1.ListOptions) (res
 // Watch returns a watch.Interface that watches the requested numatopologies.
 func (c *FakeNumatopologies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewRootWatchAction(numatopologiesResource, opts))
+		InvokesWatch(testing.NewRootWatchActionWithOptions(numatopologiesResource, opts))
 }
 
 // Create takes the representation of a numatopology and creates it.  Returns the server's representation of the numatopology, and an error, if there is any.
 func (c *FakeNumatopologies) Create(ctx context.Context, numatopology *v1alpha1.Numatopology, opts v1.CreateOptions) (result *v1alpha1.Numatopology, err error) {
+	emptyResult := &v1alpha1.Numatopology{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootCreateAction(numatopologiesResource, numatopology), &v1alpha1.Numatopology{})
+		Invokes(testing.NewRootCreateActionWithOptions(numatopologiesResource, numatopology, opts), emptyResult)
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.Numatopology), err
 }
 
 // Update takes the representation of a numatopology and updates it. Returns the server's representation of the numatopology, and an error, if there is any.
 func (c *FakeNumatopologies) Update(ctx context.Context, numatopology *v1alpha1.Numatopology, opts v1.UpdateOptions) (result *v1alpha1.Numatopology, err error) {
+	emptyResult := &v1alpha1.Numatopology{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateAction(numatopologiesResource, numatopology), &v1alpha1.Numatopology{})
+		Invokes(testing.NewRootUpdateActionWithOptions(numatopologiesResource, numatopology, opts), emptyResult)
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.Numatopology), err
 }
@@ -106,7 +110,7 @@ func (c *FakeNumatopologies) Delete(ctx context.Context, name string, opts v1.De
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeNumatopologies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewRootDeleteCollectionAction(numatopologiesResource, listOpts)
+	action := testing.NewRootDeleteCollectionActionWithOptions(numatopologiesResource, opts, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1alpha1.NumatopologyList{})
 	return err
@@ -114,10 +118,11 @@ func (c *FakeNumatopologies) DeleteCollection(ctx context.Context, opts v1.Delet
 
 // Patch applies the patch and returns the patched numatopology.
 func (c *FakeNumatopologies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Numatopology, err error) {
+	emptyResult := &v1alpha1.Numatopology{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceAction(numatopologiesResource, name, pt, data, subresources...), &v1alpha1.Numatopology{})
+		Invokes(testing.NewRootPatchSubresourceActionWithOptions(numatopologiesResource, name, pt, data, opts, subresources...), emptyResult)
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.Numatopology), err
 }
@@ -135,10 +140,11 @@ func (c *FakeNumatopologies) Apply(ctx context.Context, numatopology *nodeinfov1
 	if name == nil {
 		return nil, fmt.Errorf("numatopology.Name must be provided to Apply")
 	}
+	emptyResult := &v1alpha1.Numatopology{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceAction(numatopologiesResource, *name, types.ApplyPatchType, data), &v1alpha1.Numatopology{})
+		Invokes(testing.NewRootPatchSubresourceActionWithOptions(numatopologiesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.Numatopology), err
 }
