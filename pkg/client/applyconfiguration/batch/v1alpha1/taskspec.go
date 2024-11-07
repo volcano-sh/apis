@@ -22,7 +22,7 @@ import (
 	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// TaskSpecApplyConfiguration represents an declarative configuration of the TaskSpec type for use
+// TaskSpecApplyConfiguration represents a declarative configuration of the TaskSpec type for use
 // with apply.
 type TaskSpecApplyConfiguration struct {
 	Name           *string                             `json:"name,omitempty"`
@@ -35,7 +35,7 @@ type TaskSpecApplyConfiguration struct {
 	DependsOn      *DependsOnApplyConfiguration        `json:"dependsOn,omitempty"`
 }
 
-// TaskSpecApplyConfiguration constructs an declarative configuration of the TaskSpec type for use with
+// TaskSpecApplyConfiguration constructs a declarative configuration of the TaskSpec type for use with
 // apply.
 func TaskSpec() *TaskSpecApplyConfiguration {
 	return &TaskSpecApplyConfiguration{}

@@ -22,7 +22,7 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// JobStatusApplyConfiguration represents an declarative configuration of the JobStatus type for use
+// JobStatusApplyConfiguration represents a declarative configuration of the JobStatus type for use
 // with apply.
 type JobStatusApplyConfiguration struct {
 	Name             *string                               `json:"name,omitempty"`
@@ -33,7 +33,7 @@ type JobStatusApplyConfiguration struct {
 	RunningHistories []JobRunningHistoryApplyConfiguration `json:"runningHistories,omitempty"`
 }
 
-// JobStatusApplyConfiguration constructs an declarative configuration of the JobStatus type for use with
+// JobStatusApplyConfiguration constructs a declarative configuration of the JobStatus type for use with
 // apply.
 func JobStatus() *JobStatusApplyConfiguration {
 	return &JobStatusApplyConfiguration{}

@@ -18,7 +18,9 @@ limitations under the License.
 package applyconfiguration
 
 import (
+	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
+	testing "k8s.io/client-go/testing"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
@@ -27,6 +29,7 @@ import (
 	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	applyconfigurationbusv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 	applyconfigurationflowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
+	internal "volcano.sh/apis/pkg/client/applyconfiguration/internal"
 	applyconfigurationnodeinfov1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 )
@@ -133,4 +136,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 
 	}
 	return nil
+}
+
+func NewTypeConverter(scheme *runtime.Scheme) *testing.TypeConverter {
+	return &testing.TypeConverter{Scheme: scheme, TypeResolver: internal.Parser()}
 }

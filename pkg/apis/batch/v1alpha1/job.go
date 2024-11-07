@@ -87,6 +87,7 @@ type JobSpec struct {
 
 	// Specifies the maximum number of retries before marking this Job failed.
 	// Defaults to 3.
+	// +kubebuilder:default:=3
 	// +optional
 	MaxRetry int32 `json:"maxRetry,omitempty" protobuf:"bytes,9,opt,name=maxRetry"`
 
@@ -174,6 +175,7 @@ type LifecyclePolicy struct {
 	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,5,opt,name=timeout"`
 }
 
+// +kubebuilder:validation:Enum=none;best-effort;restricted;single-numa-node
 type NumaPolicy string
 
 const (
@@ -222,6 +224,7 @@ type TaskSpec struct {
 }
 
 // JobPhase defines the phase of the job.
+// +kubebuilder:validation:Enum=Pending;Aborting;Aborted;Running;Restarting;Completing;Completed;Terminating;Terminated;Failed
 type JobPhase string
 
 const (

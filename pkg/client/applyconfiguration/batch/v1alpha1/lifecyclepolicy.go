@@ -22,7 +22,7 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 )
 
-// LifecyclePolicyApplyConfiguration represents an declarative configuration of the LifecyclePolicy type for use
+// LifecyclePolicyApplyConfiguration represents a declarative configuration of the LifecyclePolicy type for use
 // with apply.
 type LifecyclePolicyApplyConfiguration struct {
 	Action   *v1alpha1.Action `json:"action,omitempty"`
@@ -32,7 +32,7 @@ type LifecyclePolicyApplyConfiguration struct {
 	Timeout  *v1.Duration     `json:"timeout,omitempty"`
 }
 
-// LifecyclePolicyApplyConfiguration constructs an declarative configuration of the LifecyclePolicy type for use with
+// LifecyclePolicyApplyConfiguration constructs a declarative configuration of the LifecyclePolicy type for use with
 // apply.
 func LifecyclePolicy() *LifecyclePolicyApplyConfiguration {
 	return &LifecyclePolicyApplyConfiguration{}

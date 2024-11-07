@@ -23,7 +23,7 @@ import (
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
-// PodGroupConditionApplyConfiguration represents an declarative configuration of the PodGroupCondition type for use
+// PodGroupConditionApplyConfiguration represents a declarative configuration of the PodGroupCondition type for use
 // with apply.
 type PodGroupConditionApplyConfiguration struct {
 	Type               *v1beta1.PodGroupConditionType `json:"type,omitempty"`
@@ -34,7 +34,7 @@ type PodGroupConditionApplyConfiguration struct {
 	Message            *string                        `json:"message,omitempty"`
 }
 
-// PodGroupConditionApplyConfiguration constructs an declarative configuration of the PodGroupCondition type for use with
+// PodGroupConditionApplyConfiguration constructs a declarative configuration of the PodGroupCondition type for use with
 // apply.
 func PodGroupCondition() *PodGroupConditionApplyConfiguration {
 	return &PodGroupConditionApplyConfiguration{}

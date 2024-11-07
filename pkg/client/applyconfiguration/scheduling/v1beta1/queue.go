@@ -23,7 +23,7 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// QueueApplyConfiguration represents an declarative configuration of the Queue type for use
+// QueueApplyConfiguration represents a declarative configuration of the Queue type for use
 // with apply.
 type QueueApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -32,7 +32,7 @@ type QueueApplyConfiguration struct {
 	Status                           *QueueStatusApplyConfiguration `json:"status,omitempty"`
 }
 
-// Queue constructs an declarative configuration of the Queue type for use with
+// Queue constructs a declarative configuration of the Queue type for use with
 // apply.
 func Queue(name string) *QueueApplyConfiguration {
 	b := &QueueApplyConfiguration{}
@@ -214,4 +214,10 @@ func (b *QueueApplyConfiguration) WithSpec(value *QueueSpecApplyConfiguration) *
 func (b *QueueApplyConfiguration) WithStatus(value *QueueStatusApplyConfiguration) *QueueApplyConfiguration {
 	b.Status = value
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *QueueApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }
