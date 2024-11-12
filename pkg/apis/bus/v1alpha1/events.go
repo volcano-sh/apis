@@ -30,6 +30,12 @@ const (
 	// PodEvictedEvent is triggered if Pod was deleted
 	PodEvictedEvent Event = "PodEvicted"
 
+	// PodPendingEvent is triggered if Pod was pending
+	PodPendingEvent Event = "PodPending"
+
+	// PodRunningEvent is triggered if Pod was running
+	PodRunningEvent Event = "PodRunning"
+
 	// JobUnknownEvent These below are several events can lead to job 'Unknown'
 	// 1. Task Unschedulable, this is triggered when part of
 	//    pods can't be scheduled while some are already running in gang-scheduling case.
