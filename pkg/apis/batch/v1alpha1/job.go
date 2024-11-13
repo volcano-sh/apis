@@ -263,6 +263,8 @@ const (
 	JobPreempted PendingReason = "JobPreempted"
 	// Cannot enqueue job because of the upper limit of resources in the quota
 	NotEnoughResourcesInQuota PendingReason = "NoResourcesInTheQuota"
+	// Cannot enqueue job because of the insufficient quota
+	InsufficientQuota PendingReason = "InsufficientQuota"
 )
 
 // PendingReasonInfo describes why a podgroup is in Pending state
