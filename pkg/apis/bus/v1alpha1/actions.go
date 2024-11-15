@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 // Action is the action that Job controller will take according to the event.
+// +kubebuilder:validation:Enum=AbortJob;RestartJob;RestartTask;TerminateJob;CompleteJob;ResumeJob;SyncJob;EnqueueJob;SyncQueue;OpenQueue;CloseQueue
 type Action string
 
 const (

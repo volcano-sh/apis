@@ -23,7 +23,7 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// CommandApplyConfiguration represents an declarative configuration of the Command type for use
+// CommandApplyConfiguration represents a declarative configuration of the Command type for use
 // with apply.
 type CommandApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -34,7 +34,7 @@ type CommandApplyConfiguration struct {
 	Message                          *string                              `json:"message,omitempty"`
 }
 
-// Command constructs an declarative configuration of the Command type for use with
+// Command constructs a declarative configuration of the Command type for use with
 // apply.
 func Command(name, namespace string) *CommandApplyConfiguration {
 	b := &CommandApplyConfiguration{}
@@ -233,4 +233,10 @@ func (b *CommandApplyConfiguration) WithReason(value string) *CommandApplyConfig
 func (b *CommandApplyConfiguration) WithMessage(value string) *CommandApplyConfiguration {
 	b.Message = &value
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *CommandApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }

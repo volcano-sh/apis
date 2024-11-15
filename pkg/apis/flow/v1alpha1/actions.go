@@ -1,6 +1,7 @@
 package v1alpha1
 
 // Action is the action that JobFlow controller will take according to the event.
+// +kubebuilder:validation:Enum=SyncJobFlow;SyncJobTemplate
 type Action string
 
 const (

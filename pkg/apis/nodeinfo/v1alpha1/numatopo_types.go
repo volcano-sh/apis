@@ -25,18 +25,27 @@ import (
 
 // ResourceInfo is the sets about resource capacity and allocatable
 type ResourceInfo struct {
+	// +optional
 	Allocatable string `json:"allocatable,omitempty"`
-	Capacity    int    `json:"capacity,omitempty"`
+	// +optional
+	Capacity int `json:"capacity,omitempty"`
 }
 
 // CPUInfo is the cpu topology detail
 type CPUInfo struct {
+	// +kubebuilder:validation:Minimum=0
+	// +optional
 	NUMANodeID int `json:"numa,omitempty"`
-	SocketID   int `json:"socket,omitempty"`
-	CoreID     int `json:"core,omitempty"`
+	// +kubebuilder:validation:Minimum=0
+	// +optional
+	SocketID int `json:"socket,omitempty"`
+	// +kubebuilder:validation:Minimum=0
+	// +optional
+	CoreID int `json:"core,omitempty"`
 }
 
 // PolicyName is the policy name type
+// +kubebuilder:validation:Enum=CPUManagerPolicy;TopologyManagerPolicy
 type PolicyName string
 
 const (
