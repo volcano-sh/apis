@@ -108,6 +108,35 @@ type JobSpec struct {
 	// +kubebuilder:validation:Minimum=1
 	// +optional
 	MinSuccess *int32 `json:"minSuccess,omitempty" protobuf:"varint,12,opt,name=minSuccess"`
+
+	// NetworkTopologies defines the NetworkTopologies config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopologies *NetworkTopologiesSpec `json:"networkTopologies,omitempty" protobuf:"bytes,13,opt,name=networkTopologies"`
+}
+
+// NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".
+// +kubebuilder:validation:Enum=hard;soft
+type NetworkTopologyMode string
+
+const (
+	// HardNetworkTopologyMode represents a strict network topology constraint that jobs must adhere to.
+	HardNetworkTopologyMode NetworkTopologyMode = "hard"
+
+	// SoftNetworkTopologyMode represents a flexible network topology constraint that allows jobs
+	// to cross network boundaries under certain conditions.
+	SoftNetworkTopologyMode NetworkTopologyMode = "soft"
+)
+
+type NetworkTopologiesSpec struct {
+	// Mode specifies the mode of the network topology constrain.
+	// +kubebuilder:default=hard
+	// +optional
+	Mode NetworkTopologyMode `json:"mode,omitempty" protobuf:"bytes,1,opt,name=mode"`
+
+	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
+	// +kubebuilder:default=1
+	// +optional
+	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"bytes,2,opt,name=highestTierAllowed"`
 }
 
 // VolumeSpec defines the specification of Volume, e.g. PVC.

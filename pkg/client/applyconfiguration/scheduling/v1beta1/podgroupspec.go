@@ -24,11 +24,12 @@ import (
 // PodGroupSpecApplyConfiguration represents a declarative configuration of the PodGroupSpec type for use
 // with apply.
 type PodGroupSpecApplyConfiguration struct {
-	MinMember         *int32           `json:"minMember,omitempty"`
-	MinTaskMember     map[string]int32 `json:"minTaskMember,omitempty"`
-	Queue             *string          `json:"queue,omitempty"`
-	PriorityClassName *string          `json:"priorityClassName,omitempty"`
-	MinResources      *v1.ResourceList `json:"minResources,omitempty"`
+	MinMember         *int32                                   `json:"minMember,omitempty"`
+	MinTaskMember     map[string]int32                         `json:"minTaskMember,omitempty"`
+	Queue             *string                                  `json:"queue,omitempty"`
+	PriorityClassName *string                                  `json:"priorityClassName,omitempty"`
+	MinResources      *v1.ResourceList                         `json:"minResources,omitempty"`
+	NetworkTopologies *NetworkTopologiesSpecApplyConfiguration `json:"networkTopologies,omitempty"`
 }
 
 // PodGroupSpecApplyConfiguration constructs a declarative configuration of the PodGroupSpec type for use with
@@ -80,5 +81,13 @@ func (b *PodGroupSpecApplyConfiguration) WithPriorityClassName(value string) *Po
 // If called multiple times, the MinResources field is set to the value of the last call.
 func (b *PodGroupSpecApplyConfiguration) WithMinResources(value v1.ResourceList) *PodGroupSpecApplyConfiguration {
 	b.MinResources = &value
+	return b
+}
+
+// WithNetworkTopologies sets the NetworkTopologies field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the NetworkTopologies field is set to the value of the last call.
+func (b *PodGroupSpecApplyConfiguration) WithNetworkTopologies(value *NetworkTopologiesSpecApplyConfiguration) *PodGroupSpecApplyConfiguration {
+	b.NetworkTopologies = value
 	return b
 }
