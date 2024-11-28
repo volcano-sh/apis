@@ -23,7 +23,7 @@ import (
 	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 )
 
-// ConditionApplyConfiguration represents an declarative configuration of the Condition type for use
+// ConditionApplyConfiguration represents a declarative configuration of the Condition type for use
 // with apply.
 type ConditionApplyConfiguration struct {
 	Phase           *v1alpha1.JobPhase                                   `json:"phase,omitempty"`
@@ -32,7 +32,7 @@ type ConditionApplyConfiguration struct {
 	TaskStatusCount map[string]batchv1alpha1.TaskStateApplyConfiguration `json:"taskStatusCount,omitempty"`
 }
 
-// ConditionApplyConfiguration constructs an declarative configuration of the Condition type for use with
+// ConditionApplyConfiguration constructs a declarative configuration of the Condition type for use with
 // apply.
 func Condition() *ConditionApplyConfiguration {
 	return &ConditionApplyConfiguration{}

@@ -43,22 +43,24 @@ var jobflowsKind = v1alpha1.SchemeGroupVersion.WithKind("JobFlow")
 
 // Get takes name of the jobFlow, and returns the corresponding jobFlow object, and an error if there is any.
 func (c *FakeJobFlows) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.JobFlow, err error) {
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(jobflowsResource, c.ns, name), &v1alpha1.JobFlow{})
+		Invokes(testing.NewGetActionWithOptions(jobflowsResource, c.ns, name, options), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }
 
 // List takes label and field selectors, and returns the list of JobFlows that match those selectors.
 func (c *FakeJobFlows) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.JobFlowList, err error) {
+	emptyResult := &v1alpha1.JobFlowList{}
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(jobflowsResource, jobflowsKind, c.ns, opts), &v1alpha1.JobFlowList{})
+		Invokes(testing.NewListActionWithOptions(jobflowsResource, jobflowsKind, c.ns, opts), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 
 	label, _, _ := testing.ExtractFromListOptions(opts)
@@ -77,40 +79,43 @@ func (c *FakeJobFlows) List(ctx context.Context, opts v1.ListOptions) (result *v
 // Watch returns a watch.Interface that watches the requested jobFlows.
 func (c *FakeJobFlows) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(jobflowsResource, c.ns, opts))
+		InvokesWatch(testing.NewWatchActionWithOptions(jobflowsResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a jobFlow and creates it.  Returns the server's representation of the jobFlow, and an error, if there is any.
 func (c *FakeJobFlows) Create(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.CreateOptions) (result *v1alpha1.JobFlow, err error) {
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(jobflowsResource, c.ns, jobFlow), &v1alpha1.JobFlow{})
+		Invokes(testing.NewCreateActionWithOptions(jobflowsResource, c.ns, jobFlow, opts), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }
 
 // Update takes the representation of a jobFlow and updates it. Returns the server's representation of the jobFlow, and an error, if there is any.
 func (c *FakeJobFlows) Update(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (result *v1alpha1.JobFlow, err error) {
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(jobflowsResource, c.ns, jobFlow), &v1alpha1.JobFlow{})
+		Invokes(testing.NewUpdateActionWithOptions(jobflowsResource, c.ns, jobFlow, opts), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeJobFlows) UpdateStatus(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (*v1alpha1.JobFlow, error) {
+func (c *FakeJobFlows) UpdateStatus(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (result *v1alpha1.JobFlow, err error) {
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(jobflowsResource, "status", c.ns, jobFlow), &v1alpha1.JobFlow{})
+		Invokes(testing.NewUpdateSubresourceActionWithOptions(jobflowsResource, "status", c.ns, jobFlow, opts), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }
@@ -125,7 +130,7 @@ func (c *FakeJobFlows) Delete(ctx context.Context, name string, opts v1.DeleteOp
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeJobFlows) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(jobflowsResource, c.ns, listOpts)
+	action := testing.NewDeleteCollectionActionWithOptions(jobflowsResource, c.ns, opts, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1alpha1.JobFlowList{})
 	return err
@@ -133,11 +138,12 @@ func (c *FakeJobFlows) DeleteCollection(ctx context.Context, opts v1.DeleteOptio
 
 // Patch applies the patch and returns the patched jobFlow.
 func (c *FakeJobFlows) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.JobFlow, err error) {
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(jobflowsResource, c.ns, name, pt, data, subresources...), &v1alpha1.JobFlow{})
+		Invokes(testing.NewPatchSubresourceActionWithOptions(jobflowsResource, c.ns, name, pt, data, opts, subresources...), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }
@@ -155,11 +161,12 @@ func (c *FakeJobFlows) Apply(ctx context.Context, jobFlow *flowv1alpha1.JobFlowA
 	if name == nil {
 		return nil, fmt.Errorf("jobFlow.Name must be provided to Apply")
 	}
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(jobflowsResource, c.ns, *name, types.ApplyPatchType, data), &v1alpha1.JobFlow{})
+		Invokes(testing.NewPatchSubresourceActionWithOptions(jobflowsResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }
@@ -178,11 +185,12 @@ func (c *FakeJobFlows) ApplyStatus(ctx context.Context, jobFlow *flowv1alpha1.Jo
 	if name == nil {
 		return nil, fmt.Errorf("jobFlow.Name must be provided to Apply")
 	}
+	emptyResult := &v1alpha1.JobFlow{}
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(jobflowsResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1alpha1.JobFlow{})
+		Invokes(testing.NewPatchSubresourceActionWithOptions(jobflowsResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions(), "status"), emptyResult)
 
 	if obj == nil {
-		return nil, err
+		return emptyResult, err
 	}
 	return obj.(*v1alpha1.JobFlow), err
 }

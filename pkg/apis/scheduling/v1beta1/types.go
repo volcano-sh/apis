@@ -21,9 +21,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// PodGroupPhase is the phase of a pod group at the current time.
-type PodGroupPhase string
-
 // QueueState is state type of queue.
 type QueueState string
 
@@ -37,6 +34,9 @@ const (
 	// QueueStateUnknown indicate `Unknown` state of queue
 	QueueStateUnknown QueueState = "Unknown"
 )
+
+// PodGroupPhase is the phase of a pod group at the current time.
+type PodGroupPhase string
 
 // These are the valid phase of podGroups.
 const (
@@ -309,8 +309,11 @@ type QueueStatus struct {
 
 // CluterSpec represents the template of Cluster
 type Cluster struct {
-	Name     string          `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
-	Weight   int32           `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	// +optional
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	// +optional
+	Weight int32 `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	// +optional
 	Capacity v1.ResourceList `json:"capacity,omitempty" protobuf:"bytes,3,opt,name=capacity"`
 }
 
@@ -341,7 +344,10 @@ type NodeGroupAntiAffinity struct {
 
 // QueueSpec represents the template of Queue.
 type QueueSpec struct {
-	Weight     int32           `json:"weight,omitempty" protobuf:"bytes,1,opt,name=weight"`
+	// +optional
+	Weight int32 `json:"weight,omitempty" protobuf:"bytes,1,opt,name=weight"`
+
+	// +optional
 	Capability v1.ResourceList `json:"capability,omitempty" protobuf:"bytes,2,opt,name=capability"`
 
 	// Reclaimable indicate whether the queue can be reclaimed by other queue

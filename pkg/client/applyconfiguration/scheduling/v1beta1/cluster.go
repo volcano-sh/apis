@@ -21,7 +21,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// ClusterApplyConfiguration represents an declarative configuration of the Cluster type for use
+// ClusterApplyConfiguration represents a declarative configuration of the Cluster type for use
 // with apply.
 type ClusterApplyConfiguration struct {
 	Name     *string          `json:"name,omitempty"`
@@ -29,7 +29,7 @@ type ClusterApplyConfiguration struct {
 	Capacity *v1.ResourceList `json:"capacity,omitempty"`
 }
 
-// ClusterApplyConfiguration constructs an declarative configuration of the Cluster type for use with
+// ClusterApplyConfiguration constructs a declarative configuration of the Cluster type for use with
 // apply.
 func Cluster() *ClusterApplyConfiguration {
 	return &ClusterApplyConfiguration{}

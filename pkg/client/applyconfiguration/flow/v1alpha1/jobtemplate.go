@@ -24,7 +24,7 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 )
 
-// JobTemplateApplyConfiguration represents an declarative configuration of the JobTemplate type for use
+// JobTemplateApplyConfiguration represents a declarative configuration of the JobTemplate type for use
 // with apply.
 type JobTemplateApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -33,7 +33,7 @@ type JobTemplateApplyConfiguration struct {
 	Status                           *JobTemplateStatusApplyConfiguration `json:"status,omitempty"`
 }
 
-// JobTemplate constructs an declarative configuration of the JobTemplate type for use with
+// JobTemplate constructs a declarative configuration of the JobTemplate type for use with
 // apply.
 func JobTemplate(name, namespace string) *JobTemplateApplyConfiguration {
 	b := &JobTemplateApplyConfiguration{}
@@ -216,4 +216,10 @@ func (b *JobTemplateApplyConfiguration) WithSpec(value *v1alpha1.JobSpecApplyCon
 func (b *JobTemplateApplyConfiguration) WithStatus(value *JobTemplateStatusApplyConfiguration) *JobTemplateApplyConfiguration {
 	b.Status = value
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *JobTemplateApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }

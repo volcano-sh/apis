@@ -21,7 +21,7 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 )
 
-// NumatopoSpecApplyConfiguration represents an declarative configuration of the NumatopoSpec type for use
+// NumatopoSpecApplyConfiguration represents a declarative configuration of the NumatopoSpec type for use
 // with apply.
 type NumatopoSpecApplyConfiguration struct {
 	Policies    map[v1alpha1.PolicyName]string            `json:"policies,omitempty"`
@@ -30,7 +30,7 @@ type NumatopoSpecApplyConfiguration struct {
 	CPUDetail   map[string]CPUInfoApplyConfiguration      `json:"cpuDetail,omitempty"`
 }
 
-// NumatopoSpecApplyConfiguration constructs an declarative configuration of the NumatopoSpec type for use with
+// NumatopoSpecApplyConfiguration constructs a declarative configuration of the NumatopoSpec type for use with
 // apply.
 func NumatopoSpec() *NumatopoSpecApplyConfiguration {
 	return &NumatopoSpecApplyConfiguration{}

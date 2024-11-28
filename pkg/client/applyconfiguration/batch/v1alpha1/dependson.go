@@ -21,14 +21,14 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// DependsOnApplyConfiguration represents an declarative configuration of the DependsOn type for use
+// DependsOnApplyConfiguration represents a declarative configuration of the DependsOn type for use
 // with apply.
 type DependsOnApplyConfiguration struct {
 	Name      []string            `json:"name,omitempty"`
 	Iteration *v1alpha1.Iteration `json:"iteration,omitempty"`
 }
 
-// DependsOnApplyConfiguration constructs an declarative configuration of the DependsOn type for use with
+// DependsOnApplyConfiguration constructs a declarative configuration of the DependsOn type for use with
 // apply.
 func DependsOn() *DependsOnApplyConfiguration {
 	return &DependsOnApplyConfiguration{}

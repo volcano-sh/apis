@@ -17,7 +17,7 @@ limitations under the License.
 
 package v1alpha1
 
-// ProbeApplyConfiguration represents an declarative configuration of the Probe type for use
+// ProbeApplyConfiguration represents a declarative configuration of the Probe type for use
 // with apply.
 type ProbeApplyConfiguration struct {
 	HttpGetList    []HttpGetApplyConfiguration    `json:"httpGetList,omitempty"`
@@ -25,7 +25,7 @@ type ProbeApplyConfiguration struct {
 	TaskStatusList []TaskStatusApplyConfiguration `json:"taskStatusList,omitempty"`
 }
 
-// ProbeApplyConfiguration constructs an declarative configuration of the Probe type for use with
+// ProbeApplyConfiguration constructs a declarative configuration of the Probe type for use with
 // apply.
 func Probe() *ProbeApplyConfiguration {
 	return &ProbeApplyConfiguration{}

@@ -17,14 +17,18 @@ limitations under the License.
 
 package v1alpha1
 
-// JobFlowSpecApplyConfiguration represents an declarative configuration of the JobFlowSpec type for use
+import (
+	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+)
+
+// JobFlowSpecApplyConfiguration represents a declarative configuration of the JobFlowSpec type for use
 // with apply.
 type JobFlowSpecApplyConfiguration struct {
-	Flows           []FlowApplyConfiguration `json:"flows,omitempty"`
-	JobRetainPolicy *string                  `json:"jobRetainPolicy,omitempty"`
+	Flows           []FlowApplyConfiguration   `json:"flows,omitempty"`
+	JobRetainPolicy *flowv1alpha1.RetainPolicy `json:"jobRetainPolicy,omitempty"`
 }
 
-// JobFlowSpecApplyConfiguration constructs an declarative configuration of the JobFlowSpec type for use with
+// JobFlowSpecApplyConfiguration constructs a declarative configuration of the JobFlowSpec type for use with
 // apply.
 func JobFlowSpec() *JobFlowSpecApplyConfiguration {
 	return &JobFlowSpecApplyConfiguration{}
@@ -46,7 +50,7 @@ func (b *JobFlowSpecApplyConfiguration) WithFlows(values ...*FlowApplyConfigurat
 // WithJobRetainPolicy sets the JobRetainPolicy field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the JobRetainPolicy field is set to the value of the last call.
-func (b *JobFlowSpecApplyConfiguration) WithJobRetainPolicy(value string) *JobFlowSpecApplyConfiguration {
+func (b *JobFlowSpecApplyConfiguration) WithJobRetainPolicy(value flowv1alpha1.RetainPolicy) *JobFlowSpecApplyConfiguration {
 	b.JobRetainPolicy = &value
 	return b
 }

@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-// TcpSocketApplyConfiguration represents an declarative configuration of the TcpSocket type for use
+// TcpSocketApplyConfiguration represents a declarative configuration of the TcpSocket type for use
 // with apply.
 type TcpSocketApplyConfiguration struct {
 	TaskName *string `json:"taskName,omitempty"`
 	Port     *int    `json:"port,omitempty"`
 }
 
-// TcpSocketApplyConfiguration constructs an declarative configuration of the TcpSocket type for use with
+// TcpSocketApplyConfiguration constructs a declarative configuration of the TcpSocket type for use with
 // apply.
 func TcpSocket() *TcpSocketApplyConfiguration {
 	return &TcpSocketApplyConfiguration{}

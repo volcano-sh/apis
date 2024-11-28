@@ -22,7 +22,7 @@ import (
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
-// QueueStatusApplyConfiguration represents an declarative configuration of the QueueStatus type for use
+// QueueStatusApplyConfiguration represents a declarative configuration of the QueueStatus type for use
 // with apply.
 type QueueStatusApplyConfiguration struct {
 	State       *v1beta1.QueueState            `json:"state,omitempty"`
@@ -35,7 +35,7 @@ type QueueStatusApplyConfiguration struct {
 	Allocated   *v1.ResourceList               `json:"allocated,omitempty"`
 }
 
-// QueueStatusApplyConfiguration constructs an declarative configuration of the QueueStatus type for use with
+// QueueStatusApplyConfiguration constructs a declarative configuration of the QueueStatus type for use with
 // apply.
 func QueueStatus() *QueueStatusApplyConfiguration {
 	return &QueueStatusApplyConfiguration{}

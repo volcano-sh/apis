@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1beta1
 
-// NodeGroupAffinityApplyConfiguration represents an declarative configuration of the NodeGroupAffinity type for use
+// NodeGroupAffinityApplyConfiguration represents a declarative configuration of the NodeGroupAffinity type for use
 // with apply.
 type NodeGroupAffinityApplyConfiguration struct {
 	RequiredDuringSchedulingIgnoredDuringExecution  []string `json:"requiredDuringSchedulingIgnoredDuringExecution,omitempty"`
 	PreferredDuringSchedulingIgnoredDuringExecution []string `json:"preferredDuringSchedulingIgnoredDuringExecution,omitempty"`
 }
 
-// NodeGroupAffinityApplyConfiguration constructs an declarative configuration of the NodeGroupAffinity type for use with
+// NodeGroupAffinityApplyConfiguration constructs a declarative configuration of the NodeGroupAffinity type for use with
 // apply.
 func NodeGroupAffinity() *NodeGroupAffinityApplyConfiguration {
 	return &NodeGroupAffinityApplyConfiguration{}
