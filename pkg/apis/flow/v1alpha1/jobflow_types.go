@@ -44,6 +44,12 @@ type Flow struct {
 	Name string `json:"name"`
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
+	// Defaults to 1.
+	//
+	// +kubebuilder:default:=1
+	// +kubebuilder:validation:Minimum=1
+	// +optional
+	MaxRetry *int64 `json:"maxRetry,omitempty"`
 }
 
 type DependsOn struct {

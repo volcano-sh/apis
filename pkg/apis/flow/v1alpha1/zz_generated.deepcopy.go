@@ -89,6 +89,11 @@ func (in *Flow) DeepCopyInto(out *Flow) {
 		*out = new(DependsOn)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.MaxRetry != nil {
+		in, out := &in.MaxRetry, &out.MaxRetry
+		*out = new(int64)
+		**out = **in
+	}
 	return
 }
 
