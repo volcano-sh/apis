@@ -21,7 +21,7 @@ import (
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
-// PodGroupStatusApplyConfiguration represents an declarative configuration of the PodGroupStatus type for use
+// PodGroupStatusApplyConfiguration represents a declarative configuration of the PodGroupStatus type for use
 // with apply.
 type PodGroupStatusApplyConfiguration struct {
 	Phase      *v1beta1.PodGroupPhase                `json:"phase,omitempty"`
@@ -31,7 +31,7 @@ type PodGroupStatusApplyConfiguration struct {
 	Failed     *int32                                `json:"failed,omitempty"`
 }
 
-// PodGroupStatusApplyConfiguration constructs an declarative configuration of the PodGroupStatus type for use with
+// PodGroupStatusApplyConfiguration constructs a declarative configuration of the PodGroupStatus type for use with
 // apply.
 func PodGroupStatus() *PodGroupStatusApplyConfiguration {
 	return &PodGroupStatusApplyConfiguration{}

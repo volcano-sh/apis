@@ -21,7 +21,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// HttpGetApplyConfiguration represents an declarative configuration of the HttpGet type for use
+// HttpGetApplyConfiguration represents a declarative configuration of the HttpGet type for use
 // with apply.
 type HttpGetApplyConfiguration struct {
 	TaskName   *string        `json:"taskName,omitempty"`
@@ -30,7 +30,7 @@ type HttpGetApplyConfiguration struct {
 	HTTPHeader *v1.HTTPHeader `json:"httpHeader,omitempty"`
 }
 
-// HttpGetApplyConfiguration constructs an declarative configuration of the HttpGet type for use with
+// HttpGetApplyConfiguration constructs a declarative configuration of the HttpGet type for use with
 // apply.
 func HttpGet() *HttpGetApplyConfiguration {
 	return &HttpGetApplyConfiguration{}

@@ -21,13 +21,13 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 )
 
-// StateApplyConfiguration represents an declarative configuration of the State type for use
+// StateApplyConfiguration represents a declarative configuration of the State type for use
 // with apply.
 type StateApplyConfiguration struct {
 	Phase *v1alpha1.Phase `json:"phase,omitempty"`
 }
 
-// StateApplyConfiguration constructs an declarative configuration of the State type for use with
+// StateApplyConfiguration constructs a declarative configuration of the State type for use with
 // apply.
 func State() *StateApplyConfiguration {
 	return &StateApplyConfiguration{}

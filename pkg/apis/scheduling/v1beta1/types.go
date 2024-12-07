@@ -21,9 +21,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// PodGroupPhase is the phase of a pod group at the current time.
-type PodGroupPhase string
-
 // QueueState is state type of queue.
 type QueueState string
 
@@ -37,6 +34,9 @@ const (
 	// QueueStateUnknown indicate `Unknown` state of queue
 	QueueStateUnknown QueueState = "Unknown"
 )
+
+// PodGroupPhase is the phase of a pod group at the current time.
+type PodGroupPhase string
 
 // These are the valid phase of podGroups.
 const (
@@ -199,6 +199,34 @@ type PodGroupSpec struct {
 	// if there's not enough resources to start all tasks, the scheduler
 	// will not start anyone.
 	MinResources *v1.ResourceList `json:"minResources,omitempty" protobuf:"bytes,4,opt,name=minResources"`
+
+	// NetworkTopologies defines the NetworkTopologies config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopologies *NetworkTopologiesSpec `json:"networkTopologies,omitempty" protobuf:"bytes,5,opt,name=networkTopologies"`
+}
+
+type NetworkTopologyMode string
+
+const (
+	// HardNetworkTopologyMode represents a strict network topology constraint that jobs must adhere to.
+	HardNetworkTopologyMode NetworkTopologyMode = "hard"
+
+	// SoftNetworkTopologyMode represents a flexible network topology constraint that allows jobs
+	// to cross network boundaries under certain conditions.
+	SoftNetworkTopologyMode NetworkTopologyMode = "soft"
+)
+
+type NetworkTopologiesSpec struct {
+	// Mode specifies the mode of the network topology constrain.
+	// +kubebuilder:validation:Enum=hard;soft
+	// +kubebuilder:default=hard
+	// +optional
+	Mode NetworkTopologyMode `json:"mode,omitempty" protobuf:"bytes,1,opt,name=mode"`
+
+	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
+	// +kubebuilder:default=1
+	// +optional
+	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"bytes,2,opt,name=highestTierAllowed"`
 }
 
 // PodGroupStatus represents the current state of a pod group.
@@ -309,8 +337,11 @@ type QueueStatus struct {
 
 // CluterSpec represents the template of Cluster
 type Cluster struct {
-	Name     string          `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
-	Weight   int32           `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	// +optional
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	// +optional
+	Weight int32 `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	// +optional
 	Capacity v1.ResourceList `json:"capacity,omitempty" protobuf:"bytes,3,opt,name=capacity"`
 }
 
@@ -341,7 +372,10 @@ type NodeGroupAntiAffinity struct {
 
 // QueueSpec represents the template of Queue.
 type QueueSpec struct {
-	Weight     int32           `json:"weight,omitempty" protobuf:"bytes,1,opt,name=weight"`
+	// +optional
+	Weight int32 `json:"weight,omitempty" protobuf:"bytes,1,opt,name=weight"`
+
+	// +optional
 	Capability v1.ResourceList `json:"capability,omitempty" protobuf:"bytes,2,opt,name=capability"`
 
 	// Reclaimable indicate whether the queue can be reclaimed by other queue

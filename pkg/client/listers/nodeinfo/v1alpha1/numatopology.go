@@ -18,8 +18,8 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/client-go/listers"
 	"k8s.io/client-go/tools/cache"
 	v1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 )
@@ -38,30 +38,10 @@ type NumatopologyLister interface {
 
 // numatopologyLister implements the NumatopologyLister interface.
 type numatopologyLister struct {
-	indexer cache.Indexer
+	listers.ResourceIndexer[*v1alpha1.Numatopology]
 }
 
 // NewNumatopologyLister returns a new NumatopologyLister.
 func NewNumatopologyLister(indexer cache.Indexer) NumatopologyLister {
-	return &numatopologyLister{indexer: indexer}
-}
-
-// List lists all Numatopologies in the indexer.
-func (s *numatopologyLister) List(selector labels.Selector) (ret []*v1alpha1.Numatopology, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.Numatopology))
-	})
-	return ret, err
-}
-
-// Get retrieves the Numatopology from the index for a given name.
-func (s *numatopologyLister) Get(name string) (*v1alpha1.Numatopology, error) {
-	obj, exists, err := s.indexer.GetByKey(name)
-	if err != nil {
-		return nil, err
-	}
-	if !exists {
-		return nil, errors.NewNotFound(v1alpha1.Resource("numatopology"), name)
-	}
-	return obj.(*v1alpha1.Numatopology), nil
+	return &numatopologyLister{listers.New[*v1alpha1.Numatopology](indexer, v1alpha1.Resource("numatopology"))}
 }

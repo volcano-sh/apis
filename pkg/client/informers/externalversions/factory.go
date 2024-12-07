@@ -33,6 +33,7 @@ import (
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
 	nodeinfo "volcano.sh/apis/pkg/client/informers/externalversions/nodeinfo"
 	scheduling "volcano.sh/apis/pkg/client/informers/externalversions/scheduling"
+	topology "volcano.sh/apis/pkg/client/informers/externalversions/topology"
 )
 
 // SharedInformerOption defines the functional option type for SharedInformerFactory.
@@ -231,6 +232,7 @@ type SharedInformerFactory interface {
 
 	// Start initializes all requested informers. They are handled in goroutines
 	// which run until the stop channel gets closed.
+	// Warning: Start does not block. When run in a go-routine, it will race with a later WaitForCacheSync.
 	Start(stopCh <-chan struct{})
 
 	// Shutdown marks a factory as shutting down. At that point no new
@@ -261,6 +263,7 @@ type SharedInformerFactory interface {
 	Flow() flow.Interface
 	Nodeinfo() nodeinfo.Interface
 	Scheduling() scheduling.Interface
+	Topology() topology.Interface
 }
 
 func (f *sharedInformerFactory) Batch() batch.Interface {
@@ -281,4 +284,8 @@ func (f *sharedInformerFactory) Nodeinfo() nodeinfo.Interface {
 
 func (f *sharedInformerFactory) Scheduling() scheduling.Interface {
 	return scheduling.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Topology() topology.Interface {
+	return topology.New(f, f.namespace, f.tweakListOptions)
 }

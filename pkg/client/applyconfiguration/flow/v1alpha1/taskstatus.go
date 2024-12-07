@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-// TaskStatusApplyConfiguration represents an declarative configuration of the TaskStatus type for use
+// TaskStatusApplyConfiguration represents a declarative configuration of the TaskStatus type for use
 // with apply.
 type TaskStatusApplyConfiguration struct {
 	TaskName *string `json:"taskName,omitempty"`
 	Phase    *string `json:"phase,omitempty"`
 }
 
-// TaskStatusApplyConfiguration constructs an declarative configuration of the TaskStatus type for use with
+// TaskStatusApplyConfiguration constructs a declarative configuration of the TaskStatus type for use with
 // apply.
 func TaskStatus() *TaskStatusApplyConfiguration {
 	return &TaskStatusApplyConfiguration{}
