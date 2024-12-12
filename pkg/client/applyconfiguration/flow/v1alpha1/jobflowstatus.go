@@ -17,7 +17,7 @@ limitations under the License.
 
 package v1alpha1
 
-// JobFlowStatusApplyConfiguration represents an declarative configuration of the JobFlowStatus type for use
+// JobFlowStatusApplyConfiguration represents a declarative configuration of the JobFlowStatus type for use
 // with apply.
 type JobFlowStatusApplyConfiguration struct {
 	PendingJobs    []string                               `json:"pendingJobs,omitempty"`
@@ -31,7 +31,7 @@ type JobFlowStatusApplyConfiguration struct {
 	State          *StateApplyConfiguration               `json:"state,omitempty"`
 }
 
-// JobFlowStatusApplyConfiguration constructs an declarative configuration of the JobFlowStatus type for use with
+// JobFlowStatusApplyConfiguration constructs a declarative configuration of the JobFlowStatus type for use with
 // apply.
 func JobFlowStatus() *JobFlowStatusApplyConfiguration {
 	return &JobFlowStatusApplyConfiguration{}

@@ -18,8 +18,8 @@ limitations under the License.
 package v1beta1
 
 import (
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/client-go/listers"
 	"k8s.io/client-go/tools/cache"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
@@ -38,30 +38,10 @@ type QueueLister interface {
 
 // queueLister implements the QueueLister interface.
 type queueLister struct {
-	indexer cache.Indexer
+	listers.ResourceIndexer[*v1beta1.Queue]
 }
 
 // NewQueueLister returns a new QueueLister.
 func NewQueueLister(indexer cache.Indexer) QueueLister {
-	return &queueLister{indexer: indexer}
-}
-
-// List lists all Queues in the indexer.
-func (s *queueLister) List(selector labels.Selector) (ret []*v1beta1.Queue, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1beta1.Queue))
-	})
-	return ret, err
-}
-
-// Get retrieves the Queue from the index for a given name.
-func (s *queueLister) Get(name string) (*v1beta1.Queue, error) {
-	obj, exists, err := s.indexer.GetByKey(name)
-	if err != nil {
-		return nil, err
-	}
-	if !exists {
-		return nil, errors.NewNotFound(v1beta1.Resource("queue"), name)
-	}
-	return obj.(*v1beta1.Queue), nil
+	return &queueLister{listers.New[*v1beta1.Queue](indexer, v1beta1.Resource("queue"))}
 }

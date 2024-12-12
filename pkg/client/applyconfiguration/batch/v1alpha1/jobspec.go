@@ -21,7 +21,7 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// JobSpecApplyConfiguration represents an declarative configuration of the JobSpec type for use
+// JobSpecApplyConfiguration represents a declarative configuration of the JobSpec type for use
 // with apply.
 type JobSpecApplyConfiguration struct {
 	SchedulerName           *string                             `json:"schedulerName,omitempty"`
@@ -38,7 +38,7 @@ type JobSpecApplyConfiguration struct {
 	MinSuccess              *int32                              `json:"minSuccess,omitempty"`
 }
 
-// JobSpecApplyConfiguration constructs an declarative configuration of the JobSpec type for use with
+// JobSpecApplyConfiguration constructs a declarative configuration of the JobSpec type for use with
 // apply.
 func JobSpec() *JobSpecApplyConfiguration {
 	return &JobSpecApplyConfiguration{}

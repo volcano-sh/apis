@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-// JobFlowSpecApplyConfiguration represents an declarative configuration of the JobFlowSpec type for use
+// JobFlowSpecApplyConfiguration represents a declarative configuration of the JobFlowSpec type for use
 // with apply.
 type JobFlowSpecApplyConfiguration struct {
 	Flows           []FlowApplyConfiguration `json:"flows,omitempty"`
 	JobRetainPolicy *string                  `json:"jobRetainPolicy,omitempty"`
 }
 
-// JobFlowSpecApplyConfiguration constructs an declarative configuration of the JobFlowSpec type for use with
+// JobFlowSpecApplyConfiguration constructs a declarative configuration of the JobFlowSpec type for use with
 // apply.
 func JobFlowSpec() *JobFlowSpecApplyConfiguration {
 	return &JobFlowSpecApplyConfiguration{}

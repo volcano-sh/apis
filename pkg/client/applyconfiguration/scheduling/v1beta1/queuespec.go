@@ -21,7 +21,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// QueueSpecApplyConfiguration represents an declarative configuration of the QueueSpec type for use
+// QueueSpecApplyConfiguration represents a declarative configuration of the QueueSpec type for use
 // with apply.
 type QueueSpecApplyConfiguration struct {
 	Weight         *int32                       `json:"weight,omitempty"`
@@ -36,7 +36,7 @@ type QueueSpecApplyConfiguration struct {
 	Priority       *int32                       `json:"priority,omitempty"`
 }
 
-// QueueSpecApplyConfiguration constructs an declarative configuration of the QueueSpec type for use with
+// QueueSpecApplyConfiguration constructs a declarative configuration of the QueueSpec type for use with
 // apply.
 func QueueSpec() *QueueSpecApplyConfiguration {
 	return &QueueSpecApplyConfiguration{}
