@@ -23,7 +23,7 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// PodGroupApplyConfiguration represents an declarative configuration of the PodGroup type for use
+// PodGroupApplyConfiguration represents a declarative configuration of the PodGroup type for use
 // with apply.
 type PodGroupApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -32,7 +32,7 @@ type PodGroupApplyConfiguration struct {
 	Status                           *PodGroupStatusApplyConfiguration `json:"status,omitempty"`
 }
 
-// PodGroup constructs an declarative configuration of the PodGroup type for use with
+// PodGroup constructs a declarative configuration of the PodGroup type for use with
 // apply.
 func PodGroup(name, namespace string) *PodGroupApplyConfiguration {
 	b := &PodGroupApplyConfiguration{}
@@ -215,4 +215,10 @@ func (b *PodGroupApplyConfiguration) WithSpec(value *PodGroupSpecApplyConfigurat
 func (b *PodGroupApplyConfiguration) WithStatus(value *PodGroupStatusApplyConfiguration) *PodGroupApplyConfiguration {
 	b.Status = value
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *PodGroupApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }

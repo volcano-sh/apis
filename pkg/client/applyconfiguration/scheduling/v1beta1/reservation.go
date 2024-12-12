@@ -21,14 +21,14 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// ReservationApplyConfiguration represents an declarative configuration of the Reservation type for use
+// ReservationApplyConfiguration represents a declarative configuration of the Reservation type for use
 // with apply.
 type ReservationApplyConfiguration struct {
 	Nodes    []string         `json:"nodes,omitempty"`
 	Resource *v1.ResourceList `json:"resource,omitempty"`
 }
 
-// ReservationApplyConfiguration constructs an declarative configuration of the Reservation type for use with
+// ReservationApplyConfiguration constructs a declarative configuration of the Reservation type for use with
 // apply.
 func Reservation() *ReservationApplyConfiguration {
 	return &ReservationApplyConfiguration{}

@@ -18,8 +18,8 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/client-go/listers"
 	"k8s.io/client-go/tools/cache"
 	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 )
@@ -37,25 +37,17 @@ type JobTemplateLister interface {
 
 // jobTemplateLister implements the JobTemplateLister interface.
 type jobTemplateLister struct {
-	indexer cache.Indexer
+	listers.ResourceIndexer[*v1alpha1.JobTemplate]
 }
 
 // NewJobTemplateLister returns a new JobTemplateLister.
 func NewJobTemplateLister(indexer cache.Indexer) JobTemplateLister {
-	return &jobTemplateLister{indexer: indexer}
-}
-
-// List lists all JobTemplates in the indexer.
-func (s *jobTemplateLister) List(selector labels.Selector) (ret []*v1alpha1.JobTemplate, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.JobTemplate))
-	})
-	return ret, err
+	return &jobTemplateLister{listers.New[*v1alpha1.JobTemplate](indexer, v1alpha1.Resource("jobtemplate"))}
 }
 
 // JobTemplates returns an object that can list and get JobTemplates.
 func (s *jobTemplateLister) JobTemplates(namespace string) JobTemplateNamespaceLister {
-	return jobTemplateNamespaceLister{indexer: s.indexer, namespace: namespace}
+	return jobTemplateNamespaceLister{listers.NewNamespaced[*v1alpha1.JobTemplate](s.ResourceIndexer, namespace)}
 }
 
 // JobTemplateNamespaceLister helps list and get JobTemplates.
@@ -73,26 +65,5 @@ type JobTemplateNamespaceLister interface {
 // jobTemplateNamespaceLister implements the JobTemplateNamespaceLister
 // interface.
 type jobTemplateNamespaceLister struct {
-	indexer   cache.Indexer
-	namespace string
-}
-
-// List lists all JobTemplates in the indexer for a given namespace.
-func (s jobTemplateNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.JobTemplate, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.JobTemplate))
-	})
-	return ret, err
-}
-
-// Get retrieves the JobTemplate from the indexer for a given namespace and name.
-func (s jobTemplateNamespaceLister) Get(name string) (*v1alpha1.JobTemplate, error) {
-	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
-	if err != nil {
-		return nil, err
-	}
-	if !exists {
-		return nil, errors.NewNotFound(v1alpha1.Resource("jobtemplate"), name)
-	}
-	return obj.(*v1alpha1.JobTemplate), nil
+	listers.ResourceIndexer[*v1alpha1.JobTemplate]
 }

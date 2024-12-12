@@ -23,7 +23,7 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// NumatopologyApplyConfiguration represents an declarative configuration of the Numatopology type for use
+// NumatopologyApplyConfiguration represents a declarative configuration of the Numatopology type for use
 // with apply.
 type NumatopologyApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
@@ -31,7 +31,7 @@ type NumatopologyApplyConfiguration struct {
 	Spec                             *NumatopoSpecApplyConfiguration `json:"spec,omitempty"`
 }
 
-// Numatopology constructs an declarative configuration of the Numatopology type for use with
+// Numatopology constructs a declarative configuration of the Numatopology type for use with
 // apply.
 func Numatopology(name string) *NumatopologyApplyConfiguration {
 	b := &NumatopologyApplyConfiguration{}
@@ -205,4 +205,10 @@ func (b *NumatopologyApplyConfiguration) ensureObjectMetaApplyConfigurationExist
 func (b *NumatopologyApplyConfiguration) WithSpec(value *NumatopoSpecApplyConfiguration) *NumatopologyApplyConfiguration {
 	b.Spec = value
 	return b
+}
+
+// GetName retrieves the value of the Name field in the declarative configuration.
+func (b *NumatopologyApplyConfiguration) GetName() *string {
+	b.ensureObjectMetaApplyConfigurationExists()
+	return b.Name
 }

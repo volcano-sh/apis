@@ -21,13 +21,13 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// TaskStateApplyConfiguration represents an declarative configuration of the TaskState type for use
+// TaskStateApplyConfiguration represents a declarative configuration of the TaskState type for use
 // with apply.
 type TaskStateApplyConfiguration struct {
 	Phase map[v1.PodPhase]int32 `json:"phase,omitempty"`
 }
 
-// TaskStateApplyConfiguration constructs an declarative configuration of the TaskState type for use with
+// TaskStateApplyConfiguration constructs a declarative configuration of the TaskState type for use with
 // apply.
 func TaskState() *TaskStateApplyConfiguration {
 	return &TaskStateApplyConfiguration{}

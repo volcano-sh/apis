@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-// DependsOnApplyConfiguration represents an declarative configuration of the DependsOn type for use
+// DependsOnApplyConfiguration represents a declarative configuration of the DependsOn type for use
 // with apply.
 type DependsOnApplyConfiguration struct {
 	Targets []string                 `json:"targets,omitempty"`
 	Probe   *ProbeApplyConfiguration `json:"probe,omitempty"`
 }
 
-// DependsOnApplyConfiguration constructs an declarative configuration of the DependsOn type for use with
+// DependsOnApplyConfiguration constructs a declarative configuration of the DependsOn type for use with
 // apply.
 func DependsOn() *DependsOnApplyConfiguration {
 	return &DependsOnApplyConfiguration{}
