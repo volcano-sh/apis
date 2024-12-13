@@ -22,7 +22,7 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// JobRunningHistoryApplyConfiguration represents an declarative configuration of the JobRunningHistory type for use
+// JobRunningHistoryApplyConfiguration represents a declarative configuration of the JobRunningHistory type for use
 // with apply.
 type JobRunningHistoryApplyConfiguration struct {
 	StartTimestamp *v1.Time           `json:"startTimestamp,omitempty"`
@@ -30,7 +30,7 @@ type JobRunningHistoryApplyConfiguration struct {
 	State          *v1alpha1.JobPhase `json:"state,omitempty"`
 }
 
-// JobRunningHistoryApplyConfiguration constructs an declarative configuration of the JobRunningHistory type for use with
+// JobRunningHistoryApplyConfiguration constructs a declarative configuration of the JobRunningHistory type for use with
 // apply.
 func JobRunningHistory() *JobRunningHistoryApplyConfiguration {
 	return &JobRunningHistoryApplyConfiguration{}

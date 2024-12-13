@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-// FlowApplyConfiguration represents an declarative configuration of the Flow type for use
+// FlowApplyConfiguration represents a declarative configuration of the Flow type for use
 // with apply.
 type FlowApplyConfiguration struct {
 	Name      *string                      `json:"name,omitempty"`
 	DependsOn *DependsOnApplyConfiguration `json:"dependsOn,omitempty"`
 }
 
-// FlowApplyConfiguration constructs an declarative configuration of the Flow type for use with
+// FlowApplyConfiguration constructs a declarative configuration of the Flow type for use with
 // apply.
 func Flow() *FlowApplyConfiguration {
 	return &FlowApplyConfiguration{}

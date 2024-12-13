@@ -17,13 +17,13 @@ limitations under the License.
 
 package v1alpha1
 
-// JobTemplateStatusApplyConfiguration represents an declarative configuration of the JobTemplateStatus type for use
+// JobTemplateStatusApplyConfiguration represents a declarative configuration of the JobTemplateStatus type for use
 // with apply.
 type JobTemplateStatusApplyConfiguration struct {
 	JobDependsOnList []string `json:"jobDependsOnList,omitempty"`
 }
 
-// JobTemplateStatusApplyConfiguration constructs an declarative configuration of the JobTemplateStatus type for use with
+// JobTemplateStatusApplyConfiguration constructs a declarative configuration of the JobTemplateStatus type for use with
 // apply.
 func JobTemplateStatus() *JobTemplateStatusApplyConfiguration {
 	return &JobTemplateStatusApplyConfiguration{}

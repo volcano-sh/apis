@@ -22,14 +22,14 @@ import (
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// JobConditionApplyConfiguration represents an declarative configuration of the JobCondition type for use
+// JobConditionApplyConfiguration represents a declarative configuration of the JobCondition type for use
 // with apply.
 type JobConditionApplyConfiguration struct {
 	Status             *v1alpha1.JobPhase `json:"status,omitempty"`
 	LastTransitionTime *v1.Time           `json:"lastTransitionTime,omitempty"`
 }
 
-// JobConditionApplyConfiguration constructs an declarative configuration of the JobCondition type for use with
+// JobConditionApplyConfiguration constructs a declarative configuration of the JobCondition type for use with
 // apply.
 func JobCondition() *JobConditionApplyConfiguration {
 	return &JobConditionApplyConfiguration{}

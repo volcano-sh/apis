@@ -19,14 +19,11 @@ package v1alpha1
 
 import (
 	"context"
-	json "encoding/json"
-	"fmt"
-	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
@@ -54,154 +51,18 @@ type CommandInterface interface {
 
 // commands implements CommandInterface
 type commands struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithListAndApply[*v1alpha1.Command, *v1alpha1.CommandList, *busv1alpha1.CommandApplyConfiguration]
 }
 
 // newCommands returns a Commands
 func newCommands(c *BusV1alpha1Client, namespace string) *commands {
 	return &commands{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithListAndApply[*v1alpha1.Command, *v1alpha1.CommandList, *busv1alpha1.CommandApplyConfiguration](
+			"commands",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *v1alpha1.Command { return &v1alpha1.Command{} },
+			func() *v1alpha1.CommandList { return &v1alpha1.CommandList{} }),
 	}
-}
-
-// Get takes name of the command, and returns the corresponding command object, and an error if there is any.
-func (c *commands) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.Command, err error) {
-	result = &v1alpha1.Command{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("commands").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of Commands that match those selectors.
-func (c *commands) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CommandList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1alpha1.CommandList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("commands").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested commands.
-func (c *commands) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("commands").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a command and creates it.  Returns the server's representation of the command, and an error, if there is any.
-func (c *commands) Create(ctx context.Context, command *v1alpha1.Command, opts v1.CreateOptions) (result *v1alpha1.Command, err error) {
-	result = &v1alpha1.Command{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("commands").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(command).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a command and updates it. Returns the server's representation of the command, and an error, if there is any.
-func (c *commands) Update(ctx context.Context, command *v1alpha1.Command, opts v1.UpdateOptions) (result *v1alpha1.Command, err error) {
-	result = &v1alpha1.Command{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("commands").
-		Name(command.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(command).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the command and deletes it. Returns an error if one occurs.
-func (c *commands) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("commands").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *commands) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("commands").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched command.
-func (c *commands) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Command, err error) {
-	result = &v1alpha1.Command{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("commands").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Apply takes the given apply declarative configuration, applies it and returns the applied command.
-func (c *commands) Apply(ctx context.Context, command *busv1alpha1.CommandApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Command, err error) {
-	if command == nil {
-		return nil, fmt.Errorf("command provided to Apply must not be nil")
-	}
-	patchOpts := opts.ToPatchOptions()
-	data, err := json.Marshal(command)
-	if err != nil {
-		return nil, err
-	}
-	name := command.Name
-	if name == nil {
-		return nil, fmt.Errorf("command.Name must be provided to Apply")
-	}
-	result = &v1alpha1.Command{}
-	err = c.client.Patch(types.ApplyPatchType).
-		Namespace(c.ns).
-		Resource("commands").
-		Name(*name).
-		VersionedParams(&patchOpts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }
