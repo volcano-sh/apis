@@ -51,8 +51,8 @@ type MemberType string
 const (
 	// MemberTypeNode means the member type is a node.
 	MemberTypeNode MemberType = "Node"
-	// memberTypeHyperNode means the member type is a hyperNode.
-	memberTypeHyperNode MemberType = "HyperNode"
+	// MemberTypeHyperNode means the member type is a hyperNode.
+	MemberTypeHyperNode MemberType = "HyperNode"
 )
 
 // HyperNodeSpec defines the desired state of a HyperNode.
