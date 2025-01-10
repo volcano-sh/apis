@@ -59,7 +59,7 @@ const (
 type HyperNodeSpec struct {
 	// Tier categorizes the performance level of the HyperNode.
 	// +required
-	Tier string `json:"tier,omitempty"`
+	Tier int `json:"tier,omitempty"`
 
 	// Members defines a list of node groups or individual nodes included in the HyperNode.
 	// +optional
@@ -82,19 +82,21 @@ type MemberSpec struct {
 // Example for Exact match:
 //
 //	members:
-//	- selector:
+//  - type: Node
+//	  selector:
 //	    exactMatch:
 //	      name: "node1"
 //
 // Example for Regex match:
 //
-//	members:
-//	- selector:
-//	    regexMatch:
-//	      pattern: "^node-[0-9]+$"
+//	 members:
+//	 - type: Node
+//	     selector:
+//		   regexMatch:
+//		     pattern: "^node-[0-9]+$"
 //
-// +kubebuilder:validation:XValidation:rule="self.exactMatch != null || self.regexMatch != null",message="Either ExactMatch or RegexMatch must be specified"
-// +kubebuilder:validation:XValidation:rule="!(self.exactMatch != null && self.regexMatch != null)",message="ExactMatch and RegexMatch cannot be specified together"
+// +kubebuilder:validation:XValidation:rule="has(self.exactMatch) || has(self.regexMatch)",message="Either ExactMatch or RegexMatch must be specified"
+// +kubebuilder:validation:XValidation:rule="!(has(self.exactMatch) && has(self.regexMatch))",message="ExactMatch and RegexMatch cannot be specified together"
 type MemberSelector struct {
 	// ExactMatch defines the exact match criteria (required when Type is "Exact").
 	// +optional
