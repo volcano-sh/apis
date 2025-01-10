@@ -20,7 +20,7 @@ package v1alpha1
 // HyperNodeSpecApplyConfiguration represents a declarative configuration of the HyperNodeSpec type for use
 // with apply.
 type HyperNodeSpecApplyConfiguration struct {
-	Tier    *string                        `json:"tier,omitempty"`
+	Tier    *int                           `json:"tier,omitempty"`
 	Members []MemberSpecApplyConfiguration `json:"members,omitempty"`
 }
 
@@ -33,7 +33,7 @@ func HyperNodeSpec() *HyperNodeSpecApplyConfiguration {
 // WithTier sets the Tier field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Tier field is set to the value of the last call.
-func (b *HyperNodeSpecApplyConfiguration) WithTier(value string) *HyperNodeSpecApplyConfiguration {
+func (b *HyperNodeSpecApplyConfiguration) WithTier(value int) *HyperNodeSpecApplyConfiguration {
 	b.Tier = &value
 	return b
 }
