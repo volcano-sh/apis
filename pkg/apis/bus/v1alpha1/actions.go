@@ -28,9 +28,15 @@ const (
 	// RestartJobAction if this action is set, the whole job will be restarted
 	RestartJobAction Action = "RestartJob"
 
-	// RestartTaskAction if this action is set, only the task will be restarted; default action.
+	// RestartTaskAction if this action is set, only the task will be restarted
+	// It means that all pods under the task will be deleted and recreated.
 	// This action can not work together with job level events, e.g. JobUnschedulable
 	RestartTaskAction Action = "RestartTask"
+
+	// RestartPodAction if this action is set, only the pod will be restarted
+	// It means that only the pod corresponding to the event will be deleted and recreated.
+	// This action can just work together with pod level events, e.g. PodFailed
+	RestartPodAction Action = "RestartPod"
 
 	// TerminateJobAction if this action is set, the whole job wil be terminated
 	// and can not be resumed: all Pod of Job will be evicted, and no Pod will be recreated.
