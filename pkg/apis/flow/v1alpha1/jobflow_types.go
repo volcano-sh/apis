@@ -31,85 +31,128 @@ type JobFlowSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
-	Flows           []Flow `json:"flows,omitempty"`
-	JobRetainPolicy string `json:"jobRetainPolicy,omitempty"`
+	// +optional
+	Flows []Flow `json:"flows,omitempty"`
+	// +optional
+	JobRetainPolicy RetainPolicy `json:"jobRetainPolicy,omitempty"`
 }
 
 // Flow defines the dependent of jobs
 type Flow struct {
-	Name      string     `json:"name"`
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	Name string `json:"name"`
+	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
 }
 
 type DependsOn struct {
+	// +optional
 	Targets []string `json:"targets,omitempty"`
-	Probe   *Probe   `json:"probe,omitempty"`
+	// +optional
+	Probe *Probe `json:"probe,omitempty"`
 }
 
 type Probe struct {
-	HttpGetList    []HttpGet    `json:"httpGetList,omitempty"`
-	TcpSocketList  []TcpSocket  `json:"tcpSocketList,omitempty"`
+	// +optional
+	HttpGetList []HttpGet `json:"httpGetList,omitempty"`
+	// +optional
+	TcpSocketList []TcpSocket `json:"tcpSocketList,omitempty"`
+	// +optional
 	TaskStatusList []TaskStatus `json:"taskStatusList,omitempty"`
 }
 
 type HttpGet struct {
-	TaskName   string        `json:"taskName,omitempty"`
-	Path       string        `json:"path,omitempty"`
-	Port       int           `json:"port,omitempty"`
+	// +optional
+	TaskName string `json:"taskName,omitempty"`
+	// +optional
+	Path string `json:"path,omitempty"`
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=65535
+	Port int `json:"port,omitempty"`
+	// +optional
 	HTTPHeader v1.HTTPHeader `json:"httpHeader,omitempty"`
 }
 
 type TcpSocket struct {
+	// +optional
 	TaskName string `json:"taskName,omitempty"`
-	Port     int    `json:"port"`
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=65535
+	// +required
+	Port int `json:"port"`
 }
 
 type TaskStatus struct {
+	// +optional
 	TaskName string `json:"taskName,omitempty"`
-	Phase    string `json:"phase,omitempty"`
+	// +optional
+	Phase string `json:"phase,omitempty"`
 }
 
 // JobFlowStatus defines the observed state of JobFlow
 type JobFlowStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-
-	PendingJobs    []string             `json:"pendingJobs,omitempty"`
-	RunningJobs    []string             `json:"runningJobs,omitempty"`
-	FailedJobs     []string             `json:"failedJobs,omitempty"`
-	CompletedJobs  []string             `json:"completedJobs,omitempty"`
-	TerminatedJobs []string             `json:"terminatedJobs,omitempty"`
-	UnKnowJobs     []string             `json:"unKnowJobs,omitempty"`
-	JobStatusList  []JobStatus          `json:"jobStatusList,omitempty"`
-	Conditions     map[string]Condition `json:"conditions,omitempty"`
-	State          State                `json:"state,omitempty"`
+	// +optional
+	PendingJobs []string `json:"pendingJobs,omitempty"`
+	// +optional
+	RunningJobs []string `json:"runningJobs,omitempty"`
+	// +optional
+	FailedJobs []string `json:"failedJobs,omitempty"`
+	// +optional
+	CompletedJobs []string `json:"completedJobs,omitempty"`
+	// +optional
+	TerminatedJobs []string `json:"terminatedJobs,omitempty"`
+	// +optional
+	UnKnowJobs []string `json:"unKnowJobs,omitempty"`
+	// +optional
+	JobStatusList []JobStatus `json:"jobStatusList,omitempty"`
+	// +optional
+	Conditions map[string]Condition `json:"conditions,omitempty"`
+	// +optional
+	State State `json:"state,omitempty"`
 }
 
 type JobStatus struct {
-	Name             string              `json:"name,omitempty"`
-	State            v1alpha1.JobPhase   `json:"state,omitempty"`
-	StartTimestamp   metav1.Time         `json:"startTimestamp,omitempty"`
-	EndTimestamp     metav1.Time         `json:"endTimestamp,omitempty"`
-	RestartCount     int32               `json:"restartCount,omitempty"`
+	// +optional
+	Name string `json:"name,omitempty"`
+	// +optional
+	State v1alpha1.JobPhase `json:"state,omitempty"`
+	// +optional
+	StartTimestamp metav1.Time `json:"startTimestamp,omitempty"`
+	// +optional
+	EndTimestamp metav1.Time `json:"endTimestamp,omitempty"`
+	// +optional
+	RestartCount int32 `json:"restartCount,omitempty"`
+	// +optional
 	RunningHistories []JobRunningHistory `json:"runningHistories,omitempty"`
 }
 
 type JobRunningHistory struct {
-	StartTimestamp metav1.Time       `json:"startTimestamp,omitempty"`
-	EndTimestamp   metav1.Time       `json:"endTimestamp,omitempty"`
-	State          v1alpha1.JobPhase `json:"state,omitempty"`
+	// +optional
+	StartTimestamp metav1.Time `json:"startTimestamp,omitempty"`
+	// +optional
+	EndTimestamp metav1.Time `json:"endTimestamp,omitempty"`
+	// +optional
+	State v1alpha1.JobPhase `json:"state,omitempty"`
 }
 
 type State struct {
+	// +optional
 	Phase Phase `json:"phase,omitempty"`
 }
 
-type Phase string
+// +kubebuilder:validation:Enum=retain;delete
+type RetainPolicy string
 
 const (
-	Retain = "retain"
-	Delete = "delete"
+	Retain RetainPolicy = "retain"
+	Delete RetainPolicy = "delete"
 )
+
+type Phase string
 
 const (
 	Succeed     Phase = "Succeed"

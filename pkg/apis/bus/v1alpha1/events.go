@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 // Event represent the phase of Job, e.g. pod-failed.
+// +kubebuilder:validation:Enum=*;PodPending;PodRunning;PodFailed;PodEvicted;Unknown;TaskCompleted;OutOfSync;CommandIssued;JobUpdated;TaskFailed
 type Event string
 
 const (
