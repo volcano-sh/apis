@@ -51,6 +51,16 @@ type DependsOn struct {
 	Targets []string `json:"targets,omitempty"`
 	// +optional
 	Probe *Probe `json:"probe,omitempty"`
+	// +optional
+	TargetsWithStatus []Target `json:"targetsWithStatus,omitempty"`
+}
+
+type Target struct {
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	Name string `json:"name,omitempty"`
+	// +optional
+	Phase v1alpha1.JobPhase `json:"phase,omitempty"`
 }
 
 type Probe struct {
@@ -113,6 +123,8 @@ type JobFlowStatus struct {
 	Conditions map[string]Condition `json:"conditions,omitempty"`
 	// +optional
 	State State `json:"state,omitempty"`
+	// +optional
+	FlowStatusMap map[string]v1alpha1.JobPhase `json:"flowStatusMap,omitempty"`
 }
 
 type JobStatus struct {

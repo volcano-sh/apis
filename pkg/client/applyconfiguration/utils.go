@@ -91,6 +91,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationflowv1alpha1.ProbeApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("State"):
 		return &applyconfigurationflowv1alpha1.StateApplyConfiguration{}
+	case flowv1alpha1.SchemeGroupVersion.WithKind("Target"):
+		return &applyconfigurationflowv1alpha1.TargetApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("TaskStatus"):
 		return &applyconfigurationflowv1alpha1.TaskStatusApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("TcpSocket"):
