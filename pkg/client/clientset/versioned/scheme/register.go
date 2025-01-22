@@ -23,12 +23,12 @@ import (
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
-	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
-	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
-	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
-	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
-	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/v2/pkg/apis/batch/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/v2/pkg/apis/bus/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
+	nodeinfov1alpha1 "volcano.sh/apis/v2/pkg/apis/nodeinfo/v1alpha1"
+	schedulingv1beta1 "volcano.sh/apis/v2/pkg/apis/scheduling/v1beta1"
+	topologyv1alpha1 "volcano.sh/apis/v2/pkg/apis/topology/v1alpha1"
 )
 
 var Scheme = runtime.NewScheme()

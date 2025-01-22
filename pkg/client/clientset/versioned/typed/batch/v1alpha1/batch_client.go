@@ -21,8 +21,8 @@ import (
 	"net/http"
 
 	rest "k8s.io/client-go/rest"
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
-	"volcano.sh/apis/pkg/client/clientset/versioned/scheme"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/batch/v1alpha1"
+	"volcano.sh/apis/v2/pkg/client/clientset/versioned/scheme"
 )
 
 type BatchV1alpha1Interface interface {

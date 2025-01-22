@@ -25,10 +25,10 @@ import (
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
-	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
-	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/listers/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
+	versioned "volcano.sh/apis/v2/pkg/client/clientset/versioned"
+	internalinterfaces "volcano.sh/apis/v2/pkg/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "volcano.sh/apis/v2/pkg/client/listers/flow/v1alpha1"
 )
 
 // JobTemplateInformer provides access to a shared informer and lister for

@@ -19,7 +19,7 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/bus/v1alpha1"
 )
 
 // LifecyclePolicyApplyConfiguration represents a declarative configuration of the LifecyclePolicy type for use

@@ -20,7 +20,7 @@ package v1beta1
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	v1beta1 "volcano.sh/apis/v2/pkg/apis/scheduling/v1beta1"
 )
 
 // PodGroupConditionApplyConfiguration represents a declarative configuration of the PodGroupCondition type for use

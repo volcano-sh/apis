@@ -21,7 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/listers"
 	"k8s.io/client-go/tools/cache"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	v1beta1 "volcano.sh/apis/v2/pkg/apis/scheduling/v1beta1"
 )
 
 // PodGroupLister helps list PodGroups.

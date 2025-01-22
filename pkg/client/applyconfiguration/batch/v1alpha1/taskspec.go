@@ -19,7 +19,7 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/api/core/v1"
-	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/v2/pkg/apis/batch/v1alpha1"
 )
 
 // TaskSpecApplyConfiguration represents a declarative configuration of the TaskSpec type for use

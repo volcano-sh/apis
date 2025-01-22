@@ -21,8 +21,8 @@ import (
 	"net/http"
 
 	rest "k8s.io/client-go/rest"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
-	"volcano.sh/apis/pkg/client/clientset/versioned/scheme"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
+	"volcano.sh/apis/v2/pkg/client/clientset/versioned/scheme"
 )
 
 type FlowV1alpha1Interface interface {

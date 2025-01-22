@@ -27,8 +27,8 @@ import (
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
-	flowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/v2/pkg/client/applyconfiguration/flow/v1alpha1"
 )
 
 // FakeJobFlows implements JobFlowInterface

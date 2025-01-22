@@ -18,7 +18,7 @@ limitations under the License.
 package v1beta1
 
 import (
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	v1beta1 "volcano.sh/apis/v2/pkg/apis/scheduling/v1beta1"
 )
 
 // NetworkTopologySpecApplyConfiguration represents a declarative configuration of the NetworkTopologySpec type for use

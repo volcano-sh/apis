@@ -20,7 +20,7 @@ package fake
 import (
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
-	v1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
+	v1beta1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
 )
 
 type FakeSchedulingV1beta1 struct {

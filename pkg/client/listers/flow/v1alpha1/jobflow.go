@@ -21,7 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/listers"
 	"k8s.io/client-go/tools/cache"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
 )
 
 // JobFlowLister helps list JobFlows.

@@ -18,8 +18,8 @@ limitations under the License.
 package topology
 
 import (
-	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/informers/externalversions/topology/v1alpha1"
+	internalinterfaces "volcano.sh/apis/v2/pkg/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "volcano.sh/apis/v2/pkg/client/informers/externalversions/topology/v1alpha1"
 )
 
 // Interface provides access to each of this group's versions.

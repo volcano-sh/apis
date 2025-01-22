@@ -18,7 +18,7 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/batch/v1alpha1"
 )
 
 // DependsOnApplyConfiguration represents a declarative configuration of the DependsOn type for use

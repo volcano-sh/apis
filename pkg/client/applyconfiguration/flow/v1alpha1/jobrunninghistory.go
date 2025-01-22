@@ -19,7 +19,7 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/batch/v1alpha1"
 )
 
 // JobRunningHistoryApplyConfiguration represents a declarative configuration of the JobRunningHistory type for use

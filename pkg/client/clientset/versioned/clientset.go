@@ -24,12 +24,12 @@ import (
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
-	batchv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/batch/v1alpha1"
-	busv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1"
-	flowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
-	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
-	schedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
-	topologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/batch/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/bus/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/flow/v1alpha1"
+	nodeinfov1alpha1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
+	schedulingv1beta1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
+	topologyv1alpha1 "volcano.sh/apis/v2/pkg/client/clientset/versioned/typed/topology/v1alpha1"
 )
 
 type Interface interface {

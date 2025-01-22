@@ -24,9 +24,9 @@ import (
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
-	flowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
-	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/v2/pkg/client/applyconfiguration/flow/v1alpha1"
+	scheme "volcano.sh/apis/v2/pkg/client/clientset/versioned/scheme"
 )
 
 // JobTemplatesGetter has a method to return a JobTemplateInterface.

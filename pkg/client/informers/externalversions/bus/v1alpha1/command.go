@@ -25,10 +25,10 @@ import (
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
-	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
-	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/listers/bus/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/v2/pkg/apis/bus/v1alpha1"
+	versioned "volcano.sh/apis/v2/pkg/client/clientset/versioned"
+	internalinterfaces "volcano.sh/apis/v2/pkg/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "volcano.sh/apis/v2/pkg/client/listers/bus/v1alpha1"
 )
 
 // CommandInformer provides access to a shared informer and lister for

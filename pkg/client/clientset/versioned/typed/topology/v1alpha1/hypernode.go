@@ -24,9 +24,9 @@ import (
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
-	topologyv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/topology/v1alpha1"
-	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/topology/v1alpha1"
+	topologyv1alpha1 "volcano.sh/apis/v2/pkg/client/applyconfiguration/topology/v1alpha1"
+	scheme "volcano.sh/apis/v2/pkg/client/clientset/versioned/scheme"
 )
 
 // HyperNodesGetter has a method to return a HyperNodeInterface.

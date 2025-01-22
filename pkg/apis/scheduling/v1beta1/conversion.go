@@ -21,7 +21,7 @@ import (
 
 	v1 "k8s.io/api/core/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
-	scheduling "volcano.sh/apis/pkg/apis/scheduling"
+	scheduling "volcano.sh/apis/v2/pkg/apis/scheduling"
 )
 
 func Convert_scheduling_QueueSpec_To_v1beta1_QueueSpec(in *scheduling.QueueSpec, out *QueueSpec, s conversion.Scope) error {

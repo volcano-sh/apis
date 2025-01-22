@@ -26,14 +26,14 @@ import (
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
-	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
-	batch "volcano.sh/apis/pkg/client/informers/externalversions/batch"
-	bus "volcano.sh/apis/pkg/client/informers/externalversions/bus"
-	flow "volcano.sh/apis/pkg/client/informers/externalversions/flow"
-	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	nodeinfo "volcano.sh/apis/pkg/client/informers/externalversions/nodeinfo"
-	scheduling "volcano.sh/apis/pkg/client/informers/externalversions/scheduling"
-	topology "volcano.sh/apis/pkg/client/informers/externalversions/topology"
+	versioned "volcano.sh/apis/v2/pkg/client/clientset/versioned"
+	batch "volcano.sh/apis/v2/pkg/client/informers/externalversions/batch"
+	bus "volcano.sh/apis/v2/pkg/client/informers/externalversions/bus"
+	flow "volcano.sh/apis/v2/pkg/client/informers/externalversions/flow"
+	internalinterfaces "volcano.sh/apis/v2/pkg/client/informers/externalversions/internalinterfaces"
+	nodeinfo "volcano.sh/apis/v2/pkg/client/informers/externalversions/nodeinfo"
+	scheduling "volcano.sh/apis/v2/pkg/client/informers/externalversions/scheduling"
+	topology "volcano.sh/apis/v2/pkg/client/informers/externalversions/topology"
 )
 
 // SharedInformerOption defines the functional option type for SharedInformerFactory.

@@ -21,7 +21,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/client/applyconfiguration/batch/v1alpha1"
 )
 
 // JobTemplateApplyConfiguration represents a declarative configuration of the JobTemplate type for use

@@ -27,8 +27,8 @@ import (
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
-	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
+	v1beta1 "volcano.sh/apis/v2/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/v2/pkg/client/applyconfiguration/scheduling/v1beta1"
 )
 
 // FakePodGroups implements PodGroupInterface

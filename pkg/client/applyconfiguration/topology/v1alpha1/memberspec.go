@@ -18,7 +18,7 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
+	v1alpha1 "volcano.sh/apis/v2/pkg/apis/topology/v1alpha1"
 )
 
 // MemberSpecApplyConfiguration represents a declarative configuration of the MemberSpec type for use

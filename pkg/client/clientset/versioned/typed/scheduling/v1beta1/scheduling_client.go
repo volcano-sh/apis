@@ -21,8 +21,8 @@ import (
 	"net/http"
 
 	rest "k8s.io/client-go/rest"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
-	"volcano.sh/apis/pkg/client/clientset/versioned/scheme"
+	v1beta1 "volcano.sh/apis/v2/pkg/apis/scheduling/v1beta1"
+	"volcano.sh/apis/v2/pkg/client/clientset/versioned/scheme"
 )
 
 type SchedulingV1beta1Interface interface {

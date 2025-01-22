@@ -24,7 +24,7 @@ SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 
 source "${SCRIPT_ROOT}/hack/kube_codegen.sh"
 
-THIS_PKG="volcano.sh/apis"
+THIS_PKG="volcano.sh/apis/v2"
 
 kube::codegen::gen_helpers \
     --boilerplate "${SCRIPT_ROOT}/hack/boilerplate.go.txt" \
@@ -35,5 +35,11 @@ kube::codegen::gen_client \
     --with-applyconfig \
     --output-dir "${SCRIPT_ROOT}/pkg/client" \
     --output-pkg "${THIS_PKG}/pkg/client" \
+    --boilerplate "${SCRIPT_ROOT}/hack/boilerplate.go.txt" \
+    "${SCRIPT_ROOT}/pkg/apis"
+
+kube::codegen::gen_openapi \
+    --output-dir "${SCRIPT_ROOT}/pkg/openapi" \
+    --output-pkg "${THIS_PKG}/pkg/openapi" \
     --boilerplate "${SCRIPT_ROOT}/hack/boilerplate.go.txt" \
     "${SCRIPT_ROOT}/pkg/apis"

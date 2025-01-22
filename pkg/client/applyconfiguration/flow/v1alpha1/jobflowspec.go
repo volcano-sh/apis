@@ -18,7 +18,7 @@ limitations under the License.
 package v1alpha1
 
 import (
-	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/v2/pkg/apis/flow/v1alpha1"
 )
 
 // JobFlowSpecApplyConfiguration represents a declarative configuration of the JobFlowSpec type for use
