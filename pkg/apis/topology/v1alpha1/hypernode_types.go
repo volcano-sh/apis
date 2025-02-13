@@ -123,6 +123,9 @@ type RegexMatch struct {
 
 // HyperNodeStatus represents the observed state of a HyperNode.
 type HyperNodeStatus struct {
+	// UnhealthyNodeNames is a list of node names that have unhealthy RDMA (Remote Direct Memory Access) NICs,
+	// such as those experiencing high bit error rates (BER) or flapping issues or any other issues on node nic.
+	UnhealthyNodeNames []string `json:"unhealthyNodeNames,omitempty"`
 	// Conditions provide details about the current state of the HyperNode.
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
