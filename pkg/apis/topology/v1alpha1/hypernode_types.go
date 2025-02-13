@@ -20,6 +20,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// HyperNodeConditionType represents the type of condition for a switch or tor.
+// This ConditionType is used to represent common conditions for switches or tors and is optional to implement.
+type HyperNodeConditionType string
+
+const (
+	// HyperNodeSystemFailureType means the switch or tor has system issues, such as CPU or memory overload, abnormal power or fan status, or any other critical system malfunctions.
+	HyperNodeSystemFailureType HyperNodeConditionType = "HyperNodeSystemFailure "
+	// HyperNodeNetworkUnavailableType means the switch or tor has network issues, such as abnormal link status, interface failures, or any other network disruptions.
+	HyperNodeNetworkUnavailableType HyperNodeConditionType = "HyperNodeNetworkUnavailable"
+)
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
