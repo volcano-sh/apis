@@ -134,15 +134,23 @@ type RegexMatch struct {
 
 // HyperNodeStatus represents the observed state of a HyperNode.
 type HyperNodeStatus struct {
-	// UnhealthyNodeNames is a list of node names that have unhealthy RDMA (Remote Direct Memory Access) NICs,
+	// UnhealthyNodes is a list of nodes that have unhealthy RDMA (Remote Direct Memory Access) NICs,
 	// such as those experiencing high bit error rates (BER) or flapping issues or any other issues on node nic.
-	UnhealthyNodeNames []string `json:"unhealthyNodeNames,omitempty"`
+	UnhealthyNodes []UnhealthyNode `json:"unhealthyNodes,omitempty"`
 	// Conditions provide details about the current state of the HyperNode.
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
 	// NodeCount is the total number of nodes currently in the HyperNode.
 	// +kubebuilder:validation:Minimum=0
 	NodeCount int64 `json:"nodeCount,omitempty"`
+}
+
+// UnhealthyNode represents unhealthy node name and unhealthy reason
+type UnhealthyNode struct {
+	// Name represents the name of the unhealthy node.
+	Name string `json:"name,omitempty"`
+	// Reason describes the specific issue affecting the node's NIC or any other related problems.
+	Reason string `json:"reason,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
