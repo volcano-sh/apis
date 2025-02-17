@@ -25,10 +25,10 @@ import (
 type HyperNodeConditionType string
 
 const (
-	// HyperNodeSystemFailureType means the switch or tor has system issues, such as CPU or memory overload, abnormal power or fan status, or any other critical system malfunctions.
-	HyperNodeSystemFailureType HyperNodeConditionType = "HyperNodeSystemFailure "
-	// HyperNodeNetworkUnavailableType means the switch or tor has network issues, such as abnormal link status, interface failures, or any other network disruptions.
-	HyperNodeNetworkUnavailableType HyperNodeConditionType = "HyperNodeNetworkUnavailable"
+	// SystemFailureType means the switch or tor has system issues, such as CPU or memory overload, abnormal power or fan status, or any other critical system malfunctions.
+	SystemFailureType HyperNodeConditionType = "SystemFailure"
+	// NetworkUnavailableType means the switch or tor has network issues, such as abnormal link status, interface failures, or any other network disruptions.
+	NetworkUnavailableType HyperNodeConditionType = "NetworkUnavailable"
 )
 
 // +genclient
