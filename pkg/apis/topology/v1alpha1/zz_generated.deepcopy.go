@@ -161,6 +161,11 @@ func (in *MemberSelector) DeepCopyInto(out *MemberSelector) {
 		*out = new(RegexMatch)
 		**out = **in
 	}
+	if in.LabelMatch != nil {
+		in, out := &in.LabelMatch, &out.LabelMatch
+		*out = new(v1.LabelSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 

@@ -17,11 +17,16 @@ limitations under the License.
 
 package v1alpha1
 
+import (
+	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
+)
+
 // MemberSelectorApplyConfiguration represents a declarative configuration of the MemberSelector type for use
 // with apply.
 type MemberSelectorApplyConfiguration struct {
-	ExactMatch *ExactMatchApplyConfiguration `json:"exactMatch,omitempty"`
-	RegexMatch *RegexMatchApplyConfiguration `json:"regexMatch,omitempty"`
+	ExactMatch *ExactMatchApplyConfiguration       `json:"exactMatch,omitempty"`
+	RegexMatch *RegexMatchApplyConfiguration       `json:"regexMatch,omitempty"`
+	LabelMatch *v1.LabelSelectorApplyConfiguration `json:"labelMatch,omitempty"`
 }
 
 // MemberSelectorApplyConfiguration constructs a declarative configuration of the MemberSelector type for use with
@@ -43,5 +48,13 @@ func (b *MemberSelectorApplyConfiguration) WithExactMatch(value *ExactMatchApply
 // If called multiple times, the RegexMatch field is set to the value of the last call.
 func (b *MemberSelectorApplyConfiguration) WithRegexMatch(value *RegexMatchApplyConfiguration) *MemberSelectorApplyConfiguration {
 	b.RegexMatch = value
+	return b
+}
+
+// WithLabelMatch sets the LabelMatch field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the LabelMatch field is set to the value of the last call.
+func (b *MemberSelectorApplyConfiguration) WithLabelMatch(value *v1.LabelSelectorApplyConfiguration) *MemberSelectorApplyConfiguration {
+	b.LabelMatch = value
 	return b
 }
