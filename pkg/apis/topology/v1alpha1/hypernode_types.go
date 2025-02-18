@@ -81,11 +81,11 @@ type MemberSpec struct {
 //
 // Example for Exact match:
 //
-//	members:
-//  - type: Node
-//	  selector:
-//	    exactMatch:
-//	      name: "node1"
+//		members:
+//	 - type: Node
+//		  selector:
+//		    exactMatch:
+//		      name: "node1"
 //
 // Example for Regex match:
 //
@@ -98,13 +98,17 @@ type MemberSpec struct {
 // +kubebuilder:validation:XValidation:rule="has(self.exactMatch) || has(self.regexMatch)",message="Either ExactMatch or RegexMatch must be specified"
 // +kubebuilder:validation:XValidation:rule="!(has(self.exactMatch) && has(self.regexMatch))",message="ExactMatch and RegexMatch cannot be specified together"
 type MemberSelector struct {
-	// ExactMatch defines the exact match criteria (required when Type is "Exact").
+	// ExactMatch defines the exact match criteria.
 	// +optional
 	ExactMatch *ExactMatch `json:"exactMatch,omitempty"`
 
-	// RegexMatch defines the regex match criteria (required when Type is "Regex").
+	// RegexMatch defines the regex match criteria.
 	// +optional
 	RegexMatch *RegexMatch `json:"regexMatch,omitempty"`
+
+	// Labels defines the labels match criteria (required when Member Type is "Node").
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // ExactMatch represents the criteria for exact name matching.
