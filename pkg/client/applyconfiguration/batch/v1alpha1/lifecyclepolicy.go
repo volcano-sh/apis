@@ -19,17 +19,17 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 )
 
 // LifecyclePolicyApplyConfiguration represents a declarative configuration of the LifecyclePolicy type for use
 // with apply.
 type LifecyclePolicyApplyConfiguration struct {
-	Action   *v1alpha1.Action `json:"action,omitempty"`
-	Event    *v1alpha1.Event  `json:"event,omitempty"`
-	Events   []v1alpha1.Event `json:"events,omitempty"`
-	ExitCode *int32           `json:"exitCode,omitempty"`
-	Timeout  *v1.Duration     `json:"timeout,omitempty"`
+	Action   *busv1alpha1.Action `json:"action,omitempty"`
+	Event    *busv1alpha1.Event  `json:"event,omitempty"`
+	Events   []busv1alpha1.Event `json:"events,omitempty"`
+	ExitCode *int32              `json:"exitCode,omitempty"`
+	Timeout  *v1.Duration        `json:"timeout,omitempty"`
 }
 
 // LifecyclePolicyApplyConfiguration constructs a declarative configuration of the LifecyclePolicy type for use with
@@ -41,7 +41,7 @@ func LifecyclePolicy() *LifecyclePolicyApplyConfiguration {
 // WithAction sets the Action field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Action field is set to the value of the last call.
-func (b *LifecyclePolicyApplyConfiguration) WithAction(value v1alpha1.Action) *LifecyclePolicyApplyConfiguration {
+func (b *LifecyclePolicyApplyConfiguration) WithAction(value busv1alpha1.Action) *LifecyclePolicyApplyConfiguration {
 	b.Action = &value
 	return b
 }
@@ -49,7 +49,7 @@ func (b *LifecyclePolicyApplyConfiguration) WithAction(value v1alpha1.Action) *L
 // WithEvent sets the Event field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Event field is set to the value of the last call.
-func (b *LifecyclePolicyApplyConfiguration) WithEvent(value v1alpha1.Event) *LifecyclePolicyApplyConfiguration {
+func (b *LifecyclePolicyApplyConfiguration) WithEvent(value busv1alpha1.Event) *LifecyclePolicyApplyConfiguration {
 	b.Event = &value
 	return b
 }
@@ -57,7 +57,7 @@ func (b *LifecyclePolicyApplyConfiguration) WithEvent(value v1alpha1.Event) *Lif
 // WithEvents adds the given value to the Events field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Events field.
-func (b *LifecyclePolicyApplyConfiguration) WithEvents(values ...v1alpha1.Event) *LifecyclePolicyApplyConfiguration {
+func (b *LifecyclePolicyApplyConfiguration) WithEvents(values ...busv1alpha1.Event) *LifecyclePolicyApplyConfiguration {
 	for i := range values {
 		b.Events = append(b.Events, values[i])
 	}

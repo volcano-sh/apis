@@ -18,14 +18,14 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
-	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	applyconfigurationbatchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -37,36 +37,37 @@ type JobsGetter interface {
 
 // JobInterface has methods to work with Job resources.
 type JobInterface interface {
-	Create(ctx context.Context, job *v1alpha1.Job, opts v1.CreateOptions) (*v1alpha1.Job, error)
-	Update(ctx context.Context, job *v1alpha1.Job, opts v1.UpdateOptions) (*v1alpha1.Job, error)
+	Create(ctx context.Context, job *batchv1alpha1.Job, opts v1.CreateOptions) (*batchv1alpha1.Job, error)
+	Update(ctx context.Context, job *batchv1alpha1.Job, opts v1.UpdateOptions) (*batchv1alpha1.Job, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, job *v1alpha1.Job, opts v1.UpdateOptions) (*v1alpha1.Job, error)
+	UpdateStatus(ctx context.Context, job *batchv1alpha1.Job, opts v1.UpdateOptions) (*batchv1alpha1.Job, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.Job, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.JobList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*batchv1alpha1.Job, error)
+	List(ctx context.Context, opts v1.ListOptions) (*batchv1alpha1.JobList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Job, err error)
-	Apply(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *batchv1alpha1.Job, err error)
+	Apply(ctx context.Context, job *applyconfigurationbatchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *batchv1alpha1.Job, err error)
 	// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-	ApplyStatus(ctx context.Context, job *batchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Job, err error)
+	ApplyStatus(ctx context.Context, job *applyconfigurationbatchv1alpha1.JobApplyConfiguration, opts v1.ApplyOptions) (result *batchv1alpha1.Job, err error)
 	JobExpansion
 }
 
 // jobs implements JobInterface
 type jobs struct {
-	*gentype.ClientWithListAndApply[*v1alpha1.Job, *v1alpha1.JobList, *batchv1alpha1.JobApplyConfiguration]
+	*gentype.ClientWithListAndApply[*batchv1alpha1.Job, *batchv1alpha1.JobList, *applyconfigurationbatchv1alpha1.JobApplyConfiguration]
 }
 
 // newJobs returns a Jobs
 func newJobs(c *BatchV1alpha1Client, namespace string) *jobs {
 	return &jobs{
-		gentype.NewClientWithListAndApply[*v1alpha1.Job, *v1alpha1.JobList, *batchv1alpha1.JobApplyConfiguration](
+		gentype.NewClientWithListAndApply[*batchv1alpha1.Job, *batchv1alpha1.JobList, *applyconfigurationbatchv1alpha1.JobApplyConfiguration](
 			"jobs",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *v1alpha1.Job { return &v1alpha1.Job{} },
-			func() *v1alpha1.JobList { return &v1alpha1.JobList{} }),
+			func() *batchv1alpha1.Job { return &batchv1alpha1.Job{} },
+			func() *batchv1alpha1.JobList { return &batchv1alpha1.JobList{} },
+		),
 	}
 }

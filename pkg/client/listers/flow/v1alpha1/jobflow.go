@@ -18,10 +18,10 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/client-go/listers"
-	"k8s.io/client-go/tools/cache"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	listers "k8s.io/client-go/listers"
+	cache "k8s.io/client-go/tools/cache"
+	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 )
 
 // JobFlowLister helps list JobFlows.
@@ -29,7 +29,7 @@ import (
 type JobFlowLister interface {
 	// List lists all JobFlows in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.JobFlow, err error)
+	List(selector labels.Selector) (ret []*flowv1alpha1.JobFlow, err error)
 	// JobFlows returns an object that can list and get JobFlows.
 	JobFlows(namespace string) JobFlowNamespaceLister
 	JobFlowListerExpansion
@@ -37,17 +37,17 @@ type JobFlowLister interface {
 
 // jobFlowLister implements the JobFlowLister interface.
 type jobFlowLister struct {
-	listers.ResourceIndexer[*v1alpha1.JobFlow]
+	listers.ResourceIndexer[*flowv1alpha1.JobFlow]
 }
 
 // NewJobFlowLister returns a new JobFlowLister.
 func NewJobFlowLister(indexer cache.Indexer) JobFlowLister {
-	return &jobFlowLister{listers.New[*v1alpha1.JobFlow](indexer, v1alpha1.Resource("jobflow"))}
+	return &jobFlowLister{listers.New[*flowv1alpha1.JobFlow](indexer, flowv1alpha1.Resource("jobflow"))}
 }
 
 // JobFlows returns an object that can list and get JobFlows.
 func (s *jobFlowLister) JobFlows(namespace string) JobFlowNamespaceLister {
-	return jobFlowNamespaceLister{listers.NewNamespaced[*v1alpha1.JobFlow](s.ResourceIndexer, namespace)}
+	return jobFlowNamespaceLister{listers.NewNamespaced[*flowv1alpha1.JobFlow](s.ResourceIndexer, namespace)}
 }
 
 // JobFlowNamespaceLister helps list and get JobFlows.
@@ -55,15 +55,15 @@ func (s *jobFlowLister) JobFlows(namespace string) JobFlowNamespaceLister {
 type JobFlowNamespaceLister interface {
 	// List lists all JobFlows in the indexer for a given namespace.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.JobFlow, err error)
+	List(selector labels.Selector) (ret []*flowv1alpha1.JobFlow, err error)
 	// Get retrieves the JobFlow from the indexer for a given namespace and name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.JobFlow, error)
+	Get(name string) (*flowv1alpha1.JobFlow, error)
 	JobFlowNamespaceListerExpansion
 }
 
 // jobFlowNamespaceLister implements the JobFlowNamespaceLister
 // interface.
 type jobFlowNamespaceLister struct {
-	listers.ResourceIndexer[*v1alpha1.JobFlow]
+	listers.ResourceIndexer[*flowv1alpha1.JobFlow]
 }

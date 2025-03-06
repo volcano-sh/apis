@@ -18,14 +18,14 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
-	flowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	applyconfigurationflowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -37,36 +37,37 @@ type JobFlowsGetter interface {
 
 // JobFlowInterface has methods to work with JobFlow resources.
 type JobFlowInterface interface {
-	Create(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.CreateOptions) (*v1alpha1.JobFlow, error)
-	Update(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (*v1alpha1.JobFlow, error)
+	Create(ctx context.Context, jobFlow *flowv1alpha1.JobFlow, opts v1.CreateOptions) (*flowv1alpha1.JobFlow, error)
+	Update(ctx context.Context, jobFlow *flowv1alpha1.JobFlow, opts v1.UpdateOptions) (*flowv1alpha1.JobFlow, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (*v1alpha1.JobFlow, error)
+	UpdateStatus(ctx context.Context, jobFlow *flowv1alpha1.JobFlow, opts v1.UpdateOptions) (*flowv1alpha1.JobFlow, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.JobFlow, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.JobFlowList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*flowv1alpha1.JobFlow, error)
+	List(ctx context.Context, opts v1.ListOptions) (*flowv1alpha1.JobFlowList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.JobFlow, err error)
-	Apply(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *flowv1alpha1.JobFlow, err error)
+	Apply(ctx context.Context, jobFlow *applyconfigurationflowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *flowv1alpha1.JobFlow, err error)
 	// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-	ApplyStatus(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error)
+	ApplyStatus(ctx context.Context, jobFlow *applyconfigurationflowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *flowv1alpha1.JobFlow, err error)
 	JobFlowExpansion
 }
 
 // jobFlows implements JobFlowInterface
 type jobFlows struct {
-	*gentype.ClientWithListAndApply[*v1alpha1.JobFlow, *v1alpha1.JobFlowList, *flowv1alpha1.JobFlowApplyConfiguration]
+	*gentype.ClientWithListAndApply[*flowv1alpha1.JobFlow, *flowv1alpha1.JobFlowList, *applyconfigurationflowv1alpha1.JobFlowApplyConfiguration]
 }
 
 // newJobFlows returns a JobFlows
 func newJobFlows(c *FlowV1alpha1Client, namespace string) *jobFlows {
 	return &jobFlows{
-		gentype.NewClientWithListAndApply[*v1alpha1.JobFlow, *v1alpha1.JobFlowList, *flowv1alpha1.JobFlowApplyConfiguration](
+		gentype.NewClientWithListAndApply[*flowv1alpha1.JobFlow, *flowv1alpha1.JobFlowList, *applyconfigurationflowv1alpha1.JobFlowApplyConfiguration](
 			"jobflows",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *v1alpha1.JobFlow { return &v1alpha1.JobFlow{} },
-			func() *v1alpha1.JobFlowList { return &v1alpha1.JobFlowList{} }),
+			func() *flowv1alpha1.JobFlow { return &flowv1alpha1.JobFlow{} },
+			func() *flowv1alpha1.JobFlowList { return &flowv1alpha1.JobFlowList{} },
+		),
 	}
 }

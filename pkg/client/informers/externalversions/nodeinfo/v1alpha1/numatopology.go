@@ -18,24 +18,24 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
+	apisnodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/listers/nodeinfo/v1alpha1"
+	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/listers/nodeinfo/v1alpha1"
 )
 
 // NumatopologyInformer provides access to a shared informer and lister for
 // Numatopologies.
 type NumatopologyInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1alpha1.NumatopologyLister
+	Lister() nodeinfov1alpha1.NumatopologyLister
 }
 
 type numatopologyInformer struct {
@@ -69,7 +69,7 @@ func NewFilteredNumatopologyInformer(client versioned.Interface, resyncPeriod ti
 				return client.NodeinfoV1alpha1().Numatopologies().Watch(context.TODO(), options)
 			},
 		},
-		&nodeinfov1alpha1.Numatopology{},
+		&apisnodeinfov1alpha1.Numatopology{},
 		resyncPeriod,
 		indexers,
 	)
@@ -80,9 +80,9 @@ func (f *numatopologyInformer) defaultInformer(client versioned.Interface, resyn
 }
 
 func (f *numatopologyInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&nodeinfov1alpha1.Numatopology{}, f.defaultInformer)
+	return f.factory.InformerFor(&apisnodeinfov1alpha1.Numatopology{}, f.defaultInformer)
 }
 
-func (f *numatopologyInformer) Lister() v1alpha1.NumatopologyLister {
-	return v1alpha1.NewNumatopologyLister(f.Informer().GetIndexer())
+func (f *numatopologyInformer) Lister() nodeinfov1alpha1.NumatopologyLister {
+	return nodeinfov1alpha1.NewNumatopologyLister(f.Informer().GetIndexer())
 }

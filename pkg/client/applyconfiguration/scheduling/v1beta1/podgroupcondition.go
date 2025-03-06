@@ -20,18 +20,18 @@ package v1beta1
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
 // PodGroupConditionApplyConfiguration represents a declarative configuration of the PodGroupCondition type for use
 // with apply.
 type PodGroupConditionApplyConfiguration struct {
-	Type               *v1beta1.PodGroupConditionType `json:"type,omitempty"`
-	Status             *v1.ConditionStatus            `json:"status,omitempty"`
-	TransitionID       *string                        `json:"transitionID,omitempty"`
-	LastTransitionTime *metav1.Time                   `json:"lastTransitionTime,omitempty"`
-	Reason             *string                        `json:"reason,omitempty"`
-	Message            *string                        `json:"message,omitempty"`
+	Type               *schedulingv1beta1.PodGroupConditionType `json:"type,omitempty"`
+	Status             *v1.ConditionStatus                      `json:"status,omitempty"`
+	TransitionID       *string                                  `json:"transitionID,omitempty"`
+	LastTransitionTime *metav1.Time                             `json:"lastTransitionTime,omitempty"`
+	Reason             *string                                  `json:"reason,omitempty"`
+	Message            *string                                  `json:"message,omitempty"`
 }
 
 // PodGroupConditionApplyConfiguration constructs a declarative configuration of the PodGroupCondition type for use with
@@ -43,7 +43,7 @@ func PodGroupCondition() *PodGroupConditionApplyConfiguration {
 // WithType sets the Type field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Type field is set to the value of the last call.
-func (b *PodGroupConditionApplyConfiguration) WithType(value v1beta1.PodGroupConditionType) *PodGroupConditionApplyConfiguration {
+func (b *PodGroupConditionApplyConfiguration) WithType(value schedulingv1beta1.PodGroupConditionType) *PodGroupConditionApplyConfiguration {
 	b.Type = &value
 	return b
 }
