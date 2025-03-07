@@ -81,11 +81,11 @@ type MemberSpec struct {
 //
 // Example for Exact match:
 //
-//	members:
-//  - type: Node
-//	  selector:
-//	    exactMatch:
-//	      name: "node1"
+//		members:
+//	 - type: Node
+//		  selector:
+//		    exactMatch:
+//		      name: "node1"
 //
 // Example for Regex match:
 //
@@ -95,16 +95,20 @@ type MemberSpec struct {
 //		   regexMatch:
 //		     pattern: "^node-[0-9]+$"
 //
-// +kubebuilder:validation:XValidation:rule="has(self.exactMatch) || has(self.regexMatch)",message="Either ExactMatch or RegexMatch must be specified"
-// +kubebuilder:validation:XValidation:rule="!(has(self.exactMatch) && has(self.regexMatch))",message="ExactMatch and RegexMatch cannot be specified together"
+// +kubebuilder:validation:XValidation:rule="has(self.exactMatch) || has(self.regexMatch) || has(self.LabelMatch)",message="Either ExactMatch or RegexMatch or LabelMatch must be specified"
+// +kubebuilder:validation:XValidation:rule="!(has(self.exactMatch) && has(self.regexMatch) && has(self.LabelMatch))",message="ExactMatch and RegexMatch and LabelMatch cannot be specified together"
 type MemberSelector struct {
-	// ExactMatch defines the exact match criteria (required when Type is "Exact").
+	// ExactMatch defines the exact match criteria.
 	// +optional
 	ExactMatch *ExactMatch `json:"exactMatch,omitempty"`
 
-	// RegexMatch defines the regex match criteria (required when Type is "Regex").
+	// RegexMatch defines the regex match criteria.
 	// +optional
 	RegexMatch *RegexMatch `json:"regexMatch,omitempty"`
+
+	// LabelMatch defines the labels match criteria (only take effect when Member Type is "Node").
+	// +optional
+	LabelMatch *metav1.LabelSelector `json:"labelMatch,omitempty"`
 }
 
 // ExactMatch represents the criteria for exact name matching.
