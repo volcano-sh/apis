@@ -346,6 +346,9 @@ type NodeGroupAntiAffinity struct {
 // QueueSpec represents the template of Queue.
 type QueueSpec struct {
 	// +optional
+	// +kubebuilder:default:=1
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
 	Weight int32 `json:"weight,omitempty" protobuf:"bytes,1,opt,name=weight"`
 
 	// +optional
