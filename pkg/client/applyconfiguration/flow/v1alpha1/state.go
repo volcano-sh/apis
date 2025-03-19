@@ -18,13 +18,13 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 )
 
 // StateApplyConfiguration represents a declarative configuration of the State type for use
 // with apply.
 type StateApplyConfiguration struct {
-	Phase *v1alpha1.Phase `json:"phase,omitempty"`
+	Phase *flowv1alpha1.Phase `json:"phase,omitempty"`
 }
 
 // StateApplyConfiguration constructs a declarative configuration of the State type for use with
@@ -36,7 +36,7 @@ func State() *StateApplyConfiguration {
 // WithPhase sets the Phase field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Phase field is set to the value of the last call.
-func (b *StateApplyConfiguration) WithPhase(value v1alpha1.Phase) *StateApplyConfiguration {
+func (b *StateApplyConfiguration) WithPhase(value flowv1alpha1.Phase) *StateApplyConfiguration {
 	b.Phase = &value
 	return b
 }

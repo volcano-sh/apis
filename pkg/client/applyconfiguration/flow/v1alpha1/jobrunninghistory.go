@@ -19,15 +19,15 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
 // JobRunningHistoryApplyConfiguration represents a declarative configuration of the JobRunningHistory type for use
 // with apply.
 type JobRunningHistoryApplyConfiguration struct {
-	StartTimestamp *v1.Time           `json:"startTimestamp,omitempty"`
-	EndTimestamp   *v1.Time           `json:"endTimestamp,omitempty"`
-	State          *v1alpha1.JobPhase `json:"state,omitempty"`
+	StartTimestamp *v1.Time                `json:"startTimestamp,omitempty"`
+	EndTimestamp   *v1.Time                `json:"endTimestamp,omitempty"`
+	State          *batchv1alpha1.JobPhase `json:"state,omitempty"`
 }
 
 // JobRunningHistoryApplyConfiguration constructs a declarative configuration of the JobRunningHistory type for use with
@@ -55,7 +55,7 @@ func (b *JobRunningHistoryApplyConfiguration) WithEndTimestamp(value v1.Time) *J
 // WithState sets the State field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the State field is set to the value of the last call.
-func (b *JobRunningHistoryApplyConfiguration) WithState(value v1alpha1.JobPhase) *JobRunningHistoryApplyConfiguration {
+func (b *JobRunningHistoryApplyConfiguration) WithState(value batchv1alpha1.JobPhase) *JobRunningHistoryApplyConfiguration {
 	b.State = &value
 	return b
 }

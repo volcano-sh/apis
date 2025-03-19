@@ -18,14 +18,14 @@ limitations under the License.
 package v1beta1
 
 import (
-	"context"
+	context "context"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
-	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	applyconfigurationschedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -37,36 +37,37 @@ type QueuesGetter interface {
 
 // QueueInterface has methods to work with Queue resources.
 type QueueInterface interface {
-	Create(ctx context.Context, queue *v1beta1.Queue, opts v1.CreateOptions) (*v1beta1.Queue, error)
-	Update(ctx context.Context, queue *v1beta1.Queue, opts v1.UpdateOptions) (*v1beta1.Queue, error)
+	Create(ctx context.Context, queue *schedulingv1beta1.Queue, opts v1.CreateOptions) (*schedulingv1beta1.Queue, error)
+	Update(ctx context.Context, queue *schedulingv1beta1.Queue, opts v1.UpdateOptions) (*schedulingv1beta1.Queue, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, queue *v1beta1.Queue, opts v1.UpdateOptions) (*v1beta1.Queue, error)
+	UpdateStatus(ctx context.Context, queue *schedulingv1beta1.Queue, opts v1.UpdateOptions) (*schedulingv1beta1.Queue, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.Queue, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.QueueList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*schedulingv1beta1.Queue, error)
+	List(ctx context.Context, opts v1.ListOptions) (*schedulingv1beta1.QueueList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Queue, err error)
-	Apply(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *schedulingv1beta1.Queue, err error)
+	Apply(ctx context.Context, queue *applyconfigurationschedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *schedulingv1beta1.Queue, err error)
 	// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-	ApplyStatus(ctx context.Context, queue *schedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Queue, err error)
+	ApplyStatus(ctx context.Context, queue *applyconfigurationschedulingv1beta1.QueueApplyConfiguration, opts v1.ApplyOptions) (result *schedulingv1beta1.Queue, err error)
 	QueueExpansion
 }
 
 // queues implements QueueInterface
 type queues struct {
-	*gentype.ClientWithListAndApply[*v1beta1.Queue, *v1beta1.QueueList, *schedulingv1beta1.QueueApplyConfiguration]
+	*gentype.ClientWithListAndApply[*schedulingv1beta1.Queue, *schedulingv1beta1.QueueList, *applyconfigurationschedulingv1beta1.QueueApplyConfiguration]
 }
 
 // newQueues returns a Queues
 func newQueues(c *SchedulingV1beta1Client) *queues {
 	return &queues{
-		gentype.NewClientWithListAndApply[*v1beta1.Queue, *v1beta1.QueueList, *schedulingv1beta1.QueueApplyConfiguration](
+		gentype.NewClientWithListAndApply[*schedulingv1beta1.Queue, *schedulingv1beta1.QueueList, *applyconfigurationschedulingv1beta1.QueueApplyConfiguration](
 			"queues",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			"",
-			func() *v1beta1.Queue { return &v1beta1.Queue{} },
-			func() *v1beta1.QueueList { return &v1beta1.QueueList{} }),
+			func() *schedulingv1beta1.Queue { return &schedulingv1beta1.Queue{} },
+			func() *schedulingv1beta1.QueueList { return &schedulingv1beta1.QueueList{} },
+		),
 	}
 }

@@ -18,14 +18,14 @@ limitations under the License.
 package v1beta1
 
 import (
-	"context"
+	context "context"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
-	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	applyconfigurationschedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -37,36 +37,37 @@ type PodGroupsGetter interface {
 
 // PodGroupInterface has methods to work with PodGroup resources.
 type PodGroupInterface interface {
-	Create(ctx context.Context, podGroup *v1beta1.PodGroup, opts v1.CreateOptions) (*v1beta1.PodGroup, error)
-	Update(ctx context.Context, podGroup *v1beta1.PodGroup, opts v1.UpdateOptions) (*v1beta1.PodGroup, error)
+	Create(ctx context.Context, podGroup *schedulingv1beta1.PodGroup, opts v1.CreateOptions) (*schedulingv1beta1.PodGroup, error)
+	Update(ctx context.Context, podGroup *schedulingv1beta1.PodGroup, opts v1.UpdateOptions) (*schedulingv1beta1.PodGroup, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, podGroup *v1beta1.PodGroup, opts v1.UpdateOptions) (*v1beta1.PodGroup, error)
+	UpdateStatus(ctx context.Context, podGroup *schedulingv1beta1.PodGroup, opts v1.UpdateOptions) (*schedulingv1beta1.PodGroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.PodGroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.PodGroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*schedulingv1beta1.PodGroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*schedulingv1beta1.PodGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.PodGroup, err error)
-	Apply(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *schedulingv1beta1.PodGroup, err error)
+	Apply(ctx context.Context, podGroup *applyconfigurationschedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *schedulingv1beta1.PodGroup, err error)
 	// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-	ApplyStatus(ctx context.Context, podGroup *schedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.PodGroup, err error)
+	ApplyStatus(ctx context.Context, podGroup *applyconfigurationschedulingv1beta1.PodGroupApplyConfiguration, opts v1.ApplyOptions) (result *schedulingv1beta1.PodGroup, err error)
 	PodGroupExpansion
 }
 
 // podGroups implements PodGroupInterface
 type podGroups struct {
-	*gentype.ClientWithListAndApply[*v1beta1.PodGroup, *v1beta1.PodGroupList, *schedulingv1beta1.PodGroupApplyConfiguration]
+	*gentype.ClientWithListAndApply[*schedulingv1beta1.PodGroup, *schedulingv1beta1.PodGroupList, *applyconfigurationschedulingv1beta1.PodGroupApplyConfiguration]
 }
 
 // newPodGroups returns a PodGroups
 func newPodGroups(c *SchedulingV1beta1Client, namespace string) *podGroups {
 	return &podGroups{
-		gentype.NewClientWithListAndApply[*v1beta1.PodGroup, *v1beta1.PodGroupList, *schedulingv1beta1.PodGroupApplyConfiguration](
+		gentype.NewClientWithListAndApply[*schedulingv1beta1.PodGroup, *schedulingv1beta1.PodGroupList, *applyconfigurationschedulingv1beta1.PodGroupApplyConfiguration](
 			"podgroups",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *v1beta1.PodGroup { return &v1beta1.PodGroup{} },
-			func() *v1beta1.PodGroupList { return &v1beta1.PodGroupList{} }),
+			func() *schedulingv1beta1.PodGroup { return &schedulingv1beta1.PodGroup{} },
+			func() *schedulingv1beta1.PodGroupList { return &schedulingv1beta1.PodGroupList{} },
+		),
 	}
 }

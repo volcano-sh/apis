@@ -18,24 +18,24 @@ limitations under the License.
 package v1beta1
 
 import (
-	"context"
+	context "context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	apisschedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1beta1 "volcano.sh/apis/pkg/client/listers/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/listers/scheduling/v1beta1"
 )
 
 // QueueInformer provides access to a shared informer and lister for
 // Queues.
 type QueueInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1beta1.QueueLister
+	Lister() schedulingv1beta1.QueueLister
 }
 
 type queueInformer struct {
@@ -69,7 +69,7 @@ func NewFilteredQueueInformer(client versioned.Interface, resyncPeriod time.Dura
 				return client.SchedulingV1beta1().Queues().Watch(context.TODO(), options)
 			},
 		},
-		&schedulingv1beta1.Queue{},
+		&apisschedulingv1beta1.Queue{},
 		resyncPeriod,
 		indexers,
 	)
@@ -80,9 +80,9 @@ func (f *queueInformer) defaultInformer(client versioned.Interface, resyncPeriod
 }
 
 func (f *queueInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&schedulingv1beta1.Queue{}, f.defaultInformer)
+	return f.factory.InformerFor(&apisschedulingv1beta1.Queue{}, f.defaultInformer)
 }
 
-func (f *queueInformer) Lister() v1beta1.QueueLister {
-	return v1beta1.NewQueueLister(f.Informer().GetIndexer())
+func (f *queueInformer) Lister() schedulingv1beta1.QueueLister {
+	return schedulingv1beta1.NewQueueLister(f.Informer().GetIndexer())
 }

@@ -18,13 +18,13 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
+	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 )
 
 // NumatopoSpecApplyConfiguration represents a declarative configuration of the NumatopoSpec type for use
 // with apply.
 type NumatopoSpecApplyConfiguration struct {
-	Policies    map[v1alpha1.PolicyName]string            `json:"policies,omitempty"`
+	Policies    map[nodeinfov1alpha1.PolicyName]string    `json:"policies,omitempty"`
 	ResReserved map[string]string                         `json:"resReserved,omitempty"`
 	NumaResMap  map[string]ResourceInfoApplyConfiguration `json:"numares,omitempty"`
 	CPUDetail   map[string]CPUInfoApplyConfiguration      `json:"cpuDetail,omitempty"`
@@ -40,9 +40,9 @@ func NumatopoSpec() *NumatopoSpecApplyConfiguration {
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, the entries provided by each call will be put on the Policies field,
 // overwriting an existing map entries in Policies field with the same key.
-func (b *NumatopoSpecApplyConfiguration) WithPolicies(entries map[v1alpha1.PolicyName]string) *NumatopoSpecApplyConfiguration {
+func (b *NumatopoSpecApplyConfiguration) WithPolicies(entries map[nodeinfov1alpha1.PolicyName]string) *NumatopoSpecApplyConfiguration {
 	if b.Policies == nil && len(entries) > 0 {
-		b.Policies = make(map[v1alpha1.PolicyName]string, len(entries))
+		b.Policies = make(map[nodeinfov1alpha1.PolicyName]string, len(entries))
 	}
 	for k, v := range entries {
 		b.Policies[k] = v

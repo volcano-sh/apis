@@ -19,17 +19,17 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
-	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	applyconfigurationbatchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 )
 
 // ConditionApplyConfiguration represents a declarative configuration of the Condition type for use
 // with apply.
 type ConditionApplyConfiguration struct {
-	Phase           *v1alpha1.JobPhase                                   `json:"phase,omitempty"`
-	CreateTimestamp *v1.Time                                             `json:"createTime,omitempty"`
-	RunningDuration *v1.Duration                                         `json:"runningDuration,omitempty"`
-	TaskStatusCount map[string]batchv1alpha1.TaskStateApplyConfiguration `json:"taskStatusCount,omitempty"`
+	Phase           *batchv1alpha1.JobPhase                                                `json:"phase,omitempty"`
+	CreateTimestamp *v1.Time                                                               `json:"createTime,omitempty"`
+	RunningDuration *v1.Duration                                                           `json:"runningDuration,omitempty"`
+	TaskStatusCount map[string]applyconfigurationbatchv1alpha1.TaskStateApplyConfiguration `json:"taskStatusCount,omitempty"`
 }
 
 // ConditionApplyConfiguration constructs a declarative configuration of the Condition type for use with
@@ -41,7 +41,7 @@ func Condition() *ConditionApplyConfiguration {
 // WithPhase sets the Phase field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Phase field is set to the value of the last call.
-func (b *ConditionApplyConfiguration) WithPhase(value v1alpha1.JobPhase) *ConditionApplyConfiguration {
+func (b *ConditionApplyConfiguration) WithPhase(value batchv1alpha1.JobPhase) *ConditionApplyConfiguration {
 	b.Phase = &value
 	return b
 }
@@ -66,9 +66,9 @@ func (b *ConditionApplyConfiguration) WithRunningDuration(value v1.Duration) *Co
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, the entries provided by each call will be put on the TaskStatusCount field,
 // overwriting an existing map entries in TaskStatusCount field with the same key.
-func (b *ConditionApplyConfiguration) WithTaskStatusCount(entries map[string]batchv1alpha1.TaskStateApplyConfiguration) *ConditionApplyConfiguration {
+func (b *ConditionApplyConfiguration) WithTaskStatusCount(entries map[string]applyconfigurationbatchv1alpha1.TaskStateApplyConfiguration) *ConditionApplyConfiguration {
 	if b.TaskStatusCount == nil && len(entries) > 0 {
-		b.TaskStatusCount = make(map[string]batchv1alpha1.TaskStateApplyConfiguration, len(entries))
+		b.TaskStatusCount = make(map[string]applyconfigurationbatchv1alpha1.TaskStateApplyConfiguration, len(entries))
 	}
 	for k, v := range entries {
 		b.TaskStatusCount[k] = v

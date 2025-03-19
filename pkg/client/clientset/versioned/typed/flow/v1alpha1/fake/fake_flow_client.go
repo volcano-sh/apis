@@ -28,11 +28,11 @@ type FakeFlowV1alpha1 struct {
 }
 
 func (c *FakeFlowV1alpha1) JobFlows(namespace string) v1alpha1.JobFlowInterface {
-	return &FakeJobFlows{c, namespace}
+	return newFakeJobFlows(c, namespace)
 }
 
 func (c *FakeFlowV1alpha1) JobTemplates(namespace string) v1alpha1.JobTemplateInterface {
-	return &FakeJobTemplates{c, namespace}
+	return newFakeJobTemplates(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

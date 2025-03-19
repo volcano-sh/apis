@@ -19,13 +19,13 @@ package v1beta1
 
 import (
 	v1 "k8s.io/api/core/v1"
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
 // QueueStatusApplyConfiguration represents a declarative configuration of the QueueStatus type for use
 // with apply.
 type QueueStatusApplyConfiguration struct {
-	State       *v1beta1.QueueState            `json:"state,omitempty"`
+	State       *schedulingv1beta1.QueueState  `json:"state,omitempty"`
 	Unknown     *int32                         `json:"unknown,omitempty"`
 	Pending     *int32                         `json:"pending,omitempty"`
 	Running     *int32                         `json:"running,omitempty"`
@@ -44,7 +44,7 @@ func QueueStatus() *QueueStatusApplyConfiguration {
 // WithState sets the State field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the State field is set to the value of the last call.
-func (b *QueueStatusApplyConfiguration) WithState(value v1beta1.QueueState) *QueueStatusApplyConfiguration {
+func (b *QueueStatusApplyConfiguration) WithState(value schedulingv1beta1.QueueState) *QueueStatusApplyConfiguration {
 	b.State = &value
 	return b
 }

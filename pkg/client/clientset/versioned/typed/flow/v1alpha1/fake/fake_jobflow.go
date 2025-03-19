@@ -18,179 +18,33 @@ limitations under the License.
 package fake
 
 import (
-	"context"
-	json "encoding/json"
-	"fmt"
-
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	gentype "k8s.io/client-go/gentype"
 	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
+	typedflowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
 )
 
-// FakeJobFlows implements JobFlowInterface
-type FakeJobFlows struct {
+// fakeJobFlows implements JobFlowInterface
+type fakeJobFlows struct {
+	*gentype.FakeClientWithListAndApply[*v1alpha1.JobFlow, *v1alpha1.JobFlowList, *flowv1alpha1.JobFlowApplyConfiguration]
 	Fake *FakeFlowV1alpha1
-	ns   string
 }
 
-var jobflowsResource = v1alpha1.SchemeGroupVersion.WithResource("jobflows")
-
-var jobflowsKind = v1alpha1.SchemeGroupVersion.WithKind("JobFlow")
-
-// Get takes name of the jobFlow, and returns the corresponding jobFlow object, and an error if there is any.
-func (c *FakeJobFlows) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.JobFlow, err error) {
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewGetActionWithOptions(jobflowsResource, c.ns, name, options), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
+func newFakeJobFlows(fake *FakeFlowV1alpha1, namespace string) typedflowv1alpha1.JobFlowInterface {
+	return &fakeJobFlows{
+		gentype.NewFakeClientWithListAndApply[*v1alpha1.JobFlow, *v1alpha1.JobFlowList, *flowv1alpha1.JobFlowApplyConfiguration](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("jobflows"),
+			v1alpha1.SchemeGroupVersion.WithKind("JobFlow"),
+			func() *v1alpha1.JobFlow { return &v1alpha1.JobFlow{} },
+			func() *v1alpha1.JobFlowList { return &v1alpha1.JobFlowList{} },
+			func(dst, src *v1alpha1.JobFlowList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.JobFlowList) []*v1alpha1.JobFlow { return gentype.ToPointerSlice(list.Items) },
+			func(list *v1alpha1.JobFlowList, items []*v1alpha1.JobFlow) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.JobFlow), err
-}
-
-// List takes label and field selectors, and returns the list of JobFlows that match those selectors.
-func (c *FakeJobFlows) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.JobFlowList, err error) {
-	emptyResult := &v1alpha1.JobFlowList{}
-	obj, err := c.Fake.
-		Invokes(testing.NewListActionWithOptions(jobflowsResource, jobflowsKind, c.ns, opts), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.JobFlowList{ListMeta: obj.(*v1alpha1.JobFlowList).ListMeta}
-	for _, item := range obj.(*v1alpha1.JobFlowList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested jobFlows.
-func (c *FakeJobFlows) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchActionWithOptions(jobflowsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a jobFlow and creates it.  Returns the server's representation of the jobFlow, and an error, if there is any.
-func (c *FakeJobFlows) Create(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.CreateOptions) (result *v1alpha1.JobFlow, err error) {
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateActionWithOptions(jobflowsResource, c.ns, jobFlow, opts), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1alpha1.JobFlow), err
-}
-
-// Update takes the representation of a jobFlow and updates it. Returns the server's representation of the jobFlow, and an error, if there is any.
-func (c *FakeJobFlows) Update(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (result *v1alpha1.JobFlow, err error) {
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateActionWithOptions(jobflowsResource, c.ns, jobFlow, opts), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1alpha1.JobFlow), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeJobFlows) UpdateStatus(ctx context.Context, jobFlow *v1alpha1.JobFlow, opts v1.UpdateOptions) (result *v1alpha1.JobFlow, err error) {
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceActionWithOptions(jobflowsResource, "status", c.ns, jobFlow, opts), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1alpha1.JobFlow), err
-}
-
-// Delete takes name of the jobFlow and deletes it. Returns an error if one occurs.
-func (c *FakeJobFlows) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(jobflowsResource, c.ns, name, opts), &v1alpha1.JobFlow{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeJobFlows) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionActionWithOptions(jobflowsResource, c.ns, opts, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.JobFlowList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched jobFlow.
-func (c *FakeJobFlows) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.JobFlow, err error) {
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceActionWithOptions(jobflowsResource, c.ns, name, pt, data, opts, subresources...), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1alpha1.JobFlow), err
-}
-
-// Apply takes the given apply declarative configuration, applies it and returns the applied jobFlow.
-func (c *FakeJobFlows) Apply(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error) {
-	if jobFlow == nil {
-		return nil, fmt.Errorf("jobFlow provided to Apply must not be nil")
-	}
-	data, err := json.Marshal(jobFlow)
-	if err != nil {
-		return nil, err
-	}
-	name := jobFlow.Name
-	if name == nil {
-		return nil, fmt.Errorf("jobFlow.Name must be provided to Apply")
-	}
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceActionWithOptions(jobflowsResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1alpha1.JobFlow), err
-}
-
-// ApplyStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
-func (c *FakeJobFlows) ApplyStatus(ctx context.Context, jobFlow *flowv1alpha1.JobFlowApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.JobFlow, err error) {
-	if jobFlow == nil {
-		return nil, fmt.Errorf("jobFlow provided to Apply must not be nil")
-	}
-	data, err := json.Marshal(jobFlow)
-	if err != nil {
-		return nil, err
-	}
-	name := jobFlow.Name
-	if name == nil {
-		return nil, fmt.Errorf("jobFlow.Name must be provided to Apply")
-	}
-	emptyResult := &v1alpha1.JobFlow{}
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceActionWithOptions(jobflowsResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions(), "status"), emptyResult)
-
-	if obj == nil {
-		return emptyResult, err
-	}
-	return obj.(*v1alpha1.JobFlow), err
 }

@@ -45,7 +45,7 @@ func Numatopology(name string) *NumatopologyApplyConfiguration {
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Kind field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithKind(value string) *NumatopologyApplyConfiguration {
-	b.Kind = &value
+	b.TypeMetaApplyConfiguration.Kind = &value
 	return b
 }
 
@@ -53,7 +53,7 @@ func (b *NumatopologyApplyConfiguration) WithKind(value string) *NumatopologyApp
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the APIVersion field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithAPIVersion(value string) *NumatopologyApplyConfiguration {
-	b.APIVersion = &value
+	b.TypeMetaApplyConfiguration.APIVersion = &value
 	return b
 }
 
@@ -62,7 +62,7 @@ func (b *NumatopologyApplyConfiguration) WithAPIVersion(value string) *Numatopol
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithName(value string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Name = &value
+	b.ObjectMetaApplyConfiguration.Name = &value
 	return b
 }
 
@@ -71,7 +71,7 @@ func (b *NumatopologyApplyConfiguration) WithName(value string) *NumatopologyApp
 // If called multiple times, the GenerateName field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithGenerateName(value string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.GenerateName = &value
+	b.ObjectMetaApplyConfiguration.GenerateName = &value
 	return b
 }
 
@@ -80,7 +80,7 @@ func (b *NumatopologyApplyConfiguration) WithGenerateName(value string) *Numatop
 // If called multiple times, the Namespace field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithNamespace(value string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Namespace = &value
+	b.ObjectMetaApplyConfiguration.Namespace = &value
 	return b
 }
 
@@ -89,7 +89,7 @@ func (b *NumatopologyApplyConfiguration) WithNamespace(value string) *Numatopolo
 // If called multiple times, the UID field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithUID(value types.UID) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.UID = &value
+	b.ObjectMetaApplyConfiguration.UID = &value
 	return b
 }
 
@@ -98,7 +98,7 @@ func (b *NumatopologyApplyConfiguration) WithUID(value types.UID) *NumatopologyA
 // If called multiple times, the ResourceVersion field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithResourceVersion(value string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.ResourceVersion = &value
+	b.ObjectMetaApplyConfiguration.ResourceVersion = &value
 	return b
 }
 
@@ -107,7 +107,7 @@ func (b *NumatopologyApplyConfiguration) WithResourceVersion(value string) *Numa
 // If called multiple times, the Generation field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithGeneration(value int64) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Generation = &value
+	b.ObjectMetaApplyConfiguration.Generation = &value
 	return b
 }
 
@@ -116,7 +116,7 @@ func (b *NumatopologyApplyConfiguration) WithGeneration(value int64) *Numatopolo
 // If called multiple times, the CreationTimestamp field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithCreationTimestamp(value metav1.Time) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.CreationTimestamp = &value
+	b.ObjectMetaApplyConfiguration.CreationTimestamp = &value
 	return b
 }
 
@@ -125,7 +125,7 @@ func (b *NumatopologyApplyConfiguration) WithCreationTimestamp(value metav1.Time
 // If called multiple times, the DeletionTimestamp field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionTimestamp = &value
+	b.ObjectMetaApplyConfiguration.DeletionTimestamp = &value
 	return b
 }
 
@@ -134,7 +134,7 @@ func (b *NumatopologyApplyConfiguration) WithDeletionTimestamp(value metav1.Time
 // If called multiple times, the DeletionGracePeriodSeconds field is set to the value of the last call.
 func (b *NumatopologyApplyConfiguration) WithDeletionGracePeriodSeconds(value int64) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionGracePeriodSeconds = &value
+	b.ObjectMetaApplyConfiguration.DeletionGracePeriodSeconds = &value
 	return b
 }
 
@@ -144,11 +144,11 @@ func (b *NumatopologyApplyConfiguration) WithDeletionGracePeriodSeconds(value in
 // overwriting an existing map entries in Labels field with the same key.
 func (b *NumatopologyApplyConfiguration) WithLabels(entries map[string]string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Labels == nil && len(entries) > 0 {
-		b.Labels = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Labels == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Labels = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Labels[k] = v
+		b.ObjectMetaApplyConfiguration.Labels[k] = v
 	}
 	return b
 }
@@ -159,11 +159,11 @@ func (b *NumatopologyApplyConfiguration) WithLabels(entries map[string]string) *
 // overwriting an existing map entries in Annotations field with the same key.
 func (b *NumatopologyApplyConfiguration) WithAnnotations(entries map[string]string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Annotations == nil && len(entries) > 0 {
-		b.Annotations = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Annotations == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Annotations = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Annotations[k] = v
+		b.ObjectMetaApplyConfiguration.Annotations[k] = v
 	}
 	return b
 }
@@ -177,7 +177,7 @@ func (b *NumatopologyApplyConfiguration) WithOwnerReferences(values ...*v1.Owner
 		if values[i] == nil {
 			panic("nil value passed to WithOwnerReferences")
 		}
-		b.OwnerReferences = append(b.OwnerReferences, *values[i])
+		b.ObjectMetaApplyConfiguration.OwnerReferences = append(b.ObjectMetaApplyConfiguration.OwnerReferences, *values[i])
 	}
 	return b
 }
@@ -188,7 +188,7 @@ func (b *NumatopologyApplyConfiguration) WithOwnerReferences(values ...*v1.Owner
 func (b *NumatopologyApplyConfiguration) WithFinalizers(values ...string) *NumatopologyApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	for i := range values {
-		b.Finalizers = append(b.Finalizers, values[i])
+		b.ObjectMetaApplyConfiguration.Finalizers = append(b.ObjectMetaApplyConfiguration.Finalizers, values[i])
 	}
 	return b
 }
@@ -210,5 +210,5 @@ func (b *NumatopologyApplyConfiguration) WithSpec(value *NumatopoSpecApplyConfig
 // GetName retrieves the value of the Name field in the declarative configuration.
 func (b *NumatopologyApplyConfiguration) GetName() *string {
 	b.ensureObjectMetaApplyConfigurationExists()
-	return b.Name
+	return b.ObjectMetaApplyConfiguration.Name
 }

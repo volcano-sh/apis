@@ -28,7 +28,7 @@ type FakeBusV1alpha1 struct {
 }
 
 func (c *FakeBusV1alpha1) Commands(namespace string) v1alpha1.CommandInterface {
-	return &FakeCommands{c, namespace}
+	return newFakeCommands(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

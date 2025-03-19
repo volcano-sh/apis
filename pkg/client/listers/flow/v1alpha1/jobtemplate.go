@@ -18,10 +18,10 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/client-go/listers"
-	"k8s.io/client-go/tools/cache"
-	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	listers "k8s.io/client-go/listers"
+	cache "k8s.io/client-go/tools/cache"
+	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 )
 
 // JobTemplateLister helps list JobTemplates.
@@ -29,7 +29,7 @@ import (
 type JobTemplateLister interface {
 	// List lists all JobTemplates in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.JobTemplate, err error)
+	List(selector labels.Selector) (ret []*flowv1alpha1.JobTemplate, err error)
 	// JobTemplates returns an object that can list and get JobTemplates.
 	JobTemplates(namespace string) JobTemplateNamespaceLister
 	JobTemplateListerExpansion
@@ -37,17 +37,17 @@ type JobTemplateLister interface {
 
 // jobTemplateLister implements the JobTemplateLister interface.
 type jobTemplateLister struct {
-	listers.ResourceIndexer[*v1alpha1.JobTemplate]
+	listers.ResourceIndexer[*flowv1alpha1.JobTemplate]
 }
 
 // NewJobTemplateLister returns a new JobTemplateLister.
 func NewJobTemplateLister(indexer cache.Indexer) JobTemplateLister {
-	return &jobTemplateLister{listers.New[*v1alpha1.JobTemplate](indexer, v1alpha1.Resource("jobtemplate"))}
+	return &jobTemplateLister{listers.New[*flowv1alpha1.JobTemplate](indexer, flowv1alpha1.Resource("jobtemplate"))}
 }
 
 // JobTemplates returns an object that can list and get JobTemplates.
 func (s *jobTemplateLister) JobTemplates(namespace string) JobTemplateNamespaceLister {
-	return jobTemplateNamespaceLister{listers.NewNamespaced[*v1alpha1.JobTemplate](s.ResourceIndexer, namespace)}
+	return jobTemplateNamespaceLister{listers.NewNamespaced[*flowv1alpha1.JobTemplate](s.ResourceIndexer, namespace)}
 }
 
 // JobTemplateNamespaceLister helps list and get JobTemplates.
@@ -55,15 +55,15 @@ func (s *jobTemplateLister) JobTemplates(namespace string) JobTemplateNamespaceL
 type JobTemplateNamespaceLister interface {
 	// List lists all JobTemplates in the indexer for a given namespace.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.JobTemplate, err error)
+	List(selector labels.Selector) (ret []*flowv1alpha1.JobTemplate, err error)
 	// Get retrieves the JobTemplate from the indexer for a given namespace and name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.JobTemplate, error)
+	Get(name string) (*flowv1alpha1.JobTemplate, error)
 	JobTemplateNamespaceListerExpansion
 }
 
 // jobTemplateNamespaceLister implements the JobTemplateNamespaceLister
 // interface.
 type jobTemplateNamespaceLister struct {
-	listers.ResourceIndexer[*v1alpha1.JobTemplate]
+	listers.ResourceIndexer[*flowv1alpha1.JobTemplate]
 }

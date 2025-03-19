@@ -18,10 +18,10 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/client-go/listers"
-	"k8s.io/client-go/tools/cache"
-	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	listers "k8s.io/client-go/listers"
+	cache "k8s.io/client-go/tools/cache"
+	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 )
 
 // CommandLister helps list Commands.
@@ -29,7 +29,7 @@ import (
 type CommandLister interface {
 	// List lists all Commands in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.Command, err error)
+	List(selector labels.Selector) (ret []*busv1alpha1.Command, err error)
 	// Commands returns an object that can list and get Commands.
 	Commands(namespace string) CommandNamespaceLister
 	CommandListerExpansion
@@ -37,17 +37,17 @@ type CommandLister interface {
 
 // commandLister implements the CommandLister interface.
 type commandLister struct {
-	listers.ResourceIndexer[*v1alpha1.Command]
+	listers.ResourceIndexer[*busv1alpha1.Command]
 }
 
 // NewCommandLister returns a new CommandLister.
 func NewCommandLister(indexer cache.Indexer) CommandLister {
-	return &commandLister{listers.New[*v1alpha1.Command](indexer, v1alpha1.Resource("command"))}
+	return &commandLister{listers.New[*busv1alpha1.Command](indexer, busv1alpha1.Resource("command"))}
 }
 
 // Commands returns an object that can list and get Commands.
 func (s *commandLister) Commands(namespace string) CommandNamespaceLister {
-	return commandNamespaceLister{listers.NewNamespaced[*v1alpha1.Command](s.ResourceIndexer, namespace)}
+	return commandNamespaceLister{listers.NewNamespaced[*busv1alpha1.Command](s.ResourceIndexer, namespace)}
 }
 
 // CommandNamespaceLister helps list and get Commands.
@@ -55,15 +55,15 @@ func (s *commandLister) Commands(namespace string) CommandNamespaceLister {
 type CommandNamespaceLister interface {
 	// List lists all Commands in the indexer for a given namespace.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.Command, err error)
+	List(selector labels.Selector) (ret []*busv1alpha1.Command, err error)
 	// Get retrieves the Command from the indexer for a given namespace and name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.Command, error)
+	Get(name string) (*busv1alpha1.Command, error)
 	CommandNamespaceListerExpansion
 }
 
 // commandNamespaceLister implements the CommandNamespaceLister
 // interface.
 type commandNamespaceLister struct {
-	listers.ResourceIndexer[*v1alpha1.Command]
+	listers.ResourceIndexer[*busv1alpha1.Command]
 }

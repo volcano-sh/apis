@@ -28,11 +28,11 @@ type FakeSchedulingV1beta1 struct {
 }
 
 func (c *FakeSchedulingV1beta1) PodGroups(namespace string) v1beta1.PodGroupInterface {
-	return &FakePodGroups{c, namespace}
+	return newFakePodGroups(c, namespace)
 }
 
 func (c *FakeSchedulingV1beta1) Queues() v1beta1.QueueInterface {
-	return &FakeQueues{c}
+	return newFakeQueues(c)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
