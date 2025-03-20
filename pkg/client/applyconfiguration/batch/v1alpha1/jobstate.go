@@ -19,16 +19,16 @@ package v1alpha1
 
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
 // JobStateApplyConfiguration represents a declarative configuration of the JobState type for use
 // with apply.
 type JobStateApplyConfiguration struct {
-	Phase              *v1alpha1.JobPhase `json:"phase,omitempty"`
-	Reason             *string            `json:"reason,omitempty"`
-	Message            *string            `json:"message,omitempty"`
-	LastTransitionTime *v1.Time           `json:"lastTransitionTime,omitempty"`
+	Phase              *batchv1alpha1.JobPhase `json:"phase,omitempty"`
+	Reason             *string                 `json:"reason,omitempty"`
+	Message            *string                 `json:"message,omitempty"`
+	LastTransitionTime *v1.Time                `json:"lastTransitionTime,omitempty"`
 }
 
 // JobStateApplyConfiguration constructs a declarative configuration of the JobState type for use with
@@ -40,7 +40,7 @@ func JobState() *JobStateApplyConfiguration {
 // WithPhase sets the Phase field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Phase field is set to the value of the last call.
-func (b *JobStateApplyConfiguration) WithPhase(value v1alpha1.JobPhase) *JobStateApplyConfiguration {
+func (b *JobStateApplyConfiguration) WithPhase(value batchv1alpha1.JobPhase) *JobStateApplyConfiguration {
 	b.Phase = &value
 	return b
 }

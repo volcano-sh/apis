@@ -18,24 +18,24 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
+	apisflowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/listers/flow/v1alpha1"
+	flowv1alpha1 "volcano.sh/apis/pkg/client/listers/flow/v1alpha1"
 )
 
 // JobFlowInformer provides access to a shared informer and lister for
 // JobFlows.
 type JobFlowInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1alpha1.JobFlowLister
+	Lister() flowv1alpha1.JobFlowLister
 }
 
 type jobFlowInformer struct {
@@ -70,7 +70,7 @@ func NewFilteredJobFlowInformer(client versioned.Interface, namespace string, re
 				return client.FlowV1alpha1().JobFlows(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&flowv1alpha1.JobFlow{},
+		&apisflowv1alpha1.JobFlow{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,9 +81,9 @@ func (f *jobFlowInformer) defaultInformer(client versioned.Interface, resyncPeri
 }
 
 func (f *jobFlowInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&flowv1alpha1.JobFlow{}, f.defaultInformer)
+	return f.factory.InformerFor(&apisflowv1alpha1.JobFlow{}, f.defaultInformer)
 }
 
-func (f *jobFlowInformer) Lister() v1alpha1.JobFlowLister {
-	return v1alpha1.NewJobFlowLister(f.Informer().GetIndexer())
+func (f *jobFlowInformer) Lister() flowv1alpha1.JobFlowLister {
+	return flowv1alpha1.NewJobFlowLister(f.Informer().GetIndexer())
 }

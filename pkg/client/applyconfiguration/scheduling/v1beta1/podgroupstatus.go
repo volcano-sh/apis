@@ -18,13 +18,13 @@ limitations under the License.
 package v1beta1
 
 import (
-	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
 // PodGroupStatusApplyConfiguration represents a declarative configuration of the PodGroupStatus type for use
 // with apply.
 type PodGroupStatusApplyConfiguration struct {
-	Phase      *v1beta1.PodGroupPhase                `json:"phase,omitempty"`
+	Phase      *schedulingv1beta1.PodGroupPhase      `json:"phase,omitempty"`
 	Conditions []PodGroupConditionApplyConfiguration `json:"conditions,omitempty"`
 	Running    *int32                                `json:"running,omitempty"`
 	Succeeded  *int32                                `json:"succeeded,omitempty"`
@@ -40,7 +40,7 @@ func PodGroupStatus() *PodGroupStatusApplyConfiguration {
 // WithPhase sets the Phase field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Phase field is set to the value of the last call.
-func (b *PodGroupStatusApplyConfiguration) WithPhase(value v1beta1.PodGroupPhase) *PodGroupStatusApplyConfiguration {
+func (b *PodGroupStatusApplyConfiguration) WithPhase(value schedulingv1beta1.PodGroupPhase) *PodGroupStatusApplyConfiguration {
 	b.Phase = &value
 	return b
 }

@@ -18,14 +18,14 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	gentype "k8s.io/client-go/gentype"
-	v1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
-	busv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	applyconfigurationbusv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
@@ -37,32 +37,33 @@ type CommandsGetter interface {
 
 // CommandInterface has methods to work with Command resources.
 type CommandInterface interface {
-	Create(ctx context.Context, command *v1alpha1.Command, opts v1.CreateOptions) (*v1alpha1.Command, error)
-	Update(ctx context.Context, command *v1alpha1.Command, opts v1.UpdateOptions) (*v1alpha1.Command, error)
+	Create(ctx context.Context, command *busv1alpha1.Command, opts v1.CreateOptions) (*busv1alpha1.Command, error)
+	Update(ctx context.Context, command *busv1alpha1.Command, opts v1.UpdateOptions) (*busv1alpha1.Command, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.Command, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.CommandList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*busv1alpha1.Command, error)
+	List(ctx context.Context, opts v1.ListOptions) (*busv1alpha1.CommandList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Command, err error)
-	Apply(ctx context.Context, command *busv1alpha1.CommandApplyConfiguration, opts v1.ApplyOptions) (result *v1alpha1.Command, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *busv1alpha1.Command, err error)
+	Apply(ctx context.Context, command *applyconfigurationbusv1alpha1.CommandApplyConfiguration, opts v1.ApplyOptions) (result *busv1alpha1.Command, err error)
 	CommandExpansion
 }
 
 // commands implements CommandInterface
 type commands struct {
-	*gentype.ClientWithListAndApply[*v1alpha1.Command, *v1alpha1.CommandList, *busv1alpha1.CommandApplyConfiguration]
+	*gentype.ClientWithListAndApply[*busv1alpha1.Command, *busv1alpha1.CommandList, *applyconfigurationbusv1alpha1.CommandApplyConfiguration]
 }
 
 // newCommands returns a Commands
 func newCommands(c *BusV1alpha1Client, namespace string) *commands {
 	return &commands{
-		gentype.NewClientWithListAndApply[*v1alpha1.Command, *v1alpha1.CommandList, *busv1alpha1.CommandApplyConfiguration](
+		gentype.NewClientWithListAndApply[*busv1alpha1.Command, *busv1alpha1.CommandList, *applyconfigurationbusv1alpha1.CommandApplyConfiguration](
 			"commands",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *v1alpha1.Command { return &v1alpha1.Command{} },
-			func() *v1alpha1.CommandList { return &v1alpha1.CommandList{} }),
+			func() *busv1alpha1.Command { return &busv1alpha1.Command{} },
+			func() *busv1alpha1.CommandList { return &busv1alpha1.CommandList{} },
+		),
 	}
 }

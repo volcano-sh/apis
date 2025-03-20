@@ -18,24 +18,24 @@ limitations under the License.
 package v1beta1
 
 import (
-	"context"
+	context "context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	apisschedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1beta1 "volcano.sh/apis/pkg/client/listers/scheduling/v1beta1"
+	schedulingv1beta1 "volcano.sh/apis/pkg/client/listers/scheduling/v1beta1"
 )
 
 // PodGroupInformer provides access to a shared informer and lister for
 // PodGroups.
 type PodGroupInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1beta1.PodGroupLister
+	Lister() schedulingv1beta1.PodGroupLister
 }
 
 type podGroupInformer struct {
@@ -70,7 +70,7 @@ func NewFilteredPodGroupInformer(client versioned.Interface, namespace string, r
 				return client.SchedulingV1beta1().PodGroups(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&schedulingv1beta1.PodGroup{},
+		&apisschedulingv1beta1.PodGroup{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,9 +81,9 @@ func (f *podGroupInformer) defaultInformer(client versioned.Interface, resyncPer
 }
 
 func (f *podGroupInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&schedulingv1beta1.PodGroup{}, f.defaultInformer)
+	return f.factory.InformerFor(&apisschedulingv1beta1.PodGroup{}, f.defaultInformer)
 }
 
-func (f *podGroupInformer) Lister() v1beta1.PodGroupLister {
-	return v1beta1.NewPodGroupLister(f.Informer().GetIndexer())
+func (f *podGroupInformer) Lister() schedulingv1beta1.PodGroupLister {
+	return schedulingv1beta1.NewPodGroupLister(f.Informer().GetIndexer())
 }

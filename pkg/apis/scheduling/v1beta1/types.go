@@ -249,6 +249,7 @@ const (
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:path=queues,scope=Cluster,shortName=q;queue-v1beta1
 // +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="PARENT",type=string,JSONPath=`.spec.parent`
 
 // Queue is a queue of PodGroup.
 type Queue struct {

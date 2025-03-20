@@ -18,24 +18,24 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	apisbusv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/listers/bus/v1alpha1"
+	busv1alpha1 "volcano.sh/apis/pkg/client/listers/bus/v1alpha1"
 )
 
 // CommandInformer provides access to a shared informer and lister for
 // Commands.
 type CommandInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1alpha1.CommandLister
+	Lister() busv1alpha1.CommandLister
 }
 
 type commandInformer struct {
@@ -70,7 +70,7 @@ func NewFilteredCommandInformer(client versioned.Interface, namespace string, re
 				return client.BusV1alpha1().Commands(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&busv1alpha1.Command{},
+		&apisbusv1alpha1.Command{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,9 +81,9 @@ func (f *commandInformer) defaultInformer(client versioned.Interface, resyncPeri
 }
 
 func (f *commandInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&busv1alpha1.Command{}, f.defaultInformer)
+	return f.factory.InformerFor(&apisbusv1alpha1.Command{}, f.defaultInformer)
 }
 
-func (f *commandInformer) Lister() v1alpha1.CommandLister {
-	return v1alpha1.NewCommandLister(f.Informer().GetIndexer())
+func (f *commandInformer) Lister() busv1alpha1.CommandLister {
+	return busv1alpha1.NewCommandLister(f.Informer().GetIndexer())
 }

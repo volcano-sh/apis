@@ -28,7 +28,7 @@ type FakeNodeinfoV1alpha1 struct {
 }
 
 func (c *FakeNodeinfoV1alpha1) Numatopologies() v1alpha1.NumatopologyInterface {
-	return &FakeNumatopologies{c}
+	return newFakeNumatopologies(c)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

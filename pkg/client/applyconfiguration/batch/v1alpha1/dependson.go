@@ -18,14 +18,14 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
 // DependsOnApplyConfiguration represents a declarative configuration of the DependsOn type for use
 // with apply.
 type DependsOnApplyConfiguration struct {
-	Name      []string            `json:"name,omitempty"`
-	Iteration *v1alpha1.Iteration `json:"iteration,omitempty"`
+	Name      []string                 `json:"name,omitempty"`
+	Iteration *batchv1alpha1.Iteration `json:"iteration,omitempty"`
 }
 
 // DependsOnApplyConfiguration constructs a declarative configuration of the DependsOn type for use with
@@ -47,7 +47,7 @@ func (b *DependsOnApplyConfiguration) WithName(values ...string) *DependsOnApply
 // WithIteration sets the Iteration field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Iteration field is set to the value of the last call.
-func (b *DependsOnApplyConfiguration) WithIteration(value v1alpha1.Iteration) *DependsOnApplyConfiguration {
+func (b *DependsOnApplyConfiguration) WithIteration(value batchv1alpha1.Iteration) *DependsOnApplyConfiguration {
 	b.Iteration = &value
 	return b
 }
