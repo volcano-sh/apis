@@ -184,6 +184,7 @@ type PodGroupSpec struct {
 	// Queue defines the queue to allocate resource for PodGroup; if queue does not exist,
 	// the PodGroup will not be scheduled. Defaults to `default` Queue with the lowest weight.
 	// +optional
+	// +kubebuilder:default:="default"
 	Queue string `json:"queue,omitempty" protobuf:"bytes,2,opt,name=queue"`
 
 	// If specified, indicates the PodGroup's priority. "system-node-critical" and
