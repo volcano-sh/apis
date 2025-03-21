@@ -21,24 +21,15 @@ import (
 	"volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // JobTemplateSpec defines the desired state of JobTemplate
 type JobTemplateSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of JobTemplate. Edit jobtemplate_types.go to remove/update
-	v1alpha1.JobSpec
+	// JobSpec is the specification of the Job
+	v1alpha1.JobSpec `json:"jobSpec,omitempty"`
 }
 
 // JobTemplateStatus defines the observed state of JobTemplate
 type JobTemplateStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	//Describes the Jobs generated from the JobTemplate
+	// JobDependsOnList is the list of jobs that this job depends on
 	JobDependsOnList []string `json:"jobDependsOnList,omitempty"`
 }
 
