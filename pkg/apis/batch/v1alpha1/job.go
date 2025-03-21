@@ -108,6 +108,12 @@ type JobSpec struct {
 	// +kubebuilder:validation:Minimum=1
 	// +optional
 	MinSuccess *int32 `json:"minSuccess,omitempty" protobuf:"varint,12,opt,name=minSuccess"`
+
+	// Specifies the duration in seconds relative to the startTime that the job
+	// may be continuously active before the system tries to terminate it; value
+	// must be positive integer.
+	// +optional
+	ActiveDeadlineSeconds *int64 `json:"activeDeadlineSeconds,omitempty" protobuf:"varint,13,opt,name=activeDeadlineSeconds"`
 }
 
 // VolumeSpec defines the specification of Volume, e.g. PVC.
@@ -334,6 +340,11 @@ type JobStatus struct {
 	// +patchMergeKey=status
 	// +patchStrategy=merge
 	Conditions []JobCondition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"status" protobuf:"bytes,13,rep,name=conditions"`
+
+	// Represents time when the job controller started processing a job.
+	// It is represented in RFC3339 form and is in UTC.
+	// +optional
+	StartTime *metav1.Time `json:"startTime,omitempty" protobuf:"bytes,14,opt,name=startTime"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
