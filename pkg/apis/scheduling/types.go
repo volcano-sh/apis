@@ -176,6 +176,7 @@ type PodGroupSpec struct {
 
 	// Queue defines the queue to allocate resource for PodGroup; if queue does not exist,
 	// the PodGroup will not be scheduled.
+	// +kubebuilder:default:="default"
 	Queue string
 
 	// If specified, indicates the PodGroup's priority. "system-node-critical" and
