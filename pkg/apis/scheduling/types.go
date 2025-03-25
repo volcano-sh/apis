@@ -288,6 +288,7 @@ type QueueStatus struct {
 	Reservation Reservation
 
 	// Allocated is allocated resources in queue
+	// +optional
 	Allocated v1.ResourceList
 }
 

@@ -304,6 +304,7 @@ type QueueStatus struct {
 	Reservation Reservation `json:"reservation,omitempty" protobuf:"bytes,7,opt,name=reservation"`
 
 	// Allocated is allocated resources in queue
+	// +optional
 	Allocated v1.ResourceList `json:"allocated" protobuf:"bytes,8,opt,name=allocated"`
 }
 
