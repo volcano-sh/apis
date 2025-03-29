@@ -95,6 +95,15 @@ type MemberSpec struct {
 //		   regexMatch:
 //		     pattern: "^node-[0-9]+$"
 //
+// Example for Label match:
+//
+//	members:
+//	- type: Node
+//	  selector:
+//	    labelMatch:
+//	      matchLabels:
+//	        topology-rack: rack1
+//
 // +kubebuilder:validation:XValidation:rule="has(self.exactMatch) || has(self.regexMatch) || has(self.labelMatch)",message="Either ExactMatch or RegexMatch or LabelMatch must be specified"
 // +kubebuilder:validation:XValidation:rule="(has(self.exactMatch) ? 1 : 0) + (has(self.regexMatch) ? 1 : 0) + (has(self.labelMatch) ? 1 : 0) <= 1",message="Only one of ExactMatch, RegexMatch, or LabelMatch can be specified"
 type MemberSelector struct {
