@@ -17,6 +17,10 @@ limitations under the License.
 
 package v1alpha1
 
+import (
+	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
+)
+
 // JobFlowStatusApplyConfiguration represents a declarative configuration of the JobFlowStatus type for use
 // with apply.
 type JobFlowStatusApplyConfiguration struct {
@@ -29,6 +33,7 @@ type JobFlowStatusApplyConfiguration struct {
 	JobStatusList  []JobStatusApplyConfiguration          `json:"jobStatusList,omitempty"`
 	Conditions     map[string]ConditionApplyConfiguration `json:"conditions,omitempty"`
 	State          *StateApplyConfiguration               `json:"state,omitempty"`
+	FlowStatusMap  map[string]batchv1alpha1.JobPhase      `json:"flowStatusMap,omitempty"`
 }
 
 // JobFlowStatusApplyConfiguration constructs a declarative configuration of the JobFlowStatus type for use with
@@ -129,5 +134,19 @@ func (b *JobFlowStatusApplyConfiguration) WithConditions(entries map[string]Cond
 // If called multiple times, the State field is set to the value of the last call.
 func (b *JobFlowStatusApplyConfiguration) WithState(value *StateApplyConfiguration) *JobFlowStatusApplyConfiguration {
 	b.State = value
+	return b
+}
+
+// WithFlowStatusMap puts the entries into the FlowStatusMap field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, the entries provided by each call will be put on the FlowStatusMap field,
+// overwriting an existing map entries in FlowStatusMap field with the same key.
+func (b *JobFlowStatusApplyConfiguration) WithFlowStatusMap(entries map[string]batchv1alpha1.JobPhase) *JobFlowStatusApplyConfiguration {
+	if b.FlowStatusMap == nil && len(entries) > 0 {
+		b.FlowStatusMap = make(map[string]batchv1alpha1.JobPhase, len(entries))
+	}
+	for k, v := range entries {
+		b.FlowStatusMap[k] = v
+	}
 	return b
 }
