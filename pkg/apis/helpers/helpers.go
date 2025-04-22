@@ -44,6 +44,19 @@ import (
 	schedulerv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
+const (
+	// DefaultReadHeaderTimeout defines the default timeout for reading request headers
+	DefaultReadHeaderTimeout = 5 * time.Second
+	// DefaultReadTimeout defines the default timeout for reading the entire request
+	DefaultReadTimeout = 30 * time.Second
+	// DefaultWriteTimeout defines the default timeout for writing the response
+	DefaultWriteTimeout = 60 * time.Second
+	// DefaultMaxHeaderBytes defines the default max size of request headers in bytes
+	// 1 MB
+	DefaultMaxHeaderBytes = 1 << 20
+)
+
+// JobKind creates job GroupVersionKind.
 // JobKind creates job GroupVersionKind.
 var JobKind = vcbatch.SchemeGroupVersion.WithKind("Job")
 
@@ -200,9 +213,12 @@ func StartHealthz(healthzBindAddress, name string, caCertData, certData, certKey
 	healthz.InstallHandler(pathRecorderMux)
 
 	server := &http.Server{
-		Addr:           listener.Addr().String(),
-		Handler:        pathRecorderMux,
-		MaxHeaderBytes: 1 << 20,
+		Addr:              listener.Addr().String(),
+		Handler:           pathRecorderMux,
+		MaxHeaderBytes:    DefaultMaxHeaderBytes,
+		ReadHeaderTimeout: DefaultReadHeaderTimeout,
+		ReadTimeout:       DefaultReadTimeout,
+		WriteTimeout:      DefaultWriteTimeout,
 	}
 	if len(caCertData) != 0 && len(certData) != 0 && len(certKeyData) != 0 {
 		certPool := x509.NewCertPool()
