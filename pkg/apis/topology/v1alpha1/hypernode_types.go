@@ -20,6 +20,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// HyperNodeConditionType represents the type of condition for a switch or tor.
+// This ConditionType is used to represent common conditions for switches or tors and is optional to implement.
+type HyperNodeConditionType string
+
+const (
+	// SystemFailureType means the switch or tor has system issues, such as CPU or memory overload, abnormal power or fan status, or any other critical system malfunctions.
+	SystemFailureType HyperNodeConditionType = "SystemFailure"
+	// NetworkUnavailableType means the switch or tor has network issues, such as abnormal link status, interface failures, or any other network disruptions.
+	NetworkUnavailableType HyperNodeConditionType = "NetworkUnavailable"
+)
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
@@ -136,12 +147,23 @@ type RegexMatch struct {
 
 // HyperNodeStatus represents the observed state of a HyperNode.
 type HyperNodeStatus struct {
+	// UnhealthyNodes is a list of nodes that have unhealthy RDMA (Remote Direct Memory Access) NICs,
+	// such as those experiencing high bit error rates (BER) or flapping issues or any other issues on node nic.
+	UnhealthyNodes []UnhealthyNode `json:"unhealthyNodes,omitempty"`
 	// Conditions provide details about the current state of the HyperNode.
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
 	// NodeCount is the total number of nodes currently in the HyperNode.
 	// +kubebuilder:validation:Minimum=0
 	NodeCount int64 `json:"nodeCount,omitempty"`
+}
+
+// UnhealthyNode represents unhealthy node name and unhealthy reason
+type UnhealthyNode struct {
+	// Name represents the name of the unhealthy node.
+	Name string `json:"name,omitempty"`
+	// Reason describes the specific issue affecting the node's NIC or any other related problems.
+	Reason string `json:"reason,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
