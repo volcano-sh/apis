@@ -382,6 +382,10 @@ type QueueSpec struct {
 	// Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
 	// +optional
 	Priority int32 `json:"priority,omitempty" protobuf:"bytes,10,opt,name=priority"`
+
+	// SchedulerPolicy define the scheduling policy of queue
+	// +optional
+	SchedulerPolicy string `json:"schedulerPolicy,omitempty" protobuf:"bytes,11,opt,name=schedulerPolicy"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
