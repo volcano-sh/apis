@@ -20,8 +20,9 @@ package v1alpha1
 // DependsOnApplyConfiguration represents a declarative configuration of the DependsOn type for use
 // with apply.
 type DependsOnApplyConfiguration struct {
-	Targets []string                 `json:"targets,omitempty"`
-	Probe   *ProbeApplyConfiguration `json:"probe,omitempty"`
+	Targets           []string                   `json:"targets,omitempty"`
+	Probe             *ProbeApplyConfiguration   `json:"probe,omitempty"`
+	TargetsWithStatus []TargetApplyConfiguration `json:"targetsWithStatus,omitempty"`
 }
 
 // DependsOnApplyConfiguration constructs a declarative configuration of the DependsOn type for use with
@@ -45,5 +46,18 @@ func (b *DependsOnApplyConfiguration) WithTargets(values ...string) *DependsOnAp
 // If called multiple times, the Probe field is set to the value of the last call.
 func (b *DependsOnApplyConfiguration) WithProbe(value *ProbeApplyConfiguration) *DependsOnApplyConfiguration {
 	b.Probe = value
+	return b
+}
+
+// WithTargetsWithStatus adds the given value to the TargetsWithStatus field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the TargetsWithStatus field.
+func (b *DependsOnApplyConfiguration) WithTargetsWithStatus(values ...*TargetApplyConfiguration) *DependsOnApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithTargetsWithStatus")
+		}
+		b.TargetsWithStatus = append(b.TargetsWithStatus, *values[i])
+	}
 	return b
 }
