@@ -195,6 +195,28 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec
+
+	// TaskNetworkTopology defines the NetworkTopology config for Some set of pods,
+	// such as task of vcjob, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	PodsetNetworkTopology []PodsetNetworkTopologySpec
+}
+
+// PodsetNetworkTopologySpec represents the correspondence between a set of pods and networktopology
+type PodsetNetworkTopologySpec struct {
+	// NetworkTopology defines network topology.
+	// +optional
+	NetworkTopology *NetworkTopologySpec
+
+	// Selector defines the selection rules for a set of pods.
+	// +optional
+	Selector PodSetSelector
+}
+
+type PodSetSelector struct {
+	// LabelMatch defines the labels match criteria.
+	// +optional
+	LabelMatch *metav1.LabelSelector
 }
 
 // NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".
