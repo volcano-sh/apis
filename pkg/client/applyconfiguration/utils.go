@@ -131,6 +131,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.PodGroupSpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("PodGroupStatus"):
 		return &schedulingv1beta1.PodGroupStatusApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("PodsNetworkTopologySpec"):
+		return &schedulingv1beta1.PodsNetworkTopologySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Queue"):
 		return &schedulingv1beta1.QueueApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("QueueSpec"):

@@ -203,6 +203,26 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,5,opt,name=networkTopology"`
+
+	// PodsNetworkTopology defines the NetworkTopology config for Some set of pods,
+	// such as task of vcjob, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	PodsNetworkTopology []PodsNetworkTopologySpec `json:"podsNetworkTopology,omitempty" protobuf:"bytes,6,opt,name=podsNetworkTopology"`
+}
+
+// PodsetNetworkTopologySpec represents the correspondence between a set of pods and networktopology
+type PodsNetworkTopologySpec struct {
+	// NetworkTopology defines network topology.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,1,opt,name=networkTopology"`
+
+	// Selector defines the selection rules for a set of pods. For non-vcjob task level network topology, this field is required.
+	// +optional
+	LabelMatch *metav1.LabelSelector `json:"labelMatch,omitempty" protobuf:"bytes,2,opt,name=labelMatch"`
+
+	// TaskName defines the name of task in vcjob, only for vcjob task level network topology.
+	// +optional
+	TaskName *string `json:"taskName,omitempty" protobuf:"bytes,3,opt,name=taskName"`
 }
 
 type NetworkTopologyMode string
