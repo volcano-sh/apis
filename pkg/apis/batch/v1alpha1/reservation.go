@@ -69,7 +69,7 @@ type ReservationSpec struct {
 type ReservationStatus struct {
 	// Current state of Reservation.
 	// +optional
-	State ReservationPhase `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
+	State ReservationState `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
 
 	// The minimal available pods to run for this Reservation
 	// +optional
@@ -83,37 +83,41 @@ type ReservationStatus struct {
 	// +optional
 	Pending int32 `json:"pending,omitempty" protobuf:"bytes,4,opt,name=pending"`
 
+	// The number of available reservation pods.
+	// +optional
+	Available int32 `json:"available,omitempty" protobuf:"bytes,5,opt,name=available"`
+
 	// The number of reservation pods which reached phase Succeeded.
 	// +optional
-	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,5,opt,name=succeeded"`
+	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,6,opt,name=succeeded"`
 
 	// The number of reservation pods which reached phase Failed.
 	// +optional
-	Failed int32 `json:"failed,omitempty" protobuf:"bytes,6,opt,name=failed"`
+	Failed int32 `json:"failed,omitempty" protobuf:"bytes,7,opt,name=failed"`
 
 	// Which conditions caused the current Reservation state.
 	// +optional
 	// +patchMergeKey=status
 	// +patchStrategy=merge
-	Conditions []ReservationCondition `json:"conditions,omitempty" protobuf:"bytes,7,rep,name=conditions"`
+	Conditions []ReservationCondition `json:"conditions,omitempty" protobuf:"bytes,8,rep,name=conditions"`
 
 	// Owner who is currently using this reservation.
 	// +optional
-	CurrentOwner v1.ObjectReference `json:"currentOwner,omitempty" protobuf:"bytes,8,opt,name=currentOwner"`
+	CurrentOwner v1.ObjectReference `json:"currentOwner,omitempty" protobuf:"bytes,9,opt,name=currentOwner"`
 
 	// Total allocatable resources for this reservation.
 	// +optional
-	Allocatable v1.ResourceList `json:"allocatable,omitempty" protobuf:"bytes,9,rep,name=allocatable"`
+	Allocatable v1.ResourceList `json:"allocatable,omitempty" protobuf:"bytes,10,rep,name=allocatable"`
 
 	// Total resources currently allocated to the owner.
 	// +optional
-	Allocated v1.ResourceList `json:"allocated,omitempty" protobuf:"bytes,10,rep,name=allocated"`
+	Allocated v1.ResourceList `json:"allocated,omitempty" protobuf:"bytes,11,rep,name=allocated"`
 }
 
 type ReservationState struct {
-	// The phase of Job.
+	// The phase of Reservation.
 	// +optional
-	Phase JobPhase `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
+	Phase ReservationPhase `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
 
 	// Unique, one-word, CamelCase reason for the phase's last transition.
 	// +optional

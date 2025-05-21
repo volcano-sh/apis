@@ -23,6 +23,8 @@ const (
 	TaskIndex = "volcano.sh/task-index"
 	// JobNameKey job name key used in pod annotation / labels
 	JobNameKey = "volcano.sh/job-name"
+	// ReservationNameKey reservation name key used in pod annotation / labels
+	ReservationNameKey = "volcano.sh/reservation-name"
 	// QueueNameKey queue name key used in pod annotation / labels
 	QueueNameKey = "volcano.sh/queue-name"
 	// JobNamespaceKey job namespace key

@@ -24,3 +24,7 @@ type JobListerExpansion interface{}
 // JobNamespaceListerExpansion allows custom methods to be added to
 // JobNamespaceLister.
 type JobNamespaceListerExpansion interface{}
+
+// ReservationListerExpansion allows custom methods to be added to
+// ReservationLister.
+type ReservationListerExpansion interface{}

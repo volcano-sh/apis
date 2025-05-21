@@ -53,6 +53,18 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.JobStatusApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("LifecyclePolicy"):
 		return &batchv1alpha1.LifecyclePolicyApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("Reservation"):
+		return &batchv1alpha1.ReservationApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("ReservationCondition"):
+		return &batchv1alpha1.ReservationConditionApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("ReservationOwner"):
+		return &batchv1alpha1.ReservationOwnerApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("ReservationSpec"):
+		return &batchv1alpha1.ReservationSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("ReservationState"):
+		return &batchv1alpha1.ReservationStateApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("ReservationStatus"):
+		return &batchv1alpha1.ReservationStatusApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskSpec"):
 		return &batchv1alpha1.TaskSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskState"):
