@@ -35,6 +35,8 @@ import (
 	fakenodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1/fake"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
 	fakeschedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1/fake"
+	topologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1"
+	faketopologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1/fake"
 )
 
 // NewSimpleClientset returns a clientset that will respond with the provided objects.
@@ -146,4 +148,9 @@ func (c *Clientset) NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interfac
 // SchedulingV1beta1 retrieves the SchedulingV1beta1Client
 func (c *Clientset) SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface {
 	return &fakeschedulingv1beta1.FakeSchedulingV1beta1{Fake: &c.Fake}
+}
+
+// TopologyV1alpha1 retrieves the TopologyV1alpha1Client
+func (c *Clientset) TopologyV1alpha1() topologyv1alpha1.TopologyV1alpha1Interface {
+	return &faketopologyv1alpha1.FakeTopologyV1alpha1{Fake: &c.Fake}
 }

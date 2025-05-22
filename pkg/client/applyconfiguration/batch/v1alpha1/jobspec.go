@@ -24,18 +24,19 @@ import (
 // JobSpecApplyConfiguration represents a declarative configuration of the JobSpec type for use
 // with apply.
 type JobSpecApplyConfiguration struct {
-	SchedulerName           *string                             `json:"schedulerName,omitempty"`
-	MinAvailable            *int32                              `json:"minAvailable,omitempty"`
-	Volumes                 []VolumeSpecApplyConfiguration      `json:"volumes,omitempty"`
-	Tasks                   []TaskSpecApplyConfiguration        `json:"tasks,omitempty"`
-	Policies                []LifecyclePolicyApplyConfiguration `json:"policies,omitempty"`
-	Plugins                 map[string][]string                 `json:"plugins,omitempty"`
-	RunningEstimate         *v1.Duration                        `json:"runningEstimate,omitempty"`
-	Queue                   *string                             `json:"queue,omitempty"`
-	MaxRetry                *int32                              `json:"maxRetry,omitempty"`
-	TTLSecondsAfterFinished *int32                              `json:"ttlSecondsAfterFinished,omitempty"`
-	PriorityClassName       *string                             `json:"priorityClassName,omitempty"`
-	MinSuccess              *int32                              `json:"minSuccess,omitempty"`
+	SchedulerName           *string                                `json:"schedulerName,omitempty"`
+	MinAvailable            *int32                                 `json:"minAvailable,omitempty"`
+	Volumes                 []VolumeSpecApplyConfiguration         `json:"volumes,omitempty"`
+	Tasks                   []TaskSpecApplyConfiguration           `json:"tasks,omitempty"`
+	Policies                []LifecyclePolicyApplyConfiguration    `json:"policies,omitempty"`
+	Plugins                 map[string][]string                    `json:"plugins,omitempty"`
+	RunningEstimate         *v1.Duration                           `json:"runningEstimate,omitempty"`
+	Queue                   *string                                `json:"queue,omitempty"`
+	MaxRetry                *int32                                 `json:"maxRetry,omitempty"`
+	TTLSecondsAfterFinished *int32                                 `json:"ttlSecondsAfterFinished,omitempty"`
+	PriorityClassName       *string                                `json:"priorityClassName,omitempty"`
+	MinSuccess              *int32                                 `json:"minSuccess,omitempty"`
+	NetworkTopology         *NetworkTopologySpecApplyConfiguration `json:"networkTopology,omitempty"`
 }
 
 // JobSpecApplyConfiguration constructs a declarative configuration of the JobSpec type for use with
@@ -158,5 +159,13 @@ func (b *JobSpecApplyConfiguration) WithPriorityClassName(value string) *JobSpec
 // If called multiple times, the MinSuccess field is set to the value of the last call.
 func (b *JobSpecApplyConfiguration) WithMinSuccess(value int32) *JobSpecApplyConfiguration {
 	b.MinSuccess = &value
+	return b
+}
+
+// WithNetworkTopology sets the NetworkTopology field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the NetworkTopology field is set to the value of the last call.
+func (b *JobSpecApplyConfiguration) WithNetworkTopology(value *NetworkTopologySpecApplyConfiguration) *JobSpecApplyConfiguration {
+	b.NetworkTopology = value
 	return b
 }
