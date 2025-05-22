@@ -32,7 +32,7 @@ import (
 // ReservationsGetter has a method to return a ReservationInterface.
 // A group's client should implement this interface.
 type ReservationsGetter interface {
-	Reservations() ReservationInterface
+	Reservations(namespace string) ReservationInterface
 }
 
 // ReservationInterface has methods to work with Reservation resources.
@@ -59,13 +59,13 @@ type reservations struct {
 }
 
 // newReservations returns a Reservations
-func newReservations(c *BatchV1alpha1Client) *reservations {
+func newReservations(c *BatchV1alpha1Client, namespace string) *reservations {
 	return &reservations{
 		gentype.NewClientWithListAndApply[*batchv1alpha1.Reservation, *batchv1alpha1.ReservationList, *applyconfigurationbatchv1alpha1.ReservationApplyConfiguration](
 			"reservations",
 			c.RESTClient(),
 			scheme.ParameterCodec,
-			"",
+			namespace,
 			func() *batchv1alpha1.Reservation { return &batchv1alpha1.Reservation{} },
 			func() *batchv1alpha1.ReservationList { return &batchv1alpha1.ReservationList{} },
 		),

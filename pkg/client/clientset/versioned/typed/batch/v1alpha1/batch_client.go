@@ -40,8 +40,8 @@ func (c *BatchV1alpha1Client) Jobs(namespace string) JobInterface {
 	return newJobs(c, namespace)
 }
 
-func (c *BatchV1alpha1Client) Reservations() ReservationInterface {
-	return newReservations(c)
+func (c *BatchV1alpha1Client) Reservations(namespace string) ReservationInterface {
+	return newReservations(c, namespace)
 }
 
 // NewForConfig creates a new BatchV1alpha1Client for the given config.

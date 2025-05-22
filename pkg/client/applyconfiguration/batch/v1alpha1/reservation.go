@@ -34,9 +34,10 @@ type ReservationApplyConfiguration struct {
 
 // Reservation constructs a declarative configuration of the Reservation type for use with
 // apply.
-func Reservation(name string) *ReservationApplyConfiguration {
+func Reservation(name, namespace string) *ReservationApplyConfiguration {
 	b := &ReservationApplyConfiguration{}
 	b.WithName(name)
+	b.WithNamespace(namespace)
 	b.WithKind("Reservation")
 	b.WithAPIVersion("batch.volcano.sh/v1alpha1")
 	return b

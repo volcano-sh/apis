@@ -47,5 +47,5 @@ func (v *version) Jobs() JobInformer {
 
 // Reservations returns a ReservationInformer.
 func (v *version) Reservations() ReservationInformer {
-	return &reservationInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+	return &reservationInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

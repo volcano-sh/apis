@@ -30,11 +30,11 @@ type fakeReservations struct {
 	Fake *FakeBatchV1alpha1
 }
 
-func newFakeReservations(fake *FakeBatchV1alpha1) typedbatchv1alpha1.ReservationInterface {
+func newFakeReservations(fake *FakeBatchV1alpha1, namespace string) typedbatchv1alpha1.ReservationInterface {
 	return &fakeReservations{
 		gentype.NewFakeClientWithListAndApply[*v1alpha1.Reservation, *v1alpha1.ReservationList, *batchv1alpha1.ReservationApplyConfiguration](
 			fake.Fake,
-			"",
+			namespace,
 			v1alpha1.SchemeGroupVersion.WithResource("reservations"),
 			v1alpha1.SchemeGroupVersion.WithKind("Reservation"),
 			func() *v1alpha1.Reservation { return &v1alpha1.Reservation{} },

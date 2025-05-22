@@ -30,9 +30,8 @@ type ReservationLister interface {
 	// List lists all Reservations in the indexer.
 	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*batchv1alpha1.Reservation, err error)
-	// Get retrieves the Reservation from the index for a given name.
-	// Objects returned here must be treated as read-only.
-	Get(name string) (*batchv1alpha1.Reservation, error)
+	// Reservations returns an object that can list and get Reservations.
+	Reservations(namespace string) ReservationNamespaceLister
 	ReservationListerExpansion
 }
 
@@ -44,4 +43,27 @@ type reservationLister struct {
 // NewReservationLister returns a new ReservationLister.
 func NewReservationLister(indexer cache.Indexer) ReservationLister {
 	return &reservationLister{listers.New[*batchv1alpha1.Reservation](indexer, batchv1alpha1.Resource("reservation"))}
+}
+
+// Reservations returns an object that can list and get Reservations.
+func (s *reservationLister) Reservations(namespace string) ReservationNamespaceLister {
+	return reservationNamespaceLister{listers.NewNamespaced[*batchv1alpha1.Reservation](s.ResourceIndexer, namespace)}
+}
+
+// ReservationNamespaceLister helps list and get Reservations.
+// All objects returned here must be treated as read-only.
+type ReservationNamespaceLister interface {
+	// List lists all Reservations in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
+	List(selector labels.Selector) (ret []*batchv1alpha1.Reservation, err error)
+	// Get retrieves the Reservation from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
+	Get(name string) (*batchv1alpha1.Reservation, error)
+	ReservationNamespaceListerExpansion
+}
+
+// reservationNamespaceLister implements the ReservationNamespaceLister
+// interface.
+type reservationNamespaceLister struct {
+	listers.ResourceIndexer[*batchv1alpha1.Reservation]
 }
