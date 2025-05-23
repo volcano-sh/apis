@@ -68,7 +68,7 @@ type ReservationSpec struct {
 type ReservationStatus struct {
 	// Current state of Reservation.
 	// +optional
-	State ReservationState `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
+	State ReservationState `json:"state,omitempty" protobuf:"bytes,1,opt,name=state"`
 
 	// The minimal available pods to run for this Reservation
 	// +optional
