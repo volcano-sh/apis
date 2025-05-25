@@ -24,7 +24,7 @@ import (
 // ReservationStatusApplyConfiguration represents a declarative configuration of the ReservationStatus type for use
 // with apply.
 type ReservationStatusApplyConfiguration struct {
-	State           *ReservationStateApplyConfiguration      `json:"phase,omitempty"`
+	State           *ReservationStateApplyConfiguration      `json:"state,omitempty"`
 	MinAvailable    *int32                                   `json:"minAvailable,omitempty"`
 	TaskStatusCount map[string]TaskStateApplyConfiguration   `json:"taskStatusCount,omitempty"`
 	Pending         *int32                                   `json:"pending,omitempty"`

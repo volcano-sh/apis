@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"volcano.sh/apis/pkg/apis/bus/v1alpha1"
 )
 
@@ -221,6 +222,10 @@ type TaskSpec struct {
 	// Specifies the tasks that this task depends on.
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
+
+	// specifies the node name of reservation that this task scheduled to.
+	// +optional
+	ReservationNodeName string `json:"reservationNodeName,omitempty" protobuf:"bytes,9,opt,name=reservationNodeName"`
 }
 
 // JobPhase defines the phase of the job.
