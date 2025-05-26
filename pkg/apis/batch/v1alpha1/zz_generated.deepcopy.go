@@ -334,6 +334,11 @@ func (in *TaskSpec) DeepCopyInto(out *TaskSpec) {
 		*out = new(DependsOn)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.NetworkTopology != nil {
+		in, out := &in.NetworkTopology, &out.NetworkTopology
+		*out = new(NetworkTopologySpec)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 

@@ -250,6 +250,10 @@ type TaskSpec struct {
 	// Specifies the tasks that this task depends on.
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,9,opt,name=networkTopology"`
 }
 
 // JobPhase defines the phase of the job.

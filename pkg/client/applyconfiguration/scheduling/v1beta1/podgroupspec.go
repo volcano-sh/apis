@@ -24,12 +24,13 @@ import (
 // PodGroupSpecApplyConfiguration represents a declarative configuration of the PodGroupSpec type for use
 // with apply.
 type PodGroupSpecApplyConfiguration struct {
-	MinMember         *int32                                 `json:"minMember,omitempty"`
-	MinTaskMember     map[string]int32                       `json:"minTaskMember,omitempty"`
-	Queue             *string                                `json:"queue,omitempty"`
-	PriorityClassName *string                                `json:"priorityClassName,omitempty"`
-	MinResources      *v1.ResourceList                       `json:"minResources,omitempty"`
-	NetworkTopology   *NetworkTopologySpecApplyConfiguration `json:"networkTopology,omitempty"`
+	MinMember           *int32                                      `json:"minMember,omitempty"`
+	MinTaskMember       map[string]int32                            `json:"minTaskMember,omitempty"`
+	Queue               *string                                     `json:"queue,omitempty"`
+	PriorityClassName   *string                                     `json:"priorityClassName,omitempty"`
+	MinResources        *v1.ResourceList                            `json:"minResources,omitempty"`
+	NetworkTopology     *NetworkTopologySpecApplyConfiguration      `json:"networkTopology,omitempty"`
+	PodsNetworkTopology []PodsNetworkTopologySpecApplyConfiguration `json:"podsNetworkTopology,omitempty"`
 }
 
 // PodGroupSpecApplyConfiguration constructs a declarative configuration of the PodGroupSpec type for use with
@@ -89,5 +90,18 @@ func (b *PodGroupSpecApplyConfiguration) WithMinResources(value v1.ResourceList)
 // If called multiple times, the NetworkTopology field is set to the value of the last call.
 func (b *PodGroupSpecApplyConfiguration) WithNetworkTopology(value *NetworkTopologySpecApplyConfiguration) *PodGroupSpecApplyConfiguration {
 	b.NetworkTopology = value
+	return b
+}
+
+// WithPodsNetworkTopology adds the given value to the PodsNetworkTopology field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the PodsNetworkTopology field.
+func (b *PodGroupSpecApplyConfiguration) WithPodsNetworkTopology(values ...*PodsNetworkTopologySpecApplyConfiguration) *PodGroupSpecApplyConfiguration {
+	for i := range values {
+		if values[i] == nil {
+			panic("nil value passed to WithPodsNetworkTopology")
+		}
+		b.PodsNetworkTopology = append(b.PodsNetworkTopology, *values[i])
+	}
 	return b
 }
