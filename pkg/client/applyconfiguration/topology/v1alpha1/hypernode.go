@@ -46,7 +46,7 @@ func HyperNode(name string) *HyperNodeApplyConfiguration {
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Kind field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithKind(value string) *HyperNodeApplyConfiguration {
-	b.Kind = &value
+	b.TypeMetaApplyConfiguration.Kind = &value
 	return b
 }
 
@@ -54,7 +54,7 @@ func (b *HyperNodeApplyConfiguration) WithKind(value string) *HyperNodeApplyConf
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the APIVersion field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithAPIVersion(value string) *HyperNodeApplyConfiguration {
-	b.APIVersion = &value
+	b.TypeMetaApplyConfiguration.APIVersion = &value
 	return b
 }
 
@@ -63,7 +63,7 @@ func (b *HyperNodeApplyConfiguration) WithAPIVersion(value string) *HyperNodeApp
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithName(value string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Name = &value
+	b.ObjectMetaApplyConfiguration.Name = &value
 	return b
 }
 
@@ -72,7 +72,7 @@ func (b *HyperNodeApplyConfiguration) WithName(value string) *HyperNodeApplyConf
 // If called multiple times, the GenerateName field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithGenerateName(value string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.GenerateName = &value
+	b.ObjectMetaApplyConfiguration.GenerateName = &value
 	return b
 }
 
@@ -81,7 +81,7 @@ func (b *HyperNodeApplyConfiguration) WithGenerateName(value string) *HyperNodeA
 // If called multiple times, the Namespace field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithNamespace(value string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Namespace = &value
+	b.ObjectMetaApplyConfiguration.Namespace = &value
 	return b
 }
 
@@ -90,7 +90,7 @@ func (b *HyperNodeApplyConfiguration) WithNamespace(value string) *HyperNodeAppl
 // If called multiple times, the UID field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithUID(value types.UID) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.UID = &value
+	b.ObjectMetaApplyConfiguration.UID = &value
 	return b
 }
 
@@ -99,7 +99,7 @@ func (b *HyperNodeApplyConfiguration) WithUID(value types.UID) *HyperNodeApplyCo
 // If called multiple times, the ResourceVersion field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithResourceVersion(value string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.ResourceVersion = &value
+	b.ObjectMetaApplyConfiguration.ResourceVersion = &value
 	return b
 }
 
@@ -108,7 +108,7 @@ func (b *HyperNodeApplyConfiguration) WithResourceVersion(value string) *HyperNo
 // If called multiple times, the Generation field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithGeneration(value int64) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.Generation = &value
+	b.ObjectMetaApplyConfiguration.Generation = &value
 	return b
 }
 
@@ -117,7 +117,7 @@ func (b *HyperNodeApplyConfiguration) WithGeneration(value int64) *HyperNodeAppl
 // If called multiple times, the CreationTimestamp field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithCreationTimestamp(value metav1.Time) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.CreationTimestamp = &value
+	b.ObjectMetaApplyConfiguration.CreationTimestamp = &value
 	return b
 }
 
@@ -126,7 +126,7 @@ func (b *HyperNodeApplyConfiguration) WithCreationTimestamp(value metav1.Time) *
 // If called multiple times, the DeletionTimestamp field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionTimestamp = &value
+	b.ObjectMetaApplyConfiguration.DeletionTimestamp = &value
 	return b
 }
 
@@ -135,7 +135,7 @@ func (b *HyperNodeApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *
 // If called multiple times, the DeletionGracePeriodSeconds field is set to the value of the last call.
 func (b *HyperNodeApplyConfiguration) WithDeletionGracePeriodSeconds(value int64) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	b.DeletionGracePeriodSeconds = &value
+	b.ObjectMetaApplyConfiguration.DeletionGracePeriodSeconds = &value
 	return b
 }
 
@@ -145,11 +145,11 @@ func (b *HyperNodeApplyConfiguration) WithDeletionGracePeriodSeconds(value int64
 // overwriting an existing map entries in Labels field with the same key.
 func (b *HyperNodeApplyConfiguration) WithLabels(entries map[string]string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Labels == nil && len(entries) > 0 {
-		b.Labels = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Labels == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Labels = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Labels[k] = v
+		b.ObjectMetaApplyConfiguration.Labels[k] = v
 	}
 	return b
 }
@@ -160,11 +160,11 @@ func (b *HyperNodeApplyConfiguration) WithLabels(entries map[string]string) *Hyp
 // overwriting an existing map entries in Annotations field with the same key.
 func (b *HyperNodeApplyConfiguration) WithAnnotations(entries map[string]string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
-	if b.Annotations == nil && len(entries) > 0 {
-		b.Annotations = make(map[string]string, len(entries))
+	if b.ObjectMetaApplyConfiguration.Annotations == nil && len(entries) > 0 {
+		b.ObjectMetaApplyConfiguration.Annotations = make(map[string]string, len(entries))
 	}
 	for k, v := range entries {
-		b.Annotations[k] = v
+		b.ObjectMetaApplyConfiguration.Annotations[k] = v
 	}
 	return b
 }
@@ -178,7 +178,7 @@ func (b *HyperNodeApplyConfiguration) WithOwnerReferences(values ...*v1.OwnerRef
 		if values[i] == nil {
 			panic("nil value passed to WithOwnerReferences")
 		}
-		b.OwnerReferences = append(b.OwnerReferences, *values[i])
+		b.ObjectMetaApplyConfiguration.OwnerReferences = append(b.ObjectMetaApplyConfiguration.OwnerReferences, *values[i])
 	}
 	return b
 }
@@ -189,7 +189,7 @@ func (b *HyperNodeApplyConfiguration) WithOwnerReferences(values ...*v1.OwnerRef
 func (b *HyperNodeApplyConfiguration) WithFinalizers(values ...string) *HyperNodeApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	for i := range values {
-		b.Finalizers = append(b.Finalizers, values[i])
+		b.ObjectMetaApplyConfiguration.Finalizers = append(b.ObjectMetaApplyConfiguration.Finalizers, values[i])
 	}
 	return b
 }
@@ -219,5 +219,5 @@ func (b *HyperNodeApplyConfiguration) WithStatus(value *HyperNodeStatusApplyConf
 // GetName retrieves the value of the Name field in the declarative configuration.
 func (b *HyperNodeApplyConfiguration) GetName() *string {
 	b.ensureObjectMetaApplyConfigurationExists()
-	return b.Name
+	return b.ObjectMetaApplyConfiguration.Name
 }
