@@ -24,16 +24,17 @@ import (
 // QueueSpecApplyConfiguration represents a declarative configuration of the QueueSpec type for use
 // with apply.
 type QueueSpecApplyConfiguration struct {
-	Weight         *int32                       `json:"weight,omitempty"`
-	Capability     *v1.ResourceList             `json:"capability,omitempty"`
-	Reclaimable    *bool                        `json:"reclaimable,omitempty"`
-	ExtendClusters []ClusterApplyConfiguration  `json:"extendClusters,omitempty"`
-	Guarantee      *GuaranteeApplyConfiguration `json:"guarantee,omitempty"`
-	Affinity       *AffinityApplyConfiguration  `json:"affinity,omitempty"`
-	Type           *string                      `json:"type,omitempty"`
-	Parent         *string                      `json:"parent,omitempty"`
-	Deserved       *v1.ResourceList             `json:"deserved,omitempty"`
-	Priority       *int32                       `json:"priority,omitempty"`
+	Weight           *int32                       `json:"weight,omitempty"`
+	Capability       *v1.ResourceList             `json:"capability,omitempty"`
+	Reclaimable      *bool                        `json:"reclaimable,omitempty"`
+	ExtendClusters   []ClusterApplyConfiguration  `json:"extendClusters,omitempty"`
+	Guarantee        *GuaranteeApplyConfiguration `json:"guarantee,omitempty"`
+	Affinity         *AffinityApplyConfiguration  `json:"affinity,omitempty"`
+	Type             *string                      `json:"type,omitempty"`
+	Parent           *string                      `json:"parent,omitempty"`
+	Deserved         *v1.ResourceList             `json:"deserved,omitempty"`
+	Priority         *int32                       `json:"priority,omitempty"`
+	SchedulingPolicy *string                      `json:"schedulingPolicy,omitempty"`
 }
 
 // QueueSpecApplyConfiguration constructs a declarative configuration of the QueueSpec type for use with
@@ -124,5 +125,13 @@ func (b *QueueSpecApplyConfiguration) WithDeserved(value v1.ResourceList) *Queue
 // If called multiple times, the Priority field is set to the value of the last call.
 func (b *QueueSpecApplyConfiguration) WithPriority(value int32) *QueueSpecApplyConfiguration {
 	b.Priority = &value
+	return b
+}
+
+// WithSchedulingPolicy sets the SchedulingPolicy field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the SchedulingPolicy field is set to the value of the last call.
+func (b *QueueSpecApplyConfiguration) WithSchedulingPolicy(value string) *QueueSpecApplyConfiguration {
+	b.SchedulingPolicy = &value
 	return b
 }
