@@ -117,6 +117,15 @@ const (
 
 	// NotEnoughPodsOfTaskReason is probed if there're not enough pods of task compared to `spec.minTaskMember`
 	NotEnoughPodsOfTaskReason string = "NotEnoughPodsOfTask"
+
+	// InvalidReservationReason is probed if reservation of job is invalid
+	InvalidReservationReason string = "InvalidReservation"
+
+	// ReservationOwnerNotMatchReason is probed if the owner of reservation is matched
+	ReservationOwnerNotMatchReason string = "ReservationOwnerNotMatch"
+
+	// ReservationSpecNotMatchReason is probed if the spec of reservation is matched
+	ReservationSpecNotMatchReason string = "ReservationSpecNotMatch"
 )
 
 // QueueEvent represent the phase of queue.
