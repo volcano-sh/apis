@@ -26,12 +26,14 @@ import (
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	applyconfigurationbusv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 	applyconfigurationflowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
 	internal "volcano.sh/apis/pkg/client/applyconfiguration/internal"
 	applyconfigurationnodeinfov1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
+	applyconfigurationtopologyv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/topology/v1alpha1"
 )
 
 // ForKind returns an apply configuration type for the given GroupVersionKind, or nil if no
@@ -53,6 +55,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.JobStatusApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("LifecyclePolicy"):
 		return &batchv1alpha1.LifecyclePolicyApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
+		return &batchv1alpha1.NetworkTopologySpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("Reservation"):
 		return &batchv1alpha1.ReservationApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("ReservationCondition"):
@@ -125,6 +129,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.ClusterApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Guarantee"):
 		return &schedulingv1beta1.GuaranteeApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
+		return &schedulingv1beta1.NetworkTopologySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NodeGroupAffinity"):
 		return &schedulingv1beta1.NodeGroupAffinityApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NodeGroupAntiAffinity"):
@@ -145,6 +151,22 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.QueueStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Reservation"):
 		return &schedulingv1beta1.ReservationApplyConfiguration{}
+
+		// Group=topology.volcano.sh, Version=v1alpha1
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("ExactMatch"):
+		return &applyconfigurationtopologyv1alpha1.ExactMatchApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("HyperNode"):
+		return &applyconfigurationtopologyv1alpha1.HyperNodeApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("HyperNodeSpec"):
+		return &applyconfigurationtopologyv1alpha1.HyperNodeSpecApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("HyperNodeStatus"):
+		return &applyconfigurationtopologyv1alpha1.HyperNodeStatusApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("MemberSelector"):
+		return &applyconfigurationtopologyv1alpha1.MemberSelectorApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("MemberSpec"):
+		return &applyconfigurationtopologyv1alpha1.MemberSpecApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("RegexMatch"):
+		return &applyconfigurationtopologyv1alpha1.RegexMatchApplyConfiguration{}
 
 	}
 	return nil
