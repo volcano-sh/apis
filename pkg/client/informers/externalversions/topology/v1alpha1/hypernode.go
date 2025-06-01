@@ -18,24 +18,24 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
+	context "context"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
+	apistopologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 	versioned "volcano.sh/apis/pkg/client/clientset/versioned"
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "volcano.sh/apis/pkg/client/listers/topology/v1alpha1"
+	topologyv1alpha1 "volcano.sh/apis/pkg/client/listers/topology/v1alpha1"
 )
 
 // HyperNodeInformer provides access to a shared informer and lister for
 // HyperNodes.
 type HyperNodeInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1alpha1.HyperNodeLister
+	Lister() topologyv1alpha1.HyperNodeLister
 }
 
 type hyperNodeInformer struct {
@@ -69,7 +69,7 @@ func NewFilteredHyperNodeInformer(client versioned.Interface, resyncPeriod time.
 				return client.TopologyV1alpha1().HyperNodes().Watch(context.TODO(), options)
 			},
 		},
-		&topologyv1alpha1.HyperNode{},
+		&apistopologyv1alpha1.HyperNode{},
 		resyncPeriod,
 		indexers,
 	)
@@ -80,9 +80,9 @@ func (f *hyperNodeInformer) defaultInformer(client versioned.Interface, resyncPe
 }
 
 func (f *hyperNodeInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&topologyv1alpha1.HyperNode{}, f.defaultInformer)
+	return f.factory.InformerFor(&apistopologyv1alpha1.HyperNode{}, f.defaultInformer)
 }
 
-func (f *hyperNodeInformer) Lister() v1alpha1.HyperNodeLister {
-	return v1alpha1.NewHyperNodeLister(f.Informer().GetIndexer())
+func (f *hyperNodeInformer) Lister() topologyv1alpha1.HyperNodeLister {
+	return topologyv1alpha1.NewHyperNodeLister(f.Informer().GetIndexer())
 }
