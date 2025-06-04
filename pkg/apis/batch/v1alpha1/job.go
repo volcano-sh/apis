@@ -91,6 +91,10 @@ type JobSpec struct {
 	// +optional
 	MaxRetry int32 `json:"maxRetry,omitempty" protobuf:"bytes,9,opt,name=maxRetry"`
 
+	// ActiveDeadlineSeconds specifies the duration in seconds relative to the startTime that the job may be active before it is terminated.
+	// +optional
+	ActiveDeadlineSeconds *int64 `json:"activeDeadlineSeconds,omitempty" protobuf:"varint,14,opt,name=activeDeadlineSeconds"`
+
 	// ttlSecondsAfterFinished limits the lifetime of a Job that has finished
 	// execution (either Completed or Failed). If this field is set,
 	// ttlSecondsAfterFinished after the Job finishes, it is eligible to be

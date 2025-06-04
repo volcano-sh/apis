@@ -33,6 +33,7 @@ type JobSpecApplyConfiguration struct {
 	RunningEstimate         *v1.Duration                           `json:"runningEstimate,omitempty"`
 	Queue                   *string                                `json:"queue,omitempty"`
 	MaxRetry                *int32                                 `json:"maxRetry,omitempty"`
+	ActiveDeadlineSeconds   *int64                                 `json:"activeDeadlineSeconds,omitempty"`
 	TTLSecondsAfterFinished *int32                                 `json:"ttlSecondsAfterFinished,omitempty"`
 	PriorityClassName       *string                                `json:"priorityClassName,omitempty"`
 	MinSuccess              *int32                                 `json:"minSuccess,omitempty"`
@@ -135,6 +136,14 @@ func (b *JobSpecApplyConfiguration) WithQueue(value string) *JobSpecApplyConfigu
 // If called multiple times, the MaxRetry field is set to the value of the last call.
 func (b *JobSpecApplyConfiguration) WithMaxRetry(value int32) *JobSpecApplyConfiguration {
 	b.MaxRetry = &value
+	return b
+}
+
+// WithActiveDeadlineSeconds sets the ActiveDeadlineSeconds field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the ActiveDeadlineSeconds field is set to the value of the last call.
+func (b *JobSpecApplyConfiguration) WithActiveDeadlineSeconds(value int64) *JobSpecApplyConfiguration {
+	b.ActiveDeadlineSeconds = &value
 	return b
 }
 
