@@ -61,13 +61,25 @@ func NewFilteredJobFlowInformer(client versioned.Interface, namespace string, re
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.FlowV1alpha1().JobFlows(namespace).List(context.TODO(), options)
+				return client.FlowV1alpha1().JobFlows(namespace).List(context.Background(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.FlowV1alpha1().JobFlows(namespace).Watch(context.TODO(), options)
+				return client.FlowV1alpha1().JobFlows(namespace).Watch(context.Background(), options)
+			},
+			ListWithContextFunc: func(ctx context.Context, options v1.ListOptions) (runtime.Object, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.FlowV1alpha1().JobFlows(namespace).List(ctx, options)
+			},
+			WatchFuncWithContext: func(ctx context.Context, options v1.ListOptions) (watch.Interface, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.FlowV1alpha1().JobFlows(namespace).Watch(ctx, options)
 			},
 		},
 		&apisflowv1alpha1.JobFlow{},

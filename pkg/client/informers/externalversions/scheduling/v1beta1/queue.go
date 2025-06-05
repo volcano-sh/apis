@@ -60,13 +60,25 @@ func NewFilteredQueueInformer(client versioned.Interface, resyncPeriod time.Dura
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.SchedulingV1beta1().Queues().List(context.TODO(), options)
+				return client.SchedulingV1beta1().Queues().List(context.Background(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.SchedulingV1beta1().Queues().Watch(context.TODO(), options)
+				return client.SchedulingV1beta1().Queues().Watch(context.Background(), options)
+			},
+			ListWithContextFunc: func(ctx context.Context, options v1.ListOptions) (runtime.Object, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.SchedulingV1beta1().Queues().List(ctx, options)
+			},
+			WatchFuncWithContext: func(ctx context.Context, options v1.ListOptions) (watch.Interface, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.SchedulingV1beta1().Queues().Watch(ctx, options)
 			},
 		},
 		&apisschedulingv1beta1.Queue{},
