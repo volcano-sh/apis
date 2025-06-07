@@ -18,13 +18,13 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
+	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 )
 
 // MemberSpecApplyConfiguration represents a declarative configuration of the MemberSpec type for use
 // with apply.
 type MemberSpecApplyConfiguration struct {
-	Type     *v1alpha1.MemberType              `json:"type,omitempty"`
+	Type     *topologyv1alpha1.MemberType      `json:"type,omitempty"`
 	Selector *MemberSelectorApplyConfiguration `json:"selector,omitempty"`
 }
 
@@ -37,7 +37,7 @@ func MemberSpec() *MemberSpecApplyConfiguration {
 // WithType sets the Type field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Type field is set to the value of the last call.
-func (b *MemberSpecApplyConfiguration) WithType(value v1alpha1.MemberType) *MemberSpecApplyConfiguration {
+func (b *MemberSpecApplyConfiguration) WithType(value topologyv1alpha1.MemberType) *MemberSpecApplyConfiguration {
 	b.Type = &value
 	return b
 }
