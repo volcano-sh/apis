@@ -59,8 +59,6 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	// Group=batch.volcano.sh, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("jobs"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Batch().V1alpha1().Jobs().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("reservations"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Batch().V1alpha1().Reservations().Informer()}, nil
 
 		// Group=bus.volcano.sh, Version=v1alpha1
 	case busv1alpha1.SchemeGroupVersion.WithResource("commands"):
@@ -81,6 +79,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().PodGroups().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("queues"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().Queues().Informer()}, nil
+	case v1beta1.SchemeGroupVersion.WithResource("reservations"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().Reservations().Informer()}, nil
 
 		// Group=topology.volcano.sh, Version=v1alpha1
 	case topologyv1alpha1.SchemeGroupVersion.WithResource("hypernodes"):

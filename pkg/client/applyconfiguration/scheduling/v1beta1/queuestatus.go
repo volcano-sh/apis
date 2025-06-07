@@ -25,14 +25,14 @@ import (
 // QueueStatusApplyConfiguration represents a declarative configuration of the QueueStatus type for use
 // with apply.
 type QueueStatusApplyConfiguration struct {
-	State       *schedulingv1beta1.QueueState  `json:"state,omitempty"`
-	Unknown     *int32                         `json:"unknown,omitempty"`
-	Pending     *int32                         `json:"pending,omitempty"`
-	Running     *int32                         `json:"running,omitempty"`
-	Inqueue     *int32                         `json:"inqueue,omitempty"`
-	Completed   *int32                         `json:"completed,omitempty"`
-	Reservation *ReservationApplyConfiguration `json:"reservation,omitempty"`
-	Allocated   *v1.ResourceList               `json:"allocated,omitempty"`
+	State       *schedulingv1beta1.QueueState       `json:"state,omitempty"`
+	Unknown     *int32                              `json:"unknown,omitempty"`
+	Pending     *int32                              `json:"pending,omitempty"`
+	Running     *int32                              `json:"running,omitempty"`
+	Inqueue     *int32                              `json:"inqueue,omitempty"`
+	Completed   *int32                              `json:"completed,omitempty"`
+	Reservation *QueueReservationApplyConfiguration `json:"reservation,omitempty"`
+	Allocated   *v1.ResourceList                    `json:"allocated,omitempty"`
 }
 
 // QueueStatusApplyConfiguration constructs a declarative configuration of the QueueStatus type for use with
@@ -92,7 +92,7 @@ func (b *QueueStatusApplyConfiguration) WithCompleted(value int32) *QueueStatusA
 // WithReservation sets the Reservation field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Reservation field is set to the value of the last call.
-func (b *QueueStatusApplyConfiguration) WithReservation(value *ReservationApplyConfiguration) *QueueStatusApplyConfiguration {
+func (b *QueueStatusApplyConfiguration) WithReservation(value *QueueReservationApplyConfiguration) *QueueStatusApplyConfiguration {
 	b.Reservation = value
 	return b
 }

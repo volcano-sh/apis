@@ -28,7 +28,6 @@ import (
 type BatchV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	JobsGetter
-	ReservationsGetter
 }
 
 // BatchV1alpha1Client is used to interact with features provided by the batch.volcano.sh group.
@@ -38,10 +37,6 @@ type BatchV1alpha1Client struct {
 
 func (c *BatchV1alpha1Client) Jobs(namespace string) JobInterface {
 	return newJobs(c, namespace)
-}
-
-func (c *BatchV1alpha1Client) Reservations(namespace string) ReservationInterface {
-	return newReservations(c, namespace)
 }
 
 // NewForConfig creates a new BatchV1alpha1Client for the given config.

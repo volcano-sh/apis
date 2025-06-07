@@ -36,6 +36,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&PodGroupList{},
 		&Queue{},
 		&QueueList{},
+		&Reservation{},
+		&ReservationList{},
 	)
 
 	return nil

@@ -20,3 +20,5 @@ package v1beta1
 type PodGroupExpansion interface{}
 
 type QueueExpansion interface{}
+
+type ReservationExpansion interface{}

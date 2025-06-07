@@ -57,18 +57,6 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.LifecyclePolicyApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
 		return &batchv1alpha1.NetworkTopologySpecApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("Reservation"):
-		return &batchv1alpha1.ReservationApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("ReservationCondition"):
-		return &batchv1alpha1.ReservationConditionApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("ReservationOwner"):
-		return &batchv1alpha1.ReservationOwnerApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("ReservationSpec"):
-		return &batchv1alpha1.ReservationSpecApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("ReservationState"):
-		return &batchv1alpha1.ReservationStateApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("ReservationStatus"):
-		return &batchv1alpha1.ReservationStatusApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskSpec"):
 		return &batchv1alpha1.TaskSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskState"):
@@ -145,12 +133,24 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.PodGroupStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Queue"):
 		return &schedulingv1beta1.QueueApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("QueueReservation"):
+		return &schedulingv1beta1.QueueReservationApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("QueueSpec"):
 		return &schedulingv1beta1.QueueSpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("QueueStatus"):
 		return &schedulingv1beta1.QueueStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Reservation"):
 		return &schedulingv1beta1.ReservationApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationCondition"):
+		return &schedulingv1beta1.ReservationConditionApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationOwner"):
+		return &schedulingv1beta1.ReservationOwnerApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationSpec"):
+		return &schedulingv1beta1.ReservationSpecApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationState"):
+		return &schedulingv1beta1.ReservationStateApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationStatus"):
+		return &schedulingv1beta1.ReservationStatusApplyConfiguration{}
 
 		// Group=topology.volcano.sh, Version=v1alpha1
 	case topologyv1alpha1.SchemeGroupVersion.WithKind("ExactMatch"):
