@@ -18,11 +18,11 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"net/http"
+	http "net/http"
 
 	rest "k8s.io/client-go/rest"
-	v1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
-	"volcano.sh/apis/pkg/client/clientset/versioned/scheme"
+	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
+	scheme "volcano.sh/apis/pkg/client/clientset/versioned/scheme"
 )
 
 type TopologyV1alpha1Interface interface {
@@ -84,10 +84,10 @@ func New(c rest.Interface) *TopologyV1alpha1Client {
 }
 
 func setConfigDefaults(config *rest.Config) error {
-	gv := v1alpha1.SchemeGroupVersion
+	gv := topologyv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
-	config.NegotiatedSerializer = scheme.Codecs.WithoutConversion()
+	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
 
 	if config.UserAgent == "" {
 		config.UserAgent = rest.DefaultKubernetesUserAgent()
