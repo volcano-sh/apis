@@ -252,9 +252,10 @@ type TaskSpec struct {
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
 
-	// specifies the node name of reservation that this task scheduled to.
+	// Specifies the node names of reservations that this task can be scheduled to.
+	// The scheduler will pick one from the list in the given order. If none of the specified nodes are available, the scheduler will choose a node based on its internal logic.
 	// +optional
-	ReservationNodeName string `json:"reservationNodeName,omitempty" protobuf:"bytes,9,opt,name=reservationNodeName"`
+	ReservationNodeNames []string `json:"reservationNodeNames,omitempty" protobuf:"bytes,9,rep,name=reservationNodeNames"`
 }
 
 // JobPhase defines the phase of the job.
