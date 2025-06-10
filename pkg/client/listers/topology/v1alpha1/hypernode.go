@@ -18,10 +18,10 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/client-go/listers"
-	"k8s.io/client-go/tools/cache"
-	v1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
+	labels "k8s.io/apimachinery/pkg/labels"
+	listers "k8s.io/client-go/listers"
+	cache "k8s.io/client-go/tools/cache"
+	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 )
 
 // HyperNodeLister helps list HyperNodes.
@@ -29,19 +29,19 @@ import (
 type HyperNodeLister interface {
 	// List lists all HyperNodes in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.HyperNode, err error)
+	List(selector labels.Selector) (ret []*topologyv1alpha1.HyperNode, err error)
 	// Get retrieves the HyperNode from the index for a given name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.HyperNode, error)
+	Get(name string) (*topologyv1alpha1.HyperNode, error)
 	HyperNodeListerExpansion
 }
 
 // hyperNodeLister implements the HyperNodeLister interface.
 type hyperNodeLister struct {
-	listers.ResourceIndexer[*v1alpha1.HyperNode]
+	listers.ResourceIndexer[*topologyv1alpha1.HyperNode]
 }
 
 // NewHyperNodeLister returns a new HyperNodeLister.
 func NewHyperNodeLister(indexer cache.Indexer) HyperNodeLister {
-	return &hyperNodeLister{listers.New[*v1alpha1.HyperNode](indexer, v1alpha1.Resource("hypernode"))}
+	return &hyperNodeLister{listers.New[*topologyv1alpha1.HyperNode](indexer, topologyv1alpha1.Resource("hypernode"))}
 }
