@@ -175,6 +175,7 @@ const (
 )
 
 // LifecyclePolicy specifies the lifecycle and error handling of task and job.
+// +kubebuilder:validation:XValidation:rule="self.action != 'WebHook' || has(self.webhookConfig)",message="webhookConfig is required when action is WebHook"
 type LifecyclePolicy struct {
 	// The action that will be taken to the PodGroup according to Event.
 	// One of "Restart", "None".
@@ -202,6 +203,46 @@ type LifecyclePolicy struct {
 	// Default to nil (take action immediately).
 	// +optional
 	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,5,opt,name=timeout"`
+
+	// WebHookConfig specifies webhook configuration when Action is WebHook
+	// +optional
+	WebHookConfig *WebHookConfig `json:"webhookConfig,omitempty" protobuf:"bytes,6,opt,name=webhookConfig"`
+}
+
+// WebHookConfig defines webhook configuration
+type WebHookConfig struct {
+	// URL is the webhook endpoint URL
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Pattern=`^https?://.*`
+	URL string `json:"url" protobuf:"bytes,1,opt,name=url"`
+
+	// Method is the HTTP method, defaults to POST
+	// +kubebuilder:validation:Enum=GET;POST;PUT;PATCH
+	// +kubebuilder:default="POST"
+	// +optional
+	Method string `json:"method,omitempty" protobuf:"bytes,2,opt,name=method"`
+
+	// Headers are custom HTTP headers to send
+	// +optional
+	Headers map[string]string `json:"headers,omitempty" protobuf:"bytes,3,opt,name=headers"`
+
+	// Body is the JSON request body template, supports variable substitution
+	// +optional
+	Body string `json:"body,omitempty" protobuf:"bytes,4,opt,name=body"`
+
+	// TimeoutSeconds is request timeout in seconds, defaults to 30
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=300
+	// +kubebuilder:default=30
+	// +optional
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty" protobuf:"bytes,5,opt,name=timeoutSeconds"`
+
+	// Retries is the number of retry attempts for failed webhook requests, defaults to 3
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=10
+	// +kubebuilder:default=3
+	// +optional
+	Retries *int32 `json:"retries,omitempty" protobuf:"bytes,6,opt,name=retries"`
 }
 
 // +kubebuilder:validation:Enum=none;best-effort;restricted;single-numa-node

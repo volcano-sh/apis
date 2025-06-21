@@ -48,6 +48,9 @@ const (
 	// ResumeJobAction is the action to resume an aborted job.
 	ResumeJobAction Action = "ResumeJob"
 
+	// WebHookAction triggers a webhook call when event occurs.
+	WebHookAction Action = "WebHook"
+
 	// Note: actions below are only used internally, should not be used by users.
 
 	// SyncJobAction is the action to sync Job/Pod status.
