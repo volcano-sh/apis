@@ -63,6 +63,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.TaskStateApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("VolumeSpec"):
 		return &batchv1alpha1.VolumeSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("WebHookConfig"):
+		return &batchv1alpha1.WebHookConfigApplyConfiguration{}
 
 		// Group=bus.volcano.sh, Version=v1alpha1
 	case busv1alpha1.SchemeGroupVersion.WithKind("Command"):

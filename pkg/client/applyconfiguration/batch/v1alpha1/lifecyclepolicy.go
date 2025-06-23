@@ -25,11 +25,12 @@ import (
 // LifecyclePolicyApplyConfiguration represents a declarative configuration of the LifecyclePolicy type for use
 // with apply.
 type LifecyclePolicyApplyConfiguration struct {
-	Action   *busv1alpha1.Action `json:"action,omitempty"`
-	Event    *busv1alpha1.Event  `json:"event,omitempty"`
-	Events   []busv1alpha1.Event `json:"events,omitempty"`
-	ExitCode *int32              `json:"exitCode,omitempty"`
-	Timeout  *v1.Duration        `json:"timeout,omitempty"`
+	Action        *busv1alpha1.Action              `json:"action,omitempty"`
+	Event         *busv1alpha1.Event               `json:"event,omitempty"`
+	Events        []busv1alpha1.Event              `json:"events,omitempty"`
+	ExitCode      *int32                           `json:"exitCode,omitempty"`
+	Timeout       *v1.Duration                     `json:"timeout,omitempty"`
+	WebHookConfig *WebHookConfigApplyConfiguration `json:"webhookConfig,omitempty"`
 }
 
 // LifecyclePolicyApplyConfiguration constructs a declarative configuration of the LifecyclePolicy type for use with
@@ -77,5 +78,13 @@ func (b *LifecyclePolicyApplyConfiguration) WithExitCode(value int32) *Lifecycle
 // If called multiple times, the Timeout field is set to the value of the last call.
 func (b *LifecyclePolicyApplyConfiguration) WithTimeout(value v1.Duration) *LifecyclePolicyApplyConfiguration {
 	b.Timeout = &value
+	return b
+}
+
+// WithWebHookConfig sets the WebHookConfig field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the WebHookConfig field is set to the value of the last call.
+func (b *LifecyclePolicyApplyConfiguration) WithWebHookConfig(value *WebHookConfigApplyConfiguration) *LifecyclePolicyApplyConfiguration {
+	b.WebHookConfig = value
 	return b
 }

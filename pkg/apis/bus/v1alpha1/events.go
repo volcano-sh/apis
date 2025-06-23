@@ -17,7 +17,7 @@ limitations under the License.
 package v1alpha1
 
 // Event represent the phase of Job, e.g. pod-failed.
-// +kubebuilder:validation:Enum=*;PodPending;PodRunning;PodFailed;PodEvicted;Unknown;TaskCompleted;OutOfSync;CommandIssued;JobUpdated;TaskFailed
+// +kubebuilder:validation:Enum=*;PodPending;PodRunning;PodFailed;PodEvicted;Unknown;TaskCompleted;OutOfSync;CommandIssued;JobUpdated;TaskFailed;JobTerminated;JobCompleted;JobAborted;JobFailed
 type Event string
 
 const (
@@ -44,6 +44,18 @@ const (
 
 	// TaskCompletedEvent is triggered if the 'Replicas' amount of pods in one task are succeed
 	TaskCompletedEvent Event = "TaskCompleted"
+
+	// JobTerminatedEvent is triggered when job is terminated
+	JobTerminatedEvent Event = "JobTerminated"
+
+	// JobCompletedEvent is triggered when job is completed successfully
+	JobCompletedEvent Event = "JobCompleted"
+
+	// JobAbortedEvent is triggered when job is aborted
+	JobAbortedEvent Event = "JobAborted"
+
+	// JobFailedEvent is triggered when job failed permanently
+	JobFailedEvent Event = "JobFailed"
 
 	// Note: events below are used internally, should not be used by users.
 
