@@ -91,6 +91,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationflowv1alpha1.JobTemplateApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("JobTemplateStatus"):
 		return &applyconfigurationflowv1alpha1.JobTemplateStatusApplyConfiguration{}
+	case flowv1alpha1.SchemeGroupVersion.WithKind("Patch"):
+		return &applyconfigurationflowv1alpha1.PatchApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("Probe"):
 		return &applyconfigurationflowv1alpha1.ProbeApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("State"):
