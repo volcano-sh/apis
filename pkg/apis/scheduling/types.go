@@ -16,6 +16,7 @@ package scheduling
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
 // PodGroupPhase is the phase of a pod group at the current time.
@@ -111,6 +112,18 @@ const (
 
 	// NotEnoughPodsReason is probed if there're not enough tasks compared to `spec.minMember`
 	NotEnoughPodsReason string = "NotEnoughTasks"
+
+	// NotEnoughPodsOfTaskReason is probed if there're not enough pods of task compared to `spec.minTaskMember`
+	NotEnoughPodsOfTaskReason string = "NotEnoughPodsOfTask"
+
+	// InvalidReservationReason is probed if reservation of job is invalid
+	InvalidReservationReason string = "InvalidReservation"
+
+	// ReservationOwnerNotMatchReason is probed if the owner of reservation is matched
+	ReservationOwnerNotMatchReason string = "ReservationOwnerNotMatch"
+
+	// ReservationSpecNotMatchReason is probed if the spec of reservation is matched
+	ReservationSpecNotMatchReason string = "ReservationSpecNotMatch"
 )
 
 // QueueEvent represent the phase of queue.
@@ -288,8 +301,8 @@ type Guarantee struct {
 	Resource v1.ResourceList `json:"resource,omitempty" protobuf:"bytes,3,opt,name=resource"`
 }
 
-// Reservation represents current condition about resource reservation
-type Reservation struct {
+// QueueReservation represents current condition about resource reservation
+type QueueReservation struct {
 	// Nodes are Locked nodes for queue
 	// +optional
 	Nodes []string `json:"nodes,omitempty" protobuf:"bytes,1,opt,name=nodes"`
@@ -315,7 +328,7 @@ type QueueStatus struct {
 	Completed int32
 
 	// Reservation is the profile of resource reservation for queue
-	Reservation Reservation
+	Reservation QueueReservation
 
 	// Allocated is allocated resources in queue
 	// +optional
@@ -402,4 +415,170 @@ type QueueList struct {
 
 	// items is the list of PodGroup
 	Items []Queue
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// Reservation defines the reservation.
+type Reservation struct {
+	metav1.TypeMeta
+
+	// +optional
+	metav1.ObjectMeta
+
+	// Specification of the desired behavior of the reservation.
+	// +optional
+	Spec ReservationSpec
+
+	// Current status of the reservation.
+	// +optional
+	Status ReservationStatus
+}
+
+// ReservationSpec describes the desired behavior of the reservation.
+type ReservationSpec struct {
+	// SchedulerName is the default value of `tasks.template.spec.schedulerName`.
+	// +optional
+	SchedulerName string
+
+	// The minimal available pods to run for this Reservation
+	// Defaults to the summary of tasks' replicas
+	// +optional
+	MinAvailable int32
+
+	// Tasks specifies the task specification of Reservation
+	// +optional
+	Tasks []v1alpha1.TaskSpec
+
+	//Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+	// +optional
+	Queue string
+
+	// Owners specify the entities that can allocate the reserved resources.
+	// Multiple owner selectors are ORed.
+	Owners []ReservationOwner
+
+	// Time-to-Live period for the reservation.
+	// `expires` and `ttl` are mutually exclusive.
+	// +optional
+	TTL *metav1.Duration
+
+	// Expired timestamp when the reservation is expected to expire.
+	// If both `expires` and `ttl` are set, `expires` is checked first.
+	// `expires` and `ttl` are mutually exclusive. Defaults to being set dynamically at runtime based on the `ttl`.
+	// +optional
+	Expires *metav1.Time
+}
+
+// ReservationStatus represents the current status of a Reservation.
+type ReservationStatus struct {
+	// Current state of Reservation.
+	// +optional
+	State ReservationState `json:"state,omitempty" protobuf:"bytes,1,opt,name=state"`
+
+	// The minimal available pods to run for this Reservation
+	// +optional
+	MinAvailable int32 `json:"minAvailable,omitempty" protobuf:"bytes,2,opt,name=minAvailable"`
+
+	// The status of pods for each task
+	// +optional
+	TaskStatusCount map[string]v1alpha1.TaskState `json:"taskStatusCount,omitempty" protobuf:"bytes,3,opt,name=taskStatusCount"`
+
+	// The number of pending reservation pods.
+	// +optional
+	Pending int32 `json:"pending,omitempty" protobuf:"bytes,4,opt,name=pending"`
+
+	// The number of available reservation pods.
+	// +optional
+	Available int32 `json:"available,omitempty" protobuf:"bytes,5,opt,name=available"`
+
+	// The number of reservation pods which reached phase Succeeded.
+	// +optional
+	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,6,opt,name=succeeded"`
+
+	// The number of reservation pods which reached phase Failed.
+	// +optional
+	Failed int32 `json:"failed,omitempty" protobuf:"bytes,7,opt,name=failed"`
+
+	// Which conditions caused the current Reservation state.
+	// +optional
+	// +patchMergeKey=status
+	// +patchStrategy=merge
+	Conditions []ReservationCondition `json:"conditions,omitempty" protobuf:"bytes,8,rep,name=conditions"`
+
+	// Owner who is currently using this reservation.
+	// +optional
+	CurrentOwner v1.ObjectReference `json:"currentOwner,omitempty" protobuf:"bytes,9,opt,name=currentOwner"`
+
+	// Total allocatable resources for this reservation.
+	// +optional
+	Allocatable v1.ResourceList `json:"allocatable,omitempty" protobuf:"bytes,10,rep,name=allocatable"`
+
+	// Total resources currently allocated to the owner.
+	// +optional
+	Allocated v1.ResourceList `json:"allocated,omitempty" protobuf:"bytes,11,rep,name=allocated"`
+}
+
+type ReservationState struct {
+	// The phase of Reservation.
+	// +optional
+	Phase ReservationPhase
+
+	// Unique, one-word, CamelCase reason for the phase's last transition.
+	// +optional
+	Reason string
+
+	// Human-readable message indicating details about last transition.
+	// +optional
+	Message string
+
+	// Last time the condition transit from one phase to another.
+	// +optional
+	LastTransitionTime metav1.Time
+}
+
+type ReservationCondition struct {
+	// Status is the new phase of reservation after performing the state's action.
+	Status ReservationPhase
+	// Last time the condition transitioned from one phase to another.
+	// +optional
+	LastTransitionTime *metav1.Time
+}
+
+// ReservationPhase defines the phase of the reservation.
+type ReservationPhase string
+
+const (
+	// ReservationPending is the phase that reservation is pending in the queue, waiting for scheduling decision
+	ReservationPending ReservationPhase = "Pending"
+	// ReservationAvailable indicates the Reservation is both scheduled and available for allocation.
+	ReservationAvailable ReservationPhase = "Available"
+	// ReservationSucceeded indicates the Reservation is scheduled and allocated for a owner, but not allocatable anymore.
+	ReservationSucceeded ReservationPhase = "Succeeded"
+	// ReservationWaiting indicates the Reservation is scheduled, but the resources to reserve are not ready for
+	// allocation (e.g. in pre-allocation for running pods).
+	ReservationWaiting ReservationPhase = "Waiting"
+	// ReservationFailed indicates the Reservation is failed to reserve resources, due to expiration or marked as
+	// unavailable, which the object is not available to allocate and will get cleaned in the future.
+	ReservationFailed ReservationPhase = "Failed"
+)
+
+// ReservationOwner indicates the owner specification which can allocate reserved resources.
+type ReservationOwner struct {
+	// Multiple field selectors are ORed.
+	// +optional
+	Object *v1.ObjectReference `json:"object,omitempty" protobuf:"bytes,1,opt,name=object"`
+	// +optional
+	LabelSelector *metav1.LabelSelector `json:"labelSelector,omitempty" protobuf:"bytes,2,opt,name=labelSelector"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ReservationList defines the list of reservations.
+type ReservationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	Items []Reservation `json:"items" protobuf:"bytes,2,rep,name=items"`
 }

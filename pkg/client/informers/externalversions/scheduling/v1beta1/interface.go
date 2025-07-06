@@ -27,6 +27,8 @@ type Interface interface {
 	PodGroups() PodGroupInformer
 	// Queues returns a QueueInformer.
 	Queues() QueueInformer
+	// Reservations returns a ReservationInformer.
+	Reservations() ReservationInformer
 }
 
 type version struct {
@@ -48,4 +50,9 @@ func (v *version) PodGroups() PodGroupInformer {
 // Queues returns a QueueInformer.
 func (v *version) Queues() QueueInformer {
 	return &queueInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+}
+
+// Reservations returns a ReservationInformer.
+func (v *version) Reservations() ReservationInformer {
+	return &reservationInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
