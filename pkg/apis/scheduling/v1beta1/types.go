@@ -204,6 +204,12 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,5,opt,name=networkTopology"`
+
+	// Preemptable indicates whether the PodGroup can be preempted by other PodGroups.
+	// When nil or true, the PodGroup can be preempted for compatibility.
+	// When false, the PodGroup cannot be preempted.
+	// +optional
+	Preemptable *bool `json:"preemptable,omitempty" protobuf:"bytes,6,opt,name=preemptable"`
 }
 
 type NetworkTopologyMode string
