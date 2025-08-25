@@ -28,6 +28,8 @@ type JobFlowSpec struct {
 	Flows []Flow `json:"flows,omitempty"`
 	// +optional
 	JobRetainPolicy RetainPolicy `json:"jobRetainPolicy,omitempty"`
+	// +optional
+	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
 }
 
 // Flow defines the dependent of jobs
@@ -37,6 +39,8 @@ type Flow struct {
 	Name string `json:"name"`
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
+	// +optional
+	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
 }
 
 type DependsOn struct {
@@ -45,6 +49,48 @@ type DependsOn struct {
 	// +optional
 	Probe *Probe `json:"probe,omitempty"`
 }
+
+type RetryPolicy struct {
+	// Maximum number of retries allowed (default: 0 = no retry)
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	MaxRetries int32 `json:"maxRetries,omitempty"`
+
+	// +optional
+	// +kubebuilder:validation:Enum=Always;OnFailure;Never
+	Policy RetryStrategy `json:"policy,omitempty"`
+
+	// +optional
+	Backoff *BackoffPolicy `json:"backoff,omitempty"`
+}
+
+type RetryStrategy string
+
+const (
+	RetryAlways    RetryStrategy = "Always"
+	RetryOnFailure RetryStrategy = "OnFailure"
+	RetryNever     RetryStrategy = "Never"
+)
+
+type BackoffPolicy struct {
+	// +kubebuilder:validation:Enum=Constant;Exponential
+	Type BackoffType `json:"type,omitempty"`
+
+	// Base delay before retry (e.g., 30s)
+	// +optional
+	BaseDelay metav1.Duration `json:"baseDelay,omitempty"`
+
+	// Max delay cap (optional, mainly for exponential backoff)
+	// +optional
+	MaxDelay *metav1.Duration `json:"maxDelay,omitempty"`
+}
+
+type BackoffType string
+
+const (
+	BackoffConstant    BackoffType = "Constant"
+	BackoffExponential BackoffType = "Exponential"
+)
 
 type Probe struct {
 	// +optional
@@ -119,6 +165,10 @@ type JobStatus struct {
 	RestartCount int32 `json:"restartCount,omitempty"`
 	// +optional
 	RunningHistories []JobRunningHistory `json:"runningHistories,omitempty"`
+	// +optional
+	RetryCount int32 `json:"retryCount,omitempty"`
+	// +optional
+	LastFailureReason string `json:"lastFailureReason,omitempty"`
 }
 
 type JobRunningHistory struct {
