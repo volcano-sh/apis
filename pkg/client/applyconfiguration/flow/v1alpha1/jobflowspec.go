@@ -24,8 +24,9 @@ import (
 // JobFlowSpecApplyConfiguration represents a declarative configuration of the JobFlowSpec type for use
 // with apply.
 type JobFlowSpecApplyConfiguration struct {
-	Flows           []FlowApplyConfiguration   `json:"flows,omitempty"`
-	JobRetainPolicy *flowv1alpha1.RetainPolicy `json:"jobRetainPolicy,omitempty"`
+	Flows           []FlowApplyConfiguration       `json:"flows,omitempty"`
+	JobRetainPolicy *flowv1alpha1.RetainPolicy     `json:"jobRetainPolicy,omitempty"`
+	RetryPolicy     *RetryPolicyApplyConfiguration `json:"retryPolicy,omitempty"`
 }
 
 // JobFlowSpecApplyConfiguration constructs a declarative configuration of the JobFlowSpec type for use with
@@ -52,5 +53,13 @@ func (b *JobFlowSpecApplyConfiguration) WithFlows(values ...*FlowApplyConfigurat
 // If called multiple times, the JobRetainPolicy field is set to the value of the last call.
 func (b *JobFlowSpecApplyConfiguration) WithJobRetainPolicy(value flowv1alpha1.RetainPolicy) *JobFlowSpecApplyConfiguration {
 	b.JobRetainPolicy = &value
+	return b
+}
+
+// WithRetryPolicy sets the RetryPolicy field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the RetryPolicy field is set to the value of the last call.
+func (b *JobFlowSpecApplyConfiguration) WithRetryPolicy(value *RetryPolicyApplyConfiguration) *JobFlowSpecApplyConfiguration {
+	b.RetryPolicy = value
 	return b
 }

@@ -20,8 +20,9 @@ package v1alpha1
 // FlowApplyConfiguration represents a declarative configuration of the Flow type for use
 // with apply.
 type FlowApplyConfiguration struct {
-	Name      *string                      `json:"name,omitempty"`
-	DependsOn *DependsOnApplyConfiguration `json:"dependsOn,omitempty"`
+	Name        *string                        `json:"name,omitempty"`
+	DependsOn   *DependsOnApplyConfiguration   `json:"dependsOn,omitempty"`
+	RetryPolicy *RetryPolicyApplyConfiguration `json:"retryPolicy,omitempty"`
 }
 
 // FlowApplyConfiguration constructs a declarative configuration of the Flow type for use with
@@ -43,5 +44,13 @@ func (b *FlowApplyConfiguration) WithName(value string) *FlowApplyConfiguration 
 // If called multiple times, the DependsOn field is set to the value of the last call.
 func (b *FlowApplyConfiguration) WithDependsOn(value *DependsOnApplyConfiguration) *FlowApplyConfiguration {
 	b.DependsOn = value
+	return b
+}
+
+// WithRetryPolicy sets the RetryPolicy field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the RetryPolicy field is set to the value of the last call.
+func (b *FlowApplyConfiguration) WithRetryPolicy(value *RetryPolicyApplyConfiguration) *FlowApplyConfiguration {
+	b.RetryPolicy = value
 	return b
 }
