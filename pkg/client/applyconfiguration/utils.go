@@ -69,6 +69,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationbusv1alpha1.CommandApplyConfiguration{}
 
 		// Group=flow.volcano.sh, Version=v1alpha1
+	case flowv1alpha1.SchemeGroupVersion.WithKind("BackoffPolicy"):
+		return &applyconfigurationflowv1alpha1.BackoffPolicyApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("Condition"):
 		return &applyconfigurationflowv1alpha1.ConditionApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("DependsOn"):
@@ -93,6 +95,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationflowv1alpha1.JobTemplateStatusApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("Probe"):
 		return &applyconfigurationflowv1alpha1.ProbeApplyConfiguration{}
+	case flowv1alpha1.SchemeGroupVersion.WithKind("RetryPolicy"):
+		return &applyconfigurationflowv1alpha1.RetryPolicyApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("State"):
 		return &applyconfigurationflowv1alpha1.StateApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("TaskStatus"):

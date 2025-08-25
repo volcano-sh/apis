@@ -25,12 +25,14 @@ import (
 // JobStatusApplyConfiguration represents a declarative configuration of the JobStatus type for use
 // with apply.
 type JobStatusApplyConfiguration struct {
-	Name             *string                               `json:"name,omitempty"`
-	State            *batchv1alpha1.JobPhase               `json:"state,omitempty"`
-	StartTimestamp   *v1.Time                              `json:"startTimestamp,omitempty"`
-	EndTimestamp     *v1.Time                              `json:"endTimestamp,omitempty"`
-	RestartCount     *int32                                `json:"restartCount,omitempty"`
-	RunningHistories []JobRunningHistoryApplyConfiguration `json:"runningHistories,omitempty"`
+	Name              *string                               `json:"name,omitempty"`
+	State             *batchv1alpha1.JobPhase               `json:"state,omitempty"`
+	StartTimestamp    *v1.Time                              `json:"startTimestamp,omitempty"`
+	EndTimestamp      *v1.Time                              `json:"endTimestamp,omitempty"`
+	RestartCount      *int32                                `json:"restartCount,omitempty"`
+	RunningHistories  []JobRunningHistoryApplyConfiguration `json:"runningHistories,omitempty"`
+	RetryCount        *int32                                `json:"retryCount,omitempty"`
+	LastFailureReason *string                               `json:"lastFailureReason,omitempty"`
 }
 
 // JobStatusApplyConfiguration constructs a declarative configuration of the JobStatus type for use with
@@ -89,5 +91,21 @@ func (b *JobStatusApplyConfiguration) WithRunningHistories(values ...*JobRunning
 		}
 		b.RunningHistories = append(b.RunningHistories, *values[i])
 	}
+	return b
+}
+
+// WithRetryCount sets the RetryCount field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the RetryCount field is set to the value of the last call.
+func (b *JobStatusApplyConfiguration) WithRetryCount(value int32) *JobStatusApplyConfiguration {
+	b.RetryCount = &value
+	return b
+}
+
+// WithLastFailureReason sets the LastFailureReason field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the LastFailureReason field is set to the value of the last call.
+func (b *JobStatusApplyConfiguration) WithLastFailureReason(value string) *JobStatusApplyConfiguration {
+	b.LastFailureReason = &value
 	return b
 }
