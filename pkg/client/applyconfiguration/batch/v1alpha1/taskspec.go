@@ -18,21 +18,21 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1 "k8s.io/api/core/v1"
+	v1 "k8s.io/client-go/applyconfigurations/core/v1"
 	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
 // TaskSpecApplyConfiguration represents a declarative configuration of the TaskSpec type for use
 // with apply.
 type TaskSpecApplyConfiguration struct {
-	Name           *string                             `json:"name,omitempty"`
-	Replicas       *int32                              `json:"replicas,omitempty"`
-	MinAvailable   *int32                              `json:"minAvailable,omitempty"`
-	Template       *v1.PodTemplateSpec                 `json:"template,omitempty"`
-	Policies       []LifecyclePolicyApplyConfiguration `json:"policies,omitempty"`
-	TopologyPolicy *batchv1alpha1.NumaPolicy           `json:"topologyPolicy,omitempty"`
-	MaxRetry       *int32                              `json:"maxRetry,omitempty"`
-	DependsOn      *DependsOnApplyConfiguration        `json:"dependsOn,omitempty"`
+	Name           *string                               `json:"name,omitempty"`
+	Replicas       *int32                                `json:"replicas,omitempty"`
+	MinAvailable   *int32                                `json:"minAvailable,omitempty"`
+	Template       *v1.PodTemplateSpecApplyConfiguration `json:"template,omitempty"`
+	Policies       []LifecyclePolicyApplyConfiguration   `json:"policies,omitempty"`
+	TopologyPolicy *batchv1alpha1.NumaPolicy             `json:"topologyPolicy,omitempty"`
+	MaxRetry       *int32                                `json:"maxRetry,omitempty"`
+	DependsOn      *DependsOnApplyConfiguration          `json:"dependsOn,omitempty"`
 }
 
 // TaskSpecApplyConfiguration constructs a declarative configuration of the TaskSpec type for use with
@@ -68,8 +68,8 @@ func (b *TaskSpecApplyConfiguration) WithMinAvailable(value int32) *TaskSpecAppl
 // WithTemplate sets the Template field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Template field is set to the value of the last call.
-func (b *TaskSpecApplyConfiguration) WithTemplate(value v1.PodTemplateSpec) *TaskSpecApplyConfiguration {
-	b.Template = &value
+func (b *TaskSpecApplyConfiguration) WithTemplate(value *v1.PodTemplateSpecApplyConfiguration) *TaskSpecApplyConfiguration {
+	b.Template = value
 	return b
 }
 
