@@ -252,6 +252,13 @@ type TaskSpec struct {
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
 }
 
+// Default sets default values for TaskSpec fields.
+func (t *TaskSpec) Default() {
+	if t.MinAvailable == nil {
+		t.MinAvailable = &t.Replicas
+	}
+}
+
 // JobPhase defines the phase of the job.
 type JobPhase string
 
