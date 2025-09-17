@@ -37,6 +37,8 @@ type Flow struct {
 	Name string `json:"name"`
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
+	// +optional
+	Patch *Patch `json:"patch,omitempty"`
 }
 
 type DependsOn struct {
@@ -44,6 +46,11 @@ type DependsOn struct {
 	Targets []string `json:"targets,omitempty"`
 	// +optional
 	Probe *Probe `json:"probe,omitempty"`
+}
+
+type Patch struct {
+	// +optional
+	v1alpha1.JobSpec `json:"jobSpec,omitempty"`
 }
 
 type Probe struct {
