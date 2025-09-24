@@ -275,6 +275,11 @@ func (in *PodGroupSpec) DeepCopyInto(out *PodGroupSpec) {
 		*out = new(NetworkTopologySpec)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Preemptable != nil {
+		in, out := &in.Preemptable, &out.Preemptable
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 
