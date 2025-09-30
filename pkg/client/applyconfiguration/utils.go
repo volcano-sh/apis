@@ -65,6 +65,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.LifecyclePolicyApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
 		return &batchv1alpha1.NetworkTopologySpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("PartitionPolicySpec"):
+		return &batchv1alpha1.PartitionPolicySpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskSpec"):
 		return &batchv1alpha1.TaskSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskState"):
@@ -127,6 +129,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.ClusterApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Guarantee"):
 		return &schedulingv1beta1.GuaranteeApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("MatchPolicySpec"):
+		return &schedulingv1beta1.MatchPolicySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
 		return &schedulingv1beta1.NetworkTopologySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NodeGroupAffinity"):
@@ -149,6 +153,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.QueueStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Reservation"):
 		return &schedulingv1beta1.ReservationApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("SubGroupPolicySpec"):
+		return &schedulingv1beta1.SubGroupPolicySpecApplyConfiguration{}
 
 		// Group=topology.volcano.sh, Version=v1alpha1
 	case topologyv1alpha1.SchemeGroupVersion.WithKind("ExactMatch"):

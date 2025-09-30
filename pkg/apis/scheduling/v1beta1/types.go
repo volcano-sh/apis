@@ -204,6 +204,38 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,5,opt,name=networkTopology"`
+
+	// SubGroupPolicy defines policies for dividing all pods within the podGroup into multiple groups.
+	// +optional
+	SubGroupPolicy []SubGroupPolicySpec `json:"subGroupPolicy,omitempty" protobuf:"bytes,6,opt,name=subGroupPolicy"`
+}
+
+type SubGroupPolicySpec struct {
+	// Name specifies the name of SubGroupPolicy
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+
+	// MatchPolicy defines matching strategies for different groups, where pods with the same labelKey value are grouped together.
+	// The LabelKey in the list is unique.
+	MatchPolicy []MatchPolicySpec `json:"matchPolicy,omitempty" protobuf:"bytes,2,opt,name=matchPolicy"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,3,opt,name=networkTopology"`
+
+	// SubGroupSize defines the number of pods in each sub-affinity group.
+	// Only when a subGroup of pods, with a size of "subGroupSize", can satisfy the network topology constraint then will the subGroup be scheduled.
+	// +optional
+	SubGroupSize *int32 `json:"subGroupSize,omitempty" protobuf:"bytes,4,opt,name=subGroupSize"`
+
+	// MinSubGroups defines the minimum number of sub-affinity groups required.
+	// +kubebuilder:default:=0
+	// +optional
+	MinSubGroups *int32 `json:"minSubGroups,omitempty" protobuf:"bytes,5,opt,name=minSubGroups"`
+}
+
+type MatchPolicySpec struct {
+	// LabelKey specifies the label key used to group pods.
+	LabelKey string `json:"labelKey,omitempty" protobuf:"bytes,1,opt,name=labelKey"`
 }
 
 type NetworkTopologyMode string
@@ -225,9 +257,13 @@ type NetworkTopologySpec struct {
 	Mode NetworkTopologyMode `json:"mode,omitempty" protobuf:"bytes,1,opt,name=mode"`
 
 	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
-	// +kubebuilder:default=1
 	// +optional
 	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"bytes,2,opt,name=highestTierAllowed"`
+
+	// HighestTierName specifies the highest tier name that a job allowed to cross when scheduling.
+	// HighestTierName and HighestTierAllowed cannot be set simultaneously.
+	// +optional
+	HighestTierName string `json:"highestTierName,omitempty" protobuf:"bytes,3,opt,name=highestTierName"`
 }
 
 // PodGroupStatus represents the current state of a pod group.

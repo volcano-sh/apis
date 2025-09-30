@@ -82,7 +82,7 @@ type JobSpec struct {
 	// Default to nil
 	RunningEstimate *metav1.Duration `json:"runningEstimate,omitempty" protobuf:"bytes,7,opt,name=runningEstimate"`
 
-	//Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+	// Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
 	// +optional
 	Queue string `json:"queue,omitempty" protobuf:"bytes,8,opt,name=queue"`
 
@@ -135,9 +135,13 @@ type NetworkTopologySpec struct {
 	Mode NetworkTopologyMode `json:"mode,omitempty" protobuf:"bytes,1,opt,name=mode"`
 
 	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
-	// +kubebuilder:default=1
 	// +optional
 	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"bytes,2,opt,name=highestTierAllowed"`
+
+	// HighestTierName specifies the highest tier name that a job allowed to cross when scheduling.
+	// HighestTierName and HighestTierAllowed cannot be set simultaneously.
+	// +optional
+	HighestTierName string `json:"highestTierName,omitempty" protobuf:"bytes,3,opt,name=highestTierName"`
 }
 
 // VolumeSpec defines the specification of Volume, e.g. PVC.
@@ -251,6 +255,28 @@ type TaskSpec struct {
 	// Specifies the tasks that this task depends on.
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
+
+	// PartitionPolicy defines the partition policy of a task.
+	// +optional
+	PartitionPolicy *PartitionPolicySpec `json:"partitionPolicy,omitempty" protobuf:"bytes,9,opt,name=partitionPolicy"`
+}
+
+type PartitionPolicySpec struct {
+	// TotalPartitions indicates how many groups a set of pods within a task is divided into.
+	// The product of TotalPartitions and PartitionSize should be equal to Replicas.
+	TotalPartitions int32 `json:"totalPartitions" protobuf:"bytes,1,opt,name=totalPartitions"`
+
+	// PartitionSize is the number of pods included in each group.
+	PartitionSize int32 `json:"partitionSize" protobuf:"bytes,2,opt,name=partitionSize"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,3,opt,name=networkTopology"`
+
+	// MinPartitions defines the minimum number of sub-affinity groups required.
+	// +kubebuilder:default:=0
+	// +optional
+	MinPartitions int32 `json:"minPartitions,omitempty" protobuf:"bytes,4,opt,name=minPartitions"`
 }
 
 // JobPhase defines the phase of the job.
