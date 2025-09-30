@@ -196,6 +196,32 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec
+
+	// BunchPolicy defines policies for dividing all pods within the podGroup into multiple groups.
+	// +optional
+	BunchPolicy []BunchPolicySpec
+}
+
+type BunchPolicySpec struct {
+	// Name specifies the name of BunchPolicy
+	Name string
+
+	// MatchPolicy defines matching strategies for different groups, where pods with the same labelKey value are grouped together.
+	// The LabelKey in the list is unique.
+	MatchPolicy []MatchPolicySpec
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec
+
+	// BunchSize defines the number of pods in each sub-affinity group.
+	// +optional
+	BunchSize *int32
+}
+
+type MatchPolicySpec struct {
+	// LabelKey specifies the label key used to group pods.
+	LabelKey string
 }
 
 // NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".

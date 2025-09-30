@@ -82,7 +82,7 @@ type JobSpec struct {
 	// Default to nil
 	RunningEstimate *metav1.Duration `json:"runningEstimate,omitempty" protobuf:"bytes,7,opt,name=runningEstimate"`
 
-	//Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+	// Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
 	// +optional
 	Queue string `json:"queue,omitempty" protobuf:"bytes,8,opt,name=queue"`
 
@@ -251,6 +251,23 @@ type TaskSpec struct {
 	// Specifies the tasks that this task depends on.
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
+
+	// PartitionPolicy defines the partition policy of a task.
+	// +optional
+	PartitionPolicy *PartitionPolicySpec `json:"partitionPolicy,omitempty" protobuf:"bytes,9,opt,name=partitionPolicy"`
+}
+
+type PartitionPolicySpec struct {
+	// TotalPartitions indicates how many groups a set of pods within a task is divided into.
+	// The product of TotalPartitions and PartitionSize should be equal to Replicas.
+	TotalPartitions int32 `json:"totalPartitions,omitempty" protobuf:"bytes,1,opt,name=totalPartitions"`
+
+	// PartitionSize is the number of pods included in each group.
+	PartitionSize int32 `json:"partitionSize,omitempty" protobuf:"bytes,2,opt,name=partitionSize"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,3,opt,name=networkTopology"`
 }
 
 // JobPhase defines the phase of the job.

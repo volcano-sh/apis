@@ -38,6 +38,10 @@ const (
 	// This action can just work together with pod level events, e.g. PodFailed
 	RestartPodAction Action = "RestartPod"
 
+	// RestartPartitionAction if this action is set, the whole partition group of pods will be restarted.
+	// It means that all pods in the partition group corresponding to the event will be deleted and recreated.
+	RestartPartitionAction Action = "RestartPartition"
+
 	// TerminateJobAction if this action is set, the whole job wil be terminated
 	// and can not be resumed: all Pod of Job will be evicted, and no Pod will be recreated.
 	TerminateJobAction Action = "TerminateJob"

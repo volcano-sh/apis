@@ -65,6 +65,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.LifecyclePolicyApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
 		return &batchv1alpha1.NetworkTopologySpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("PartitionPolicySpec"):
+		return &batchv1alpha1.PartitionPolicySpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskSpec"):
 		return &batchv1alpha1.TaskSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskState"):
@@ -123,10 +125,14 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		// Group=scheduling.volcano.sh, Version=v1beta1
 	case v1beta1.SchemeGroupVersion.WithKind("Affinity"):
 		return &schedulingv1beta1.AffinityApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("BunchPolicySpec"):
+		return &schedulingv1beta1.BunchPolicySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Cluster"):
 		return &schedulingv1beta1.ClusterApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Guarantee"):
 		return &schedulingv1beta1.GuaranteeApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("MatchPolicySpec"):
+		return &schedulingv1beta1.MatchPolicySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
 		return &schedulingv1beta1.NetworkTopologySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NodeGroupAffinity"):
