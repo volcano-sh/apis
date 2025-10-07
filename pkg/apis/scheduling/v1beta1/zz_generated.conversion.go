@@ -183,6 +183,11 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}); err != nil {
 		return err
 	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.QueueSpec)(nil), (*QueueSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_QueueSpec_To_v1beta1_QueueSpec(a.(*scheduling.QueueSpec), b.(*QueueSpec), scope)
+	}); err != nil {
+		return err
+	}
 	if err := s.AddGeneratedConversionFunc((*QueueStatus)(nil), (*scheduling.QueueStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_QueueStatus_To_scheduling_QueueStatus(a.(*QueueStatus), b.(*scheduling.QueueStatus), scope)
 	}); err != nil {
@@ -579,17 +584,7 @@ func Convert_scheduling_Queue_To_v1beta1_Queue(in *scheduling.Queue, out *Queue,
 
 func autoConvert_v1beta1_QueueList_To_scheduling_QueueList(in *QueueList, out *scheduling.QueueList, s conversion.Scope) error {
 	out.ListMeta = in.ListMeta
-	if in.Items != nil {
-		in, out := &in.Items, &out.Items
-		*out = make([]scheduling.Queue, len(*in))
-		for i := range *in {
-			if err := Convert_v1beta1_Queue_To_scheduling_Queue(&(*in)[i], &(*out)[i], s); err != nil {
-				return err
-			}
-		}
-	} else {
-		out.Items = nil
-	}
+	out.Items = *(*[]scheduling.Queue)(unsafe.Pointer(&in.Items))
 	return nil
 }
 
@@ -600,17 +595,7 @@ func Convert_v1beta1_QueueList_To_scheduling_QueueList(in *QueueList, out *sched
 
 func autoConvert_scheduling_QueueList_To_v1beta1_QueueList(in *scheduling.QueueList, out *QueueList, s conversion.Scope) error {
 	out.ListMeta = in.ListMeta
-	if in.Items != nil {
-		in, out := &in.Items, &out.Items
-		*out = make([]Queue, len(*in))
-		for i := range *in {
-			if err := Convert_scheduling_Queue_To_v1beta1_Queue(&(*in)[i], &(*out)[i], s); err != nil {
-				return err
-			}
-		}
-	} else {
-		out.Items = nil
-	}
+	out.Items = *(*[]Queue)(unsafe.Pointer(&in.Items))
 	return nil
 }
 

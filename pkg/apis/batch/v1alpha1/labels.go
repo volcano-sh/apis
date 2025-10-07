@@ -48,5 +48,7 @@ const (
 	// OrginalNameKey annotation key for resource name
 	OrginalNameKey = "volcano.sh/burst-name"
 	// BurstToSiloClusterAnnotation labels key for resource only in silo cluster
-	BurstToSiloClusterAnnotation = "volcano.sh/silo-resource"
+	BurstToSiloClusterAnnotation        = "volcano.sh/silo-resource"
+ // CronJobScheduledTimestampAnnotation records the intended scheduled timestamp for a job triggered by a CronJob.
+	CronJobScheduledTimestampAnnotation = "volcano.sh/cronjob-scheduled-timestamp"
 )
