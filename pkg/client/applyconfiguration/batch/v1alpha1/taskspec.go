@@ -25,15 +25,15 @@ import (
 // TaskSpecApplyConfiguration represents a declarative configuration of the TaskSpec type for use
 // with apply.
 type TaskSpecApplyConfiguration struct {
-	Name           *string                               `json:"name,omitempty"`
-	Replicas       *int32                                `json:"replicas,omitempty"`
-	MinAvailable   *int32                                `json:"minAvailable,omitempty"`
-	Template       *v1.PodTemplateSpecApplyConfiguration `json:"template,omitempty"`
-	Policies       []LifecyclePolicyApplyConfiguration   `json:"policies,omitempty"`
-	TopologyPolicy *batchv1alpha1.NumaPolicy             `json:"topologyPolicy,omitempty"`
-	MaxRetry       *int32                                `json:"maxRetry,omitempty"`
-	DependsOn      *DependsOnApplyConfiguration          `json:"dependsOn,omitempty"`
-	ReservationNodeNames []string                        `json:"reservationNodeNames,omitempty"`
+	Name                 *string                               `json:"name,omitempty"`
+	Replicas             *int32                                `json:"replicas,omitempty"`
+	MinAvailable         *int32                                `json:"minAvailable,omitempty"`
+	Template             *v1.PodTemplateSpecApplyConfiguration `json:"template,omitempty"`
+	Policies             []LifecyclePolicyApplyConfiguration   `json:"policies,omitempty"`
+	TopologyPolicy       *batchv1alpha1.NumaPolicy             `json:"topologyPolicy,omitempty"`
+	MaxRetry             *int32                                `json:"maxRetry,omitempty"`
+	DependsOn            *DependsOnApplyConfiguration          `json:"dependsOn,omitempty"`
+	ReservationNodeNames []string                              `json:"reservationNodeNames,omitempty"`
 }
 
 // TaskSpecApplyConfiguration constructs a declarative configuration of the TaskSpec type for use with
