@@ -20,18 +20,20 @@ package applyconfiguration
 import (
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	testing "k8s.io/client-go/testing"
+	managedfields "k8s.io/apimachinery/pkg/util/managedfields"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	applyconfigurationbusv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
 	applyconfigurationflowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
 	internal "volcano.sh/apis/pkg/client/applyconfiguration/internal"
 	applyconfigurationnodeinfov1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
+	applyconfigurationtopologyv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/topology/v1alpha1"
 )
 
 // ForKind returns an apply configuration type for the given GroupVersionKind, or nil if no
@@ -39,6 +41,12 @@ import (
 func ForKind(kind schema.GroupVersionKind) interface{} {
 	switch kind {
 	// Group=batch.volcano.sh, Version=v1alpha1
+	case v1alpha1.SchemeGroupVersion.WithKind("CronJob"):
+		return &batchv1alpha1.CronJobApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("CronJobSpec"):
+		return &batchv1alpha1.CronJobSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("CronJobStatus"):
+		return &batchv1alpha1.CronJobStatusApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("DependsOn"):
 		return &batchv1alpha1.DependsOnApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("Job"):
@@ -51,8 +59,12 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &batchv1alpha1.JobStateApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("JobStatus"):
 		return &batchv1alpha1.JobStatusApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("JobTemplateSpec"):
+		return &batchv1alpha1.JobTemplateSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("LifecyclePolicy"):
 		return &batchv1alpha1.LifecyclePolicyApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
+		return &batchv1alpha1.NetworkTopologySpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskSpec"):
 		return &batchv1alpha1.TaskSpecApplyConfiguration{}
 	case v1alpha1.SchemeGroupVersion.WithKind("TaskState"):
@@ -87,6 +99,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationflowv1alpha1.JobTemplateApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("JobTemplateStatus"):
 		return &applyconfigurationflowv1alpha1.JobTemplateStatusApplyConfiguration{}
+	case flowv1alpha1.SchemeGroupVersion.WithKind("Patch"):
+		return &applyconfigurationflowv1alpha1.PatchApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("Probe"):
 		return &applyconfigurationflowv1alpha1.ProbeApplyConfiguration{}
 	case flowv1alpha1.SchemeGroupVersion.WithKind("State"):
@@ -113,6 +127,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.ClusterApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Guarantee"):
 		return &schedulingv1beta1.GuaranteeApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("NetworkTopologySpec"):
+		return &schedulingv1beta1.NetworkTopologySpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NodeGroupAffinity"):
 		return &schedulingv1beta1.NodeGroupAffinityApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("NodeGroupAntiAffinity"):
@@ -134,10 +150,26 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 	case v1beta1.SchemeGroupVersion.WithKind("Reservation"):
 		return &schedulingv1beta1.ReservationApplyConfiguration{}
 
+		// Group=topology.volcano.sh, Version=v1alpha1
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("ExactMatch"):
+		return &applyconfigurationtopologyv1alpha1.ExactMatchApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("HyperNode"):
+		return &applyconfigurationtopologyv1alpha1.HyperNodeApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("HyperNodeSpec"):
+		return &applyconfigurationtopologyv1alpha1.HyperNodeSpecApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("HyperNodeStatus"):
+		return &applyconfigurationtopologyv1alpha1.HyperNodeStatusApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("MemberSelector"):
+		return &applyconfigurationtopologyv1alpha1.MemberSelectorApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("MemberSpec"):
+		return &applyconfigurationtopologyv1alpha1.MemberSpecApplyConfiguration{}
+	case topologyv1alpha1.SchemeGroupVersion.WithKind("RegexMatch"):
+		return &applyconfigurationtopologyv1alpha1.RegexMatchApplyConfiguration{}
+
 	}
 	return nil
 }
 
-func NewTypeConverter(scheme *runtime.Scheme) *testing.TypeConverter {
-	return &testing.TypeConverter{Scheme: scheme, TypeResolver: internal.Parser()}
+func NewTypeConverter(scheme *runtime.Scheme) managedfields.TypeConverter {
+	return managedfields.NewSchemeTypeConverter(scheme, internal.Parser())
 }

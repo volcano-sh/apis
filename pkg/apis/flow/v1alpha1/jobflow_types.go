@@ -22,15 +22,8 @@ import (
 	"volcano.sh/apis/pkg/apis/batch/v1alpha1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // JobFlowSpec defines the desired state of JobFlow
 type JobFlowSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
 	// +optional
 	Flows []Flow `json:"flows,omitempty"`
 	// +optional
@@ -50,6 +43,8 @@ type Flow struct {
 	// +kubebuilder:validation:Minimum=1
 	// +optional
 	MaxRetry *int64 `json:"maxRetry,omitempty"`
+	// +optional
+	Patch *Patch `json:"patch,omitempty"`
 }
 
 type DependsOn struct {
@@ -57,6 +52,11 @@ type DependsOn struct {
 	Targets []string `json:"targets,omitempty"`
 	// +optional
 	Probe *Probe `json:"probe,omitempty"`
+}
+
+type Patch struct {
+	// +optional
+	v1alpha1.JobSpec `json:"jobSpec,omitempty"`
 }
 
 type Probe struct {
@@ -99,8 +99,6 @@ type TaskStatus struct {
 
 // JobFlowStatus defines the observed state of JobFlow
 type JobFlowStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 	// +optional
 	PendingJobs []string `json:"pendingJobs,omitempty"`
 	// +optional

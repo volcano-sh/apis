@@ -176,6 +176,7 @@ type PodGroupSpec struct {
 
 	// Queue defines the queue to allocate resource for PodGroup; if queue does not exist,
 	// the PodGroup will not be scheduled.
+	// +kubebuilder:default:="default"
 	Queue string
 
 	// If specified, indicates the PodGroup's priority. "system-node-critical" and
@@ -191,6 +192,35 @@ type PodGroupSpec struct {
 	// if there's not enough resources to start all tasks, the scheduler
 	// will not start anyone.
 	MinResources *v1.ResourceList
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec
+}
+
+// NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".
+// +kubebuilder:validation:Enum=hard;soft
+type NetworkTopologyMode string
+
+const (
+	// HardNetworkTopologyMode represents a strict network topology constraint that jobs must adhere to.
+	HardNetworkTopologyMode NetworkTopologyMode = "hard"
+
+	// SoftNetworkTopologyMode represents a flexible network topology constraint that
+	// allows jobs to cross network boundaries under certain conditions.
+	SoftNetworkTopologyMode NetworkTopologyMode = "soft"
+)
+
+type NetworkTopologySpec struct {
+	// Mode specifies the mode of the network topology constrain.
+	// +kubebuilder:default=hard
+	// +optional
+	Mode NetworkTopologyMode
+
+	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
+	// +kubebuilder:default=1
+	// +optional
+	HighestTierAllowed *int
 }
 
 // PodGroupStatus represents the current state of a pod group.
@@ -288,6 +318,7 @@ type QueueStatus struct {
 	Reservation Reservation
 
 	// Allocated is allocated resources in queue
+	// +optional
 	Allocated v1.ResourceList
 }
 
@@ -328,8 +359,6 @@ type QueueSpec struct {
 	Weight     int32
 	Capability v1.ResourceList
 
-	// Depreicated: replaced by status.State
-	State QueueState
 	// Reclaimable indicate whether the queue can be reclaimed by other queue
 	Reclaimable *bool
 
