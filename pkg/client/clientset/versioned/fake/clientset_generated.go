@@ -30,6 +30,8 @@ import (
 	fakebatchv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/batch/v1alpha1/fake"
 	busv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1"
 	fakebusv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1/fake"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/datadependency/v1alpha1"
+	fakedatadependencyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/datadependency/v1alpha1/fake"
 	flowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
 	fakeflowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1/fake"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
@@ -142,6 +144,11 @@ func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
 // BusV1alpha1 retrieves the BusV1alpha1Client
 func (c *Clientset) BusV1alpha1() busv1alpha1.BusV1alpha1Interface {
 	return &fakebusv1alpha1.FakeBusV1alpha1{Fake: &c.Fake}
+}
+
+// DatadependencyV1alpha1 retrieves the DatadependencyV1alpha1Client
+func (c *Clientset) DatadependencyV1alpha1() datadependencyv1alpha1.DatadependencyV1alpha1Interface {
+	return &fakedatadependencyv1alpha1.FakeDatadependencyV1alpha1{Fake: &c.Fake}
 }
 
 // FlowV1alpha1 retrieves the FlowV1alpha1Client

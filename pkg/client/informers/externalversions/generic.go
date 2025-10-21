@@ -24,6 +24,7 @@ import (
 	cache "k8s.io/client-go/tools/cache"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/apis/datadependency/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
@@ -65,6 +66,12 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		// Group=bus.volcano.sh, Version=v1alpha1
 	case busv1alpha1.SchemeGroupVersion.WithResource("commands"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Bus().V1alpha1().Commands().Informer()}, nil
+
+		// Group=datadependency.volcano.sh, Version=v1alpha1
+	case datadependencyv1alpha1.SchemeGroupVersion.WithResource("datasources"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Datadependency().V1alpha1().DataSources().Informer()}, nil
+	case datadependencyv1alpha1.SchemeGroupVersion.WithResource("datasourceclaims"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Datadependency().V1alpha1().DataSourceClaims().Informer()}, nil
 
 		// Group=flow.volcano.sh, Version=v1alpha1
 	case flowv1alpha1.SchemeGroupVersion.WithResource("jobflows"):
