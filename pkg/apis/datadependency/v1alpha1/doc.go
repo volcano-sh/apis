@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package v1alpha1 contains API Schema definitions for the data v1alpha1 API group
+// Package v1alpha1 contains API Schema definitions for the datadependency v1alpha1 API group
 // +k8s:deepcopy-gen=package,register
 // +groupName=datadependency.volcano.sh
 package v1alpha1

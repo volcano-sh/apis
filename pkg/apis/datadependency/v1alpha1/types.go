@@ -84,7 +84,7 @@ type DataSourceStatus struct {
 	// ClaimRefs is a list of references to DataSourceClaims that are bound to this DataSource.
 	// The presence of items in this list indicates the DataSource is in use.
 	// +optional
-	ClaimRefs []corev1.ObjectReference `json:"claimRef,omitempty"`
+	ClaimRefs []corev1.ObjectReference `json:"claimRefs,omitempty"`
 
 	// BoundClaims counts the number of DataSourceClaims currently bound to this DataSource.
 	// This provides a quick summary of its usage.
@@ -162,8 +162,8 @@ type DataSourceClaimStatus struct {
 	// +default="Pending"
 	Phase DSCPhase `json:"phase"`
 
-	// BoundDataSources lists the names of all DataSource objects
-	// that satisfy the claim and are considered for scheduling.
+	// BoundDataSource specifies the name of the DataSource object
+	// that is bound to this claim for scheduling.
 	// +optional
 	BoundDataSource string `json:"boundDataSources,omitempty"`
 
