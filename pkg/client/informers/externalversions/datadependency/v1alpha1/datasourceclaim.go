@@ -61,13 +61,25 @@ func NewFilteredDataSourceClaimInformer(client versioned.Interface, namespace st
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.DatadependencyV1alpha1().DataSourceClaims(namespace).List(context.TODO(), options)
+				return client.DatadependencyV1alpha1().DataSourceClaims(namespace).List(context.Background(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.DatadependencyV1alpha1().DataSourceClaims(namespace).Watch(context.TODO(), options)
+				return client.DatadependencyV1alpha1().DataSourceClaims(namespace).Watch(context.Background(), options)
+			},
+			ListWithContextFunc: func(ctx context.Context, options v1.ListOptions) (runtime.Object, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.DatadependencyV1alpha1().DataSourceClaims(namespace).List(ctx, options)
+			},
+			WatchFuncWithContext: func(ctx context.Context, options v1.ListOptions) (watch.Interface, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.DatadependencyV1alpha1().DataSourceClaims(namespace).Watch(ctx, options)
 			},
 		},
 		&apisdatadependencyv1alpha1.DataSourceClaim{},

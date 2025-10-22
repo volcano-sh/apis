@@ -125,11 +125,6 @@ func (in *DataSourceClaimSpec) DeepCopyInto(out *DataSourceClaimSpec) {
 			(*out)[key] = val
 		}
 	}
-	if in.WorkloadSelector != nil {
-		in, out := &in.WorkloadSelector, &out.WorkloadSelector
-		*out = new(v1.LabelSelector)
-		(*in).DeepCopyInto(*out)
-	}
 	return
 }
 

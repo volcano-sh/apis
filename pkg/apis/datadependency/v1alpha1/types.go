@@ -91,8 +91,7 @@ type DataSourceStatus struct {
 	// +optional
 	BoundClaims int32 `json:"boundClaims,omitempty"`
 
-	// Conditions store the latest available observations of the DataSource's state.
-	// e.g., {type: "Ready", status: "True"}, {type: "Provisioned", status: "True"}
+	// Conditions store the available observations of the DataSource's state.
 	// This is more flexible than a single phase.
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
@@ -148,11 +147,6 @@ type DataSourceClaimSpec struct {
 	// Attributes provides extra, non-identifying metadata.
 	// +optional
 	Attributes map[string]string `json:"attributes,omitempty"`
-
-	// WorkloadSelector is a label selector over the workload(s) that this claim is for.
-	// The workload MUST be in the same namespace as this DataSourceClaim.
-	// +required
-	WorkloadSelector *metav1.LabelSelector `json:"workloadSelector"`
 }
 
 // DataSourceClaimStatus defines the observed state of DataSourceClaim.
@@ -165,9 +159,9 @@ type DataSourceClaimStatus struct {
 	// BoundDataSource specifies the name of the DataSource object
 	// that is bound to this claim for scheduling.
 	// +optional
-	BoundDataSource string `json:"boundDataSources,omitempty"`
+	BoundDataSource string `json:"boundDataSource,omitempty"`
 
-	// Conditions store the latest available observations of the claim's state.
+	// Conditions store the available observations of the claim's state.
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }

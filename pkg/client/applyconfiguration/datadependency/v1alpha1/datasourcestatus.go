@@ -25,7 +25,7 @@ import (
 // DataSourceStatusApplyConfiguration represents a declarative configuration of the DataSourceStatus type for use
 // with apply.
 type DataSourceStatusApplyConfiguration struct {
-	ClaimRefs   []v1.ObjectReference                 `json:"claimRef,omitempty"`
+	ClaimRefs   []v1.ObjectReference                 `json:"claimRefs,omitempty"`
 	BoundClaims *int32                               `json:"boundClaims,omitempty"`
 	Conditions  []metav1.ConditionApplyConfiguration `json:"conditions,omitempty"`
 }

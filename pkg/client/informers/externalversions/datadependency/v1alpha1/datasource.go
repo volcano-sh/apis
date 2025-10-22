@@ -60,13 +60,25 @@ func NewFilteredDataSourceInformer(client versioned.Interface, resyncPeriod time
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.DatadependencyV1alpha1().DataSources().List(context.TODO(), options)
+				return client.DatadependencyV1alpha1().DataSources().List(context.Background(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.DatadependencyV1alpha1().DataSources().Watch(context.TODO(), options)
+				return client.DatadependencyV1alpha1().DataSources().Watch(context.Background(), options)
+			},
+			ListWithContextFunc: func(ctx context.Context, options v1.ListOptions) (runtime.Object, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.DatadependencyV1alpha1().DataSources().List(ctx, options)
+			},
+			WatchFuncWithContext: func(ctx context.Context, options v1.ListOptions) (watch.Interface, error) {
+				if tweakListOptions != nil {
+					tweakListOptions(&options)
+				}
+				return client.DatadependencyV1alpha1().DataSources().Watch(ctx, options)
 			},
 		},
 		&apisdatadependencyv1alpha1.DataSource{},

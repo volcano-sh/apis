@@ -17,18 +17,13 @@ limitations under the License.
 
 package v1alpha1
 
-import (
-	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
-)
-
 // DataSourceClaimSpecApplyConfiguration represents a declarative configuration of the DataSourceClaimSpec type for use
 // with apply.
 type DataSourceClaimSpecApplyConfiguration struct {
-	System           *string                             `json:"system,omitempty"`
-	DataSourceType   *string                             `json:"dataSourceType,omitempty"`
-	DataSourceName   *string                             `json:"dataSourceName,omitempty"`
-	Attributes       map[string]string                   `json:"attributes,omitempty"`
-	WorkloadSelector *v1.LabelSelectorApplyConfiguration `json:"workloadSelector,omitempty"`
+	System         *string           `json:"system,omitempty"`
+	DataSourceType *string           `json:"dataSourceType,omitempty"`
+	DataSourceName *string           `json:"dataSourceName,omitempty"`
+	Attributes     map[string]string `json:"attributes,omitempty"`
 }
 
 // DataSourceClaimSpecApplyConfiguration constructs a declarative configuration of the DataSourceClaimSpec type for use with
@@ -72,13 +67,5 @@ func (b *DataSourceClaimSpecApplyConfiguration) WithAttributes(entries map[strin
 	for k, v := range entries {
 		b.Attributes[k] = v
 	}
-	return b
-}
-
-// WithWorkloadSelector sets the WorkloadSelector field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the WorkloadSelector field is set to the value of the last call.
-func (b *DataSourceClaimSpecApplyConfiguration) WithWorkloadSelector(value *v1.LabelSelectorApplyConfiguration) *DataSourceClaimSpecApplyConfiguration {
-	b.WorkloadSelector = value
 	return b
 }
