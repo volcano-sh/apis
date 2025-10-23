@@ -23,12 +23,14 @@ import (
 	managedfields "k8s.io/apimachinery/pkg/util/managedfields"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/apis/datadependency/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	applyconfigurationbusv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
+	applyconfigurationdatadependencyv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/datadependency/v1alpha1"
 	applyconfigurationflowv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/flow/v1alpha1"
 	internal "volcano.sh/apis/pkg/client/applyconfiguration/internal"
 	applyconfigurationnodeinfov1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/nodeinfo/v1alpha1"
@@ -75,6 +77,24 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		// Group=bus.volcano.sh, Version=v1alpha1
 	case busv1alpha1.SchemeGroupVersion.WithKind("Command"):
 		return &applyconfigurationbusv1alpha1.CommandApplyConfiguration{}
+
+		// Group=datadependency.volcano.sh, Version=v1alpha1
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSource"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceClaim"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceClaimApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceClaimSpec"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceClaimSpecApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceClaimStatus"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceClaimStatusApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceLocality"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceLocalityApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceSpec"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceSpecApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceStatus"):
+		return &applyconfigurationdatadependencyv1alpha1.DataSourceStatusApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("WorkloadRef"):
+		return &applyconfigurationdatadependencyv1alpha1.WorkloadRefApplyConfiguration{}
 
 		// Group=flow.volcano.sh, Version=v1alpha1
 	case flowv1alpha1.SchemeGroupVersion.WithKind("Condition"):
