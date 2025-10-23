@@ -93,6 +93,8 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &applyconfigurationdatadependencyv1alpha1.DataSourceSpecApplyConfiguration{}
 	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("DataSourceStatus"):
 		return &applyconfigurationdatadependencyv1alpha1.DataSourceStatusApplyConfiguration{}
+	case datadependencyv1alpha1.SchemeGroupVersion.WithKind("WorkloadRef"):
+		return &applyconfigurationdatadependencyv1alpha1.WorkloadRefApplyConfiguration{}
 
 		// Group=flow.volcano.sh, Version=v1alpha1
 	case flowv1alpha1.SchemeGroupVersion.WithKind("Condition"):

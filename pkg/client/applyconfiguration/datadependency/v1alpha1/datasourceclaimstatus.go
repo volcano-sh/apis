@@ -26,7 +26,7 @@ import (
 // with apply.
 type DataSourceClaimStatusApplyConfiguration struct {
 	Phase           *datadependencyv1alpha1.DSCPhase `json:"phase,omitempty"`
-	BoundDataSource *string                          `json:"boundDataSources,omitempty"`
+	BoundDataSource *string                          `json:"boundDataSource,omitempty"`
 	Conditions      []v1.ConditionApplyConfiguration `json:"conditions,omitempty"`
 }
 

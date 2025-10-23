@@ -20,10 +20,11 @@ package v1alpha1
 // DataSourceClaimSpecApplyConfiguration represents a declarative configuration of the DataSourceClaimSpec type for use
 // with apply.
 type DataSourceClaimSpecApplyConfiguration struct {
-	System         *string           `json:"system,omitempty"`
-	DataSourceType *string           `json:"dataSourceType,omitempty"`
-	DataSourceName *string           `json:"dataSourceName,omitempty"`
-	Attributes     map[string]string `json:"attributes,omitempty"`
+	System         *string                        `json:"system,omitempty"`
+	DataSourceType *string                        `json:"dataSourceType,omitempty"`
+	DataSourceName *string                        `json:"dataSourceName,omitempty"`
+	Workload       *WorkloadRefApplyConfiguration `json:"workload,omitempty"`
+	Attributes     map[string]string              `json:"attributes,omitempty"`
 }
 
 // DataSourceClaimSpecApplyConfiguration constructs a declarative configuration of the DataSourceClaimSpec type for use with
@@ -53,6 +54,14 @@ func (b *DataSourceClaimSpecApplyConfiguration) WithDataSourceType(value string)
 // If called multiple times, the DataSourceName field is set to the value of the last call.
 func (b *DataSourceClaimSpecApplyConfiguration) WithDataSourceName(value string) *DataSourceClaimSpecApplyConfiguration {
 	b.DataSourceName = &value
+	return b
+}
+
+// WithWorkload sets the Workload field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Workload field is set to the value of the last call.
+func (b *DataSourceClaimSpecApplyConfiguration) WithWorkload(value *WorkloadRefApplyConfiguration) *DataSourceClaimSpecApplyConfiguration {
+	b.Workload = value
 	return b
 }
 

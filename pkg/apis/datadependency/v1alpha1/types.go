@@ -129,6 +129,29 @@ type DataSourceClaim struct {
 	Status DataSourceClaimStatus `json:"status,omitempty"`
 }
 
+// WorkloadRef defines a reference to a workload resource that can be used with Dynamic Client.
+// It provides the minimal fields needed to precisely identify and retrieve a workload.
+type WorkloadRef struct {
+	// APIVersion is the API version of the workload resource.
+	// e.g., "apps/v1", "batch.volcano.sh/v1alpha1"
+	// +required
+	APIVersion string `json:"apiVersion"`
+
+	// Kind is the kind of the workload resource.
+	// e.g., "Deployment", "Job"
+	// +required
+	Kind string `json:"kind"`
+
+	// Name is the name of the workload resource.
+	// +required
+	Name string `json:"name"`
+
+	// Namespace is the namespace of the workload resource.
+	// If empty, defaults to the namespace of the DataSourceClaim.
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // DataSourceClaimSpec defines the desired state of DataSourceClaim.
 type DataSourceClaimSpec struct {
 	// System is the required underlying data system of the data source.
@@ -143,6 +166,12 @@ type DataSourceClaimSpec struct {
 	// It will be matched against DataSource's spec.name field.
 	// +required
 	DataSourceName string `json:"dataSourceName"`
+
+	// Workload specifies the workload that this claim is associated with.
+	// This enables the controller to precisely identify and manage the workload
+	// using Dynamic Client without requiring complex selectors or UIDs.
+	// +required
+	Workload WorkloadRef `json:"workload"`
 
 	// Attributes provides extra, non-identifying metadata.
 	// +optional
