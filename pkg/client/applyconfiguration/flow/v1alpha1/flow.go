@@ -22,6 +22,7 @@ package v1alpha1
 type FlowApplyConfiguration struct {
 	Name      *string                      `json:"name,omitempty"`
 	DependsOn *DependsOnApplyConfiguration `json:"dependsOn,omitempty"`
+	MaxRetry  *int64                       `json:"maxRetry,omitempty"`
 	Patch     *PatchApplyConfiguration     `json:"patch,omitempty"`
 }
 
@@ -44,6 +45,14 @@ func (b *FlowApplyConfiguration) WithName(value string) *FlowApplyConfiguration 
 // If called multiple times, the DependsOn field is set to the value of the last call.
 func (b *FlowApplyConfiguration) WithDependsOn(value *DependsOnApplyConfiguration) *FlowApplyConfiguration {
 	b.DependsOn = value
+	return b
+}
+
+// WithMaxRetry sets the MaxRetry field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the MaxRetry field is set to the value of the last call.
+func (b *FlowApplyConfiguration) WithMaxRetry(value int64) *FlowApplyConfiguration {
+	b.MaxRetry = &value
 	return b
 }
 
