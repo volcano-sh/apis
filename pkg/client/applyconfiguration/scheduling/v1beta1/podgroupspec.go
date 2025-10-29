@@ -30,6 +30,7 @@ type PodGroupSpecApplyConfiguration struct {
 	PriorityClassName *string                                `json:"priorityClassName,omitempty"`
 	MinResources      *v1.ResourceList                       `json:"minResources,omitempty"`
 	NetworkTopology   *NetworkTopologySpecApplyConfiguration `json:"networkTopology,omitempty"`
+	Preemptable       *bool                                  `json:"preemptable,omitempty"`
 }
 
 // PodGroupSpecApplyConfiguration constructs a declarative configuration of the PodGroupSpec type for use with
@@ -89,5 +90,13 @@ func (b *PodGroupSpecApplyConfiguration) WithMinResources(value v1.ResourceList)
 // If called multiple times, the NetworkTopology field is set to the value of the last call.
 func (b *PodGroupSpecApplyConfiguration) WithNetworkTopology(value *NetworkTopologySpecApplyConfiguration) *PodGroupSpecApplyConfiguration {
 	b.NetworkTopology = value
+	return b
+}
+
+// WithPreemptable sets the Preemptable field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Preemptable field is set to the value of the last call.
+func (b *PodGroupSpecApplyConfiguration) WithPreemptable(value bool) *PodGroupSpecApplyConfiguration {
+	b.Preemptable = &value
 	return b
 }
