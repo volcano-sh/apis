@@ -386,7 +386,26 @@ type QueueSpec struct {
 	// Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
 	// +optional
 	Priority int32 `json:"priority,omitempty" protobuf:"bytes,10,opt,name=priority"`
+
+	// DequeueStrategy define the dequeue strategy of queue
+	// +optional
+	DequeueStrategy DequeueStrategy `json:"dequeueStrategy,omitempty" protobuf:"bytes,11,opt,name=dequeueStrategy"`
 }
+
+type DequeueStrategy string
+
+const (
+
+	// DequeueStrategyFIFO means if the first job in queue whose jobs are sorted by ssn.JobOrderFn cannot be dequeued,
+	// the system will repeatedly try to dequeue the first job without skipping
+	DequeueStrategyFIFO DequeueStrategy = "fifo"
+	// DequeueStrategyTraverse means if the first job in queue whose jobs are sorted by ssn.JobOrderFn cannot be dequeued,
+	// the system will skip it and try subsequent jobs in the queue
+	DequeueStrategyTraverse DequeueStrategy = "traverse"
+
+	// Default dequeue strategy is traverse
+	DefaultDequeueStrategy DequeueStrategy = DequeueStrategyTraverse
+)
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
