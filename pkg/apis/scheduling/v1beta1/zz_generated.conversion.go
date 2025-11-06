@@ -540,6 +540,7 @@ func autoConvert_v1beta1_QueueSpec_To_scheduling_QueueSpec(in *QueueSpec, out *s
 	out.Parent = in.Parent
 	out.Deserved = *(*v1.ResourceList)(unsafe.Pointer(&in.Deserved))
 	out.Priority = in.Priority
+	out.DequeueStrategy = scheduling.DequeueStrategy(in.DequeueStrategy)
 	return nil
 }
 
@@ -561,6 +562,7 @@ func autoConvert_scheduling_QueueSpec_To_v1beta1_QueueSpec(in *scheduling.QueueS
 	out.Parent = in.Parent
 	out.Deserved = *(*v1.ResourceList)(unsafe.Pointer(&in.Deserved))
 	out.Priority = in.Priority
+	out.DequeueStrategy = DequeueStrategy(in.DequeueStrategy)
 	return nil
 }
 
