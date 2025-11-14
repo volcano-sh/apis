@@ -27,6 +27,7 @@ import (
 // +kubebuilder:resource:path=hypernodes,shortName=hn,scope=Cluster
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Tier",type=string,JSONPath=`.spec.tier`
+// +kubebuilder:printcolumn:name="TierName",type=string,JSONPath=`.spec.tierName`
 // +kubebuilder:printcolumn:name="NodeCount",type=integer,JSONPath=`.status.nodeCount`
 // +kubebuilder:printcolumn:name="Age",type=date,JSONPath=`.metadata.creationTimestamp`
 
@@ -60,6 +61,10 @@ type HyperNodeSpec struct {
 	// Tier categorizes the performance level of the HyperNode.
 	// +required
 	Tier int `json:"tier,omitempty"`
+
+	// TierName represents the level name of the HyperNode.
+	// +optional
+	TierName string `json:"tierName,omitempty"`
 
 	// Members defines a list of node groups or individual nodes included in the HyperNode.
 	// +optional

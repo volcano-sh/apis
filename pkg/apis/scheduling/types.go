@@ -196,6 +196,38 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec
+
+	// SubGroupPolicy defines policies for dividing all pods within the podGroup into multiple groups.
+	// +optional
+	SubGroupPolicy []SubGroupPolicySpec
+}
+
+type SubGroupPolicySpec struct {
+	// Name specifies the name of SubGroupPolicy
+	Name string
+
+	// MatchPolicy defines matching strategies for different groups, where pods with the same labelKey value are grouped together.
+	// The LabelKey in the list is unique.
+	MatchPolicy []MatchPolicySpec
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec
+
+	// SubGroupSize defines the number of pods in each sub-affinity group.
+	// Only when a subGroup of pods, with a size of "subGroupSize", can satisfy the network topology constraint then will the subGroup be scheduled.
+	// +optional
+	SubGroupSize *int32
+
+	// MinSubGroups defines the minimum number of sub-affinity groups required.
+	// +kubebuilder:default:=0
+	// +optional
+	MinSubGroups *int32
+}
+
+type MatchPolicySpec struct {
+	// LabelKey The pods are grouped according to the LabelKey corresponding to this value.
+	LabelKey string
 }
 
 // NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".
@@ -218,9 +250,13 @@ type NetworkTopologySpec struct {
 	Mode NetworkTopologyMode
 
 	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
-	// +kubebuilder:default=1
 	// +optional
 	HighestTierAllowed *int
+
+	// HighestTierName specifies the highest tier name that a job allowed to cross when scheduling.
+	// HighestTierName and HighestTierAllowed cannot be set simultaneously.
+	// +optional
+	HighestTierName string
 }
 
 // PodGroupStatus represents the current state of a pod group.
