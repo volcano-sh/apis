@@ -28,6 +28,7 @@ import (
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	shardv1alpha1 "volcano.sh/apis/pkg/apis/shard/v1alpha1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 )
 
@@ -88,6 +89,10 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().PodGroups().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("queues"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().Queues().Informer()}, nil
+
+		// Group=shard.volcano.sh, Version=v1alpha1
+	case shardv1alpha1.SchemeGroupVersion.WithResource("nodeshards"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Shard().V1alpha1().NodeShards().Informer()}, nil
 
 		// Group=topology.volcano.sh, Version=v1alpha1
 	case topologyv1alpha1.SchemeGroupVersion.WithResource("hypernodes"):

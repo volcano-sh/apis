@@ -34,6 +34,7 @@ import (
 	internalinterfaces "volcano.sh/apis/pkg/client/informers/externalversions/internalinterfaces"
 	nodeinfo "volcano.sh/apis/pkg/client/informers/externalversions/nodeinfo"
 	scheduling "volcano.sh/apis/pkg/client/informers/externalversions/scheduling"
+	shard "volcano.sh/apis/pkg/client/informers/externalversions/shard"
 	topology "volcano.sh/apis/pkg/client/informers/externalversions/topology"
 )
 
@@ -265,6 +266,7 @@ type SharedInformerFactory interface {
 	Flow() flow.Interface
 	Nodeinfo() nodeinfo.Interface
 	Scheduling() scheduling.Interface
+	Shard() shard.Interface
 	Topology() topology.Interface
 }
 
@@ -290,6 +292,10 @@ func (f *sharedInformerFactory) Nodeinfo() nodeinfo.Interface {
 
 func (f *sharedInformerFactory) Scheduling() scheduling.Interface {
 	return scheduling.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Shard() shard.Interface {
+	return shard.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Topology() topology.Interface {

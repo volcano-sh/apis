@@ -27,6 +27,7 @@ import (
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	shardv1alpha1 "volcano.sh/apis/pkg/apis/shard/v1alpha1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
 	applyconfigurationbusv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/bus/v1alpha1"
@@ -35,6 +36,7 @@ import (
 	internal "volcano.sh/apis/pkg/client/applyconfiguration/internal"
 	applyconfigurationnodeinfov1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/applyconfiguration/scheduling/v1beta1"
+	applyconfigurationshardv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/shard/v1alpha1"
 	applyconfigurationtopologyv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/topology/v1alpha1"
 )
 
@@ -175,6 +177,14 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.ReservationApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("SubGroupPolicySpec"):
 		return &schedulingv1beta1.SubGroupPolicySpecApplyConfiguration{}
+
+		// Group=shard.volcano.sh, Version=v1alpha1
+	case shardv1alpha1.SchemeGroupVersion.WithKind("NodeShard"):
+		return &applyconfigurationshardv1alpha1.NodeShardApplyConfiguration{}
+	case shardv1alpha1.SchemeGroupVersion.WithKind("NodeShardSpec"):
+		return &applyconfigurationshardv1alpha1.NodeShardSpecApplyConfiguration{}
+	case shardv1alpha1.SchemeGroupVersion.WithKind("NodeShardStatus"):
+		return &applyconfigurationshardv1alpha1.NodeShardStatusApplyConfiguration{}
 
 		// Group=topology.volcano.sh, Version=v1alpha1
 	case topologyv1alpha1.SchemeGroupVersion.WithKind("ExactMatch"):
