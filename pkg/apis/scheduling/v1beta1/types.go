@@ -446,7 +446,27 @@ type QueueSpec struct {
 	// Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
 	// +optional
 	Priority int32 `json:"priority,omitempty" protobuf:"bytes,10,opt,name=priority"`
+
+	// DequeueStrategy defines the dequeue strategy of queue
+	// +optional
+	// +kubebuilder:default:=traverse
+	// +kubebuilder:validation:Enum=fifo;traverse
+	DequeueStrategy DequeueStrategy `json:"dequeueStrategy,omitempty" protobuf:"bytes,11,opt,name=dequeueStrategy"`
 }
+
+type DequeueStrategy string
+
+const (
+	// DequeueStrategyFIFO defines a strict FIFO strategy. If the head of the queue cannot be scheduled,
+	// the system will not attempt to dequeue other jobs from the queue.
+	DequeueStrategyFIFO DequeueStrategy = "fifo"
+	// DequeueStrategyTraverse defines a strategy that traverses the queue. If the head of the queue cannot be scheduled,
+	// it will be skipped and the scheduler will attempt to dequeue subsequent jobs.
+	DequeueStrategyTraverse DequeueStrategy = "traverse"
+
+	// DefaultDequeueStrategy is the default dequeue strategy.
+	DefaultDequeueStrategy DequeueStrategy = DequeueStrategyTraverse
+)
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
