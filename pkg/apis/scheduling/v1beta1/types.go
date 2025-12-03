@@ -176,9 +176,11 @@ type PodGroupSpec struct {
 	// will not start anyone.
 	MinMember int32 `json:"minMember,omitempty" protobuf:"bytes,1,opt,name=minMember"`
 
-	// MinTaskMember defines the minimal number of pods to run each task in the pod group;
+	// MinTaskMember defines the minimal number of pods to run for each task in the pod group;
 	// if there's not enough resources to start each task, the scheduler
 	// will not start anyone.
+	// SubGroupPolicy covers all capabilities of minTaskMember, while providing richer network topology and Gang scheduling management capabilities.
+	// Recommend using SubGroupPolicy to uniformly manage Gang scheduling for each Task group.
 	MinTaskMember map[string]int32 `json:"minTaskMember,omitempty" protobuf:"bytes,1,opt,name=minTaskMember"`
 
 	// Queue defines the queue to allocate resource for PodGroup; if queue does not exist,
@@ -205,7 +207,13 @@ type PodGroupSpec struct {
 	// +optional
 	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,5,opt,name=networkTopology"`
 
-	// SubGroupPolicy defines policies for dividing all pods within the podGroup into multiple groups.
+	// SubGroupPolicy provides secondary grouping capability for Pods within a PodGroup, supporting subgroup-level Gang scheduling and network topology affinity scheduling.
+	// 1. Supports dividing Pods in a PodGroup into multiple subgroups as required;
+	// 2. Supports configuring subgroup-level Gang scheduling (e.g., scheduling is allowed only when resource requirements of at least N subgroups are satisfied);
+	// 3. Supports specifying that Pods within a subgroup are scheduled to the same network topology domain (such as HyperNode);
+
+	// Compared with minTaskMember, it offers more comprehensive topology scheduling and Gang scheduling management capabilities.
+	// Concurrent use with minTaskMember is not recommended, and SubGroupPolicy is the long-term evolution direction.
 	// +optional
 	SubGroupPolicy []SubGroupPolicySpec `json:"subGroupPolicy,omitempty" protobuf:"bytes,6,opt,name=subGroupPolicy"`
 }
@@ -213,10 +221,6 @@ type PodGroupSpec struct {
 type SubGroupPolicySpec struct {
 	// Name specifies the name of SubGroupPolicy
 	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
-
-	// MatchPolicy defines matching strategies for different groups, where pods with the same labelKey value are grouped together.
-	// The LabelKey in the list is unique.
-	MatchPolicy []MatchPolicySpec `json:"matchPolicy,omitempty" protobuf:"bytes,2,opt,name=matchPolicy"`
 
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
@@ -227,15 +231,26 @@ type SubGroupPolicySpec struct {
 	// +optional
 	SubGroupSize *int32 `json:"subGroupSize,omitempty" protobuf:"bytes,4,opt,name=subGroupSize"`
 
-	// MinSubGroups defines the minimum number of sub-affinity groups required.
+	// MinSubGroups: Minimum number of subgroups required to trigger scheduling. Scheduling is initiated only if cluster resources meet the requirements of at least this number of subgroups.
+	// Subgroup-level Gang Scheduling
 	// +kubebuilder:default:=0
 	// +optional
 	MinSubGroups *int32 `json:"minSubGroups,omitempty" protobuf:"bytes,5,opt,name=minSubGroups"`
-}
 
-type MatchPolicySpec struct {
-	// LabelKey specifies the label key used to group pods.
-	LabelKey string `json:"labelKey,omitempty" protobuf:"bytes,1,opt,name=labelKey"`
+	// LabelSelector is used to find matching pods.
+	// Pods that match this label selector are counted to determine the number of pods
+	// in their corresponding topology domain.
+	// +optional
+	LabelSelector *metav1.LabelSelector `json:"labelSelector,omitempty" protobuf:"bytes,6,opt,name=labelSelector"`
+
+	// MatchLabelKeys: A label-based grouping configuration field for Pods, defining filtering rules for grouping label keys
+	// Core function: Refine grouping of Pods that meet LabelSelector criteria by label attributes, with the following rules and constraints:
+	// 1. Scope: Only applies to Pods matching the predefined LabelSelector
+	// 2. Grouping rule: Specify one or more label keys; Pods containing the target label keys with exactly the same corresponding label values are grouped together
+	// 3. Policy constraint: Pods in the same group follow a unified NetworkTopology policy to achieve group-level network behavior governance
+	// +listType=atomic
+	// +optional
+	MatchLabelKeys []string `json:"matchLabelKeys,omitempty" protobuf:"bytes,7,opt,name=matchLabelKeys"`
 }
 
 type NetworkTopologyMode string
