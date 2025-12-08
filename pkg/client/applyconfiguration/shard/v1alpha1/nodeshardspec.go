@@ -20,22 +20,13 @@ package v1alpha1
 // NodeShardSpecApplyConfiguration represents a declarative configuration of the NodeShardSpec type for use
 // with apply.
 type NodeShardSpecApplyConfiguration struct {
-	SchedulerName *string  `json:"schedulerName,omitempty"`
-	NodesDesired  []string `json:"nodesDesired,omitempty"`
+	NodesDesired []string `json:"nodesDesired,omitempty"`
 }
 
 // NodeShardSpecApplyConfiguration constructs a declarative configuration of the NodeShardSpec type for use with
 // apply.
 func NodeShardSpec() *NodeShardSpecApplyConfiguration {
 	return &NodeShardSpecApplyConfiguration{}
-}
-
-// WithSchedulerName sets the SchedulerName field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the SchedulerName field is set to the value of the last call.
-func (b *NodeShardSpecApplyConfiguration) WithSchedulerName(value string) *NodeShardSpecApplyConfiguration {
-	b.SchedulerName = &value
-	return b
 }
 
 // WithNodesDesired adds the given value to the NodesDesired field in the declarative configuration
