@@ -30,6 +30,7 @@ import (
 	flowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
+	shardv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/shard/v1alpha1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1"
 )
 
@@ -41,6 +42,7 @@ type Interface interface {
 	FlowV1alpha1() flowv1alpha1.FlowV1alpha1Interface
 	NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interface
 	SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface
+	ShardV1alpha1() shardv1alpha1.ShardV1alpha1Interface
 	TopologyV1alpha1() topologyv1alpha1.TopologyV1alpha1Interface
 }
 
@@ -53,6 +55,7 @@ type Clientset struct {
 	flowV1alpha1           *flowv1alpha1.FlowV1alpha1Client
 	nodeinfoV1alpha1       *nodeinfov1alpha1.NodeinfoV1alpha1Client
 	schedulingV1beta1      *schedulingv1beta1.SchedulingV1beta1Client
+	shardV1alpha1          *shardv1alpha1.ShardV1alpha1Client
 	topologyV1alpha1       *topologyv1alpha1.TopologyV1alpha1Client
 }
 
@@ -84,6 +87,11 @@ func (c *Clientset) NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interfac
 // SchedulingV1beta1 retrieves the SchedulingV1beta1Client
 func (c *Clientset) SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface {
 	return c.schedulingV1beta1
+}
+
+// ShardV1alpha1 retrieves the ShardV1alpha1Client
+func (c *Clientset) ShardV1alpha1() shardv1alpha1.ShardV1alpha1Interface {
+	return c.shardV1alpha1
 }
 
 // TopologyV1alpha1 retrieves the TopologyV1alpha1Client
@@ -159,6 +167,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.shardV1alpha1, err = shardv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.topologyV1alpha1, err = topologyv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -190,6 +202,7 @@ func New(c rest.Interface) *Clientset {
 	cs.flowV1alpha1 = flowv1alpha1.New(c)
 	cs.nodeinfoV1alpha1 = nodeinfov1alpha1.New(c)
 	cs.schedulingV1beta1 = schedulingv1beta1.New(c)
+	cs.shardV1alpha1 = shardv1alpha1.New(c)
 	cs.topologyV1alpha1 = topologyv1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
