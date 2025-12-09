@@ -23,6 +23,8 @@ const (
 	TaskIndex = "volcano.sh/task-index"
 	// JobNameKey job name key used in pod annotation / labels
 	JobNameKey = "volcano.sh/job-name"
+	// TaskPartitionID task partition id key used in pod annotation / labels
+	TaskPartitionID = "volcano.sh/partition-id"
 	// QueueNameKey queue name key used in pod annotation / labels
 	QueueNameKey = "volcano.sh/queue-name"
 	// JobNamespaceKey job namespace key
@@ -49,6 +51,4 @@ const (
 	BurstToSiloClusterAnnotation = "volcano.sh/silo-resource"
 	// CronJobScheduledTimestampAnnotation records the intended scheduled timestamp for a job triggered by a CronJob.
 	CronJobScheduledTimestampAnnotation = "volcano.sh/cronjob-scheduled-timestamp"
-	// Partitionkey labels key for partitionGroup
-	Partitionkey = "volcano.sh/partition-id"
 )

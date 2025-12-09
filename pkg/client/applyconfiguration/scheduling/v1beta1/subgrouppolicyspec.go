@@ -17,14 +17,19 @@ limitations under the License.
 
 package v1beta1
 
+import (
+	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
+)
+
 // SubGroupPolicySpecApplyConfiguration represents a declarative configuration of the SubGroupPolicySpec type for use
 // with apply.
 type SubGroupPolicySpecApplyConfiguration struct {
 	Name            *string                                `json:"name,omitempty"`
-	MatchPolicy     []MatchPolicySpecApplyConfiguration    `json:"matchPolicy,omitempty"`
 	NetworkTopology *NetworkTopologySpecApplyConfiguration `json:"networkTopology,omitempty"`
 	SubGroupSize    *int32                                 `json:"subGroupSize,omitempty"`
 	MinSubGroups    *int32                                 `json:"minSubGroups,omitempty"`
+	LabelSelector   *v1.LabelSelectorApplyConfiguration    `json:"labelSelector,omitempty"`
+	MatchLabelKeys  []string                               `json:"matchLabelKeys,omitempty"`
 }
 
 // SubGroupPolicySpecApplyConfiguration constructs a declarative configuration of the SubGroupPolicySpec type for use with
@@ -38,19 +43,6 @@ func SubGroupPolicySpec() *SubGroupPolicySpecApplyConfiguration {
 // If called multiple times, the Name field is set to the value of the last call.
 func (b *SubGroupPolicySpecApplyConfiguration) WithName(value string) *SubGroupPolicySpecApplyConfiguration {
 	b.Name = &value
-	return b
-}
-
-// WithMatchPolicy adds the given value to the MatchPolicy field in the declarative configuration
-// and returns the receiver, so that objects can be build by chaining "With" function invocations.
-// If called multiple times, values provided by each call will be appended to the MatchPolicy field.
-func (b *SubGroupPolicySpecApplyConfiguration) WithMatchPolicy(values ...*MatchPolicySpecApplyConfiguration) *SubGroupPolicySpecApplyConfiguration {
-	for i := range values {
-		if values[i] == nil {
-			panic("nil value passed to WithMatchPolicy")
-		}
-		b.MatchPolicy = append(b.MatchPolicy, *values[i])
-	}
 	return b
 }
 
@@ -75,5 +67,23 @@ func (b *SubGroupPolicySpecApplyConfiguration) WithSubGroupSize(value int32) *Su
 // If called multiple times, the MinSubGroups field is set to the value of the last call.
 func (b *SubGroupPolicySpecApplyConfiguration) WithMinSubGroups(value int32) *SubGroupPolicySpecApplyConfiguration {
 	b.MinSubGroups = &value
+	return b
+}
+
+// WithLabelSelector sets the LabelSelector field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the LabelSelector field is set to the value of the last call.
+func (b *SubGroupPolicySpecApplyConfiguration) WithLabelSelector(value *v1.LabelSelectorApplyConfiguration) *SubGroupPolicySpecApplyConfiguration {
+	b.LabelSelector = value
+	return b
+}
+
+// WithMatchLabelKeys adds the given value to the MatchLabelKeys field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the MatchLabelKeys field.
+func (b *SubGroupPolicySpecApplyConfiguration) WithMatchLabelKeys(values ...string) *SubGroupPolicySpecApplyConfiguration {
+	for i := range values {
+		b.MatchLabelKeys = append(b.MatchLabelKeys, values[i])
+	}
 	return b
 }

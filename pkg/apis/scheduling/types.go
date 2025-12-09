@@ -172,6 +172,8 @@ type PodGroupSpec struct {
 	// MinTaskMember defines the minimal number of pods to run for each task in the pod group;
 	// if there's not enough resources to start each task, the scheduler
 	// will not start anyone.
+	// SubGroupPolicy covers all capabilities of minTaskMember, while providing richer network topology and Gang scheduling management capabilities.
+	// Recommend using SubGroupPolicy to uniformly manage Gang scheduling for each Task group.
 	MinTaskMember map[string]int32
 
 	// Queue defines the queue to allocate resource for PodGroup; if queue does not exist,
@@ -197,7 +199,13 @@ type PodGroupSpec struct {
 	// +optional
 	NetworkTopology *NetworkTopologySpec
 
-	// SubGroupPolicy defines policies for dividing all pods within the podGroup into multiple groups.
+	// SubGroupPolicy provides secondary grouping capability for Pods within a PodGroup, supporting subgroup-level Gang scheduling and network topology affinity scheduling.
+	// 1. Supports dividing Pods in a PodGroup into multiple subgroups as required;
+	// 2. Supports configuring subgroup-level Gang scheduling (e.g., scheduling is allowed only when resource requirements of at least N subgroups are satisfied);
+	// 3. Supports specifying that Pods within a subgroup are scheduled to the same network topology domain (such as HyperNode);
+
+	// Compared with minTaskMember, it offers more comprehensive topology scheduling and Gang scheduling management capabilities.
+	// Concurrent use with minTaskMember is not recommended, and SubGroupPolicy is the long-term evolution direction.
 	// +optional
 	SubGroupPolicy []SubGroupPolicySpec
 }
@@ -206,28 +214,34 @@ type SubGroupPolicySpec struct {
 	// Name specifies the name of SubGroupPolicy
 	Name string
 
-	// MatchPolicy defines matching strategies for different groups, where pods with the same labelKey value are grouped together.
-	// The LabelKey in the list is unique.
-	MatchPolicy []MatchPolicySpec
-
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec
 
 	// SubGroupSize defines the number of pods in each sub-affinity group.
 	// Only when a subGroup of pods, with a size of "subGroupSize", can satisfy the network topology constraint then will the subGroup be scheduled.
-	// +optional
 	SubGroupSize *int32
 
-	// MinSubGroups defines the minimum number of sub-affinity groups required.
+	// MinSubGroups: Minimum number of subgroups required to trigger scheduling. Scheduling is initiated only if cluster resources meet the requirements of at least this number of subgroups.
+	// Subgroup-level Gang Scheduling
 	// +kubebuilder:default:=0
 	// +optional
 	MinSubGroups *int32
-}
 
-type MatchPolicySpec struct {
-	// LabelKey The pods are grouped according to the LabelKey corresponding to this value.
-	LabelKey string
+	// LabelSelector is used to find matching pods.
+	// Pods that match this label selector are counted to determine the number of pods
+	// in their corresponding topology domain.
+	// +optional
+	LabelSelector *metav1.LabelSelector
+
+	// MatchLabelKeys: A label-based grouping configuration field for Pods, defining filtering rules for grouping label keys
+	// Core function: Refine grouping of Pods that meet LabelSelector criteria by label attributes, with the following rules and constraints:
+	// 1. Scope: Only applies to Pods matching the predefined LabelSelector
+	// 2. Grouping rule: Specify one or more label keys; Pods containing the target label keys with exactly the same corresponding label values are grouped together
+	// 3. Policy constraint: Pods in the same group follow a unified NetworkTopology policy to achieve group-level network behavior governance
+	// +listType=atomic
+	// +optional
+	MatchLabelKeys []string
 }
 
 // NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".
