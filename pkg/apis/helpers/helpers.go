@@ -20,6 +20,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -54,6 +55,8 @@ const (
 	// DefaultMaxHeaderBytes defines the default max size of request headers in bytes
 	// 1 MB
 	DefaultMaxHeaderBytes = 1 << 20
+	// DefaultGracefulShutdownTimeout defines the default timeout for graceful shutdown http server
+	DefaultGracefulShutdownTimeout = 30 * time.Second
 )
 
 // JobKind creates job GroupVersionKind.
@@ -71,6 +74,8 @@ var JobFlowKind = flow.SchemeGroupVersion.WithKind("JobFlow")
 
 // JobTemplateKind creates jobtemplate GroupVersionKind.
 var JobTemplateKind = flow.SchemeGroupVersion.WithKind("JobTemplate")
+
+var shutdownSignals = []os.Signal{os.Interrupt, syscall.SIGTERM, syscall.SIGINT}
 
 // CreateOrUpdateConfigMap creates config map if not present or updates config map if necessary.
 func CreateOrUpdateConfigMap(job *vcbatch.Job, kubeClients kubernetes.Interface, data map[string]string, cmName string) error {
@@ -249,14 +254,24 @@ func runServer(server *http.Server, ln net.Listener) error {
 		return fmt.Errorf("listener and server must not be nil")
 	}
 
-	stopCh := make(chan os.Signal, 2)
-	signal.Notify(stopCh, syscall.SIGTERM, syscall.SIGINT)
+	stopCh := make(chan struct{})
+	shutdownHandler := make(chan os.Signal, 2)
+	signal.Notify(shutdownHandler, shutdownSignals...)
+	go func() {
+		<-shutdownHandler
+		close(stopCh)
+		<-shutdownHandler
+		os.Exit(1) // second signal. Exit directly.
+	}()
 
 	go func() {
 		<-stopCh
-		ctx, cancel := context.WithTimeout(context.Background(), 0)
-		server.Shutdown(ctx)
-		cancel()
+		ctx, cancel := context.WithTimeout(context.Background(), DefaultGracefulShutdownTimeout)
+		defer cancel()
+		if err := server.Shutdown(ctx); err != nil {
+			klog.Fatal("Server Shutdown:", err)
+		}
+		klog.Info("Server exiting")
 	}()
 
 	go func() {
@@ -275,7 +290,10 @@ func runServer(server *http.Server, ln net.Listener) error {
 		case <-stopCh:
 			klog.Info(msg)
 		default:
-			klog.Fatalf("%s due to error: %v", msg, err)
+			if !errors.Is(err, http.ErrServerClosed) {
+				klog.Fatalf("%s due to error: %v", msg, err)
+			}
+			klog.Infof("http server stopped listening on %s with err: %v", listener.Addr().String(), err)
 		}
 	}()
 
