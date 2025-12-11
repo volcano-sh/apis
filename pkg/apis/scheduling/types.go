@@ -167,14 +167,14 @@ type PodGroupSpec struct {
 	// MinMember defines the minimal number of members/tasks to run the pod group;
 	// if there's not enough resources to start all tasks, the scheduler
 	// will not start anyone.
-	MinMember int32 `json:"minMember,omitempty" protobuf:"bytes,1,opt,name=minMember"`
+	MinMember int32 `json:"minMember,omitempty" protobuf:"varint,1,opt,name=minMember"`
 
 	// MinTaskMember defines the minimal number of pods to run for each task in the pod group;
 	// if there's not enough resources to start each task, the scheduler
 	// will not start anyone.
 	// SubGroupPolicy covers all capabilities of minTaskMember, while providing richer network topology and Gang scheduling management capabilities.
 	// Recommend using SubGroupPolicy to uniformly manage Gang scheduling for each Task group.
-	MinTaskMember map[string]int32 `json:"minTaskMember,omitempty" protobuf:"bytes,2,opt,name=minTaskMember"`
+	MinTaskMember map[string]int32 `json:"minTaskMember,omitempty" protobuf:"bytes,2,rep,name=minTaskMember"`
 
 	// Queue defines the queue to allocate resource for PodGroup; if queue does not exist,
 	// the PodGroup will not be scheduled.
@@ -207,7 +207,7 @@ type PodGroupSpec struct {
 	// Compared with minTaskMember, it offers more comprehensive topology scheduling and Gang scheduling management capabilities.
 	// Concurrent use with minTaskMember is not recommended, and SubGroupPolicy is the long-term evolution direction.
 	// +optional
-	SubGroupPolicy []SubGroupPolicySpec `json:"subGroupPolicy,omitempty" protobuf:"bytes,7,opt,name=subGroupPolicy"`
+	SubGroupPolicy []SubGroupPolicySpec `json:"subGroupPolicy,omitempty" protobuf:"bytes,7,rep,name=subGroupPolicy"`
 }
 
 type SubGroupPolicySpec struct {
@@ -221,13 +221,13 @@ type SubGroupPolicySpec struct {
 	// SubGroupSize defines the number of pods in each sub-affinity group.
 	// Only when a subGroup of pods, with a size of "subGroupSize", can satisfy the network topology constraint then will the subGroup be scheduled.
 	// +optional
-	SubGroupSize *int32 `json:"subGroupSize,omitempty" protobuf:"bytes,3,opt,name=subGroupSize"`
+	SubGroupSize *int32 `json:"subGroupSize,omitempty" protobuf:"varint,3,opt,name=subGroupSize"`
 
 	// MinSubGroups: Minimum number of subgroups required to trigger scheduling. Scheduling is initiated only if cluster resources meet the requirements of at least this number of subgroups.
 	// Subgroup-level Gang Scheduling
 	// +kubebuilder:default:=0
 	// +optional
-	MinSubGroups *int32 `json:"minSubGroups,omitempty" protobuf:"bytes,4,opt,name=minSubGroups"`
+	MinSubGroups *int32 `json:"minSubGroups,omitempty" protobuf:"varint,4,opt,name=minSubGroups"`
 
 	// LabelSelector is used to find matching pods.
 	// Pods that match this label selector are counted to determine the number of pods
@@ -242,7 +242,7 @@ type SubGroupPolicySpec struct {
 	// 3. Policy constraint: Pods in the same group follow a unified NetworkTopology policy to achieve group-level network behavior governance
 	// +listType=atomic
 	// +optional
-	MatchLabelKeys []string `json:"matchLabelKeys,omitempty" protobuf:"bytes,6,opt,name=matchLabelKeys"`
+	MatchLabelKeys []string `json:"matchLabelKeys,omitempty" protobuf:"bytes,6,rep,name=matchLabelKeys"`
 }
 
 // NetworkTopologyMode represents the networkTopology mode, valid values are "hard" and "soft".
@@ -266,7 +266,7 @@ type NetworkTopologySpec struct {
 
 	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
 	// +optional
-	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"bytes,2,opt,name=highestTierAllowed"`
+	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"varint,2,opt,name=highestTierAllowed"`
 
 	// HighestTierName specifies the highest tier name that a job allowed to cross when scheduling.
 	// HighestTierName and HighestTierAllowed cannot be set simultaneously.
@@ -281,19 +281,19 @@ type PodGroupStatus struct {
 
 	// The conditions of PodGroup.
 	// +optional
-	Conditions []PodGroupCondition `json:"conditions,omitempty" protobuf:"bytes,2,opt,name=conditions"`
+	Conditions []PodGroupCondition `json:"conditions,omitempty" protobuf:"bytes,2,rep,name=conditions"`
 
 	// The number of actively running pods.
 	// +optional
-	Running int32 `json:"running,omitempty" protobuf:"bytes,3,opt,name=running"`
+	Running int32 `json:"running,omitempty" protobuf:"varint,3,opt,name=running"`
 
 	// The number of pods which reached phase Succeeded.
 	// +optional
-	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,4,opt,name=succeeded"`
+	Succeeded int32 `json:"succeeded,omitempty" protobuf:"varint,4,opt,name=succeeded"`
 
 	// The number of pods which reached phase Failed.
 	// +optional
-	Failed int32 `json:"failed,omitempty" protobuf:"bytes,5,opt,name=failed"`
+	Failed int32 `json:"failed,omitempty" protobuf:"varint,5,opt,name=failed"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -355,15 +355,15 @@ type QueueStatus struct {
 	State QueueState `json:"state,omitempty" protobuf:"bytes,1,opt,name=state"`
 
 	// The number of 'Unknown' PodGroup in this queue.
-	Unknown int32 `json:"unknown,omitempty" protobuf:"bytes,2,opt,name=unknown"`
+	Unknown int32 `json:"unknown,omitempty" protobuf:"varint,2,opt,name=unknown"`
 	// The number of 'Pending' PodGroup in this queue.
-	Pending int32 `json:"pending,omitempty" protobuf:"bytes,3,opt,name=pending"`
+	Pending int32 `json:"pending,omitempty" protobuf:"varint,3,opt,name=pending"`
 	// The number of 'Running' PodGroup in this queue.
-	Running int32 `json:"running,omitempty" protobuf:"bytes,4,opt,name=running"`
+	Running int32 `json:"running,omitempty" protobuf:"varint,4,opt,name=running"`
 	// The number of `Inqueue` PodGroup in this queue.
-	Inqueue int32 `json:"inqueue,omitempty" protobuf:"bytes,5,opt,name=inqueue"`
+	Inqueue int32 `json:"inqueue,omitempty" protobuf:"varint,5,opt,name=inqueue"`
 	// The number of `Completed` PodGroup in this queue.
-	Completed int32 `json:"completed,omitempty" protobuf:"bytes,6,opt,name=completed"`
+	Completed int32 `json:"completed,omitempty" protobuf:"varint,6,opt,name=completed"`
 
 	// Reservation is the profile of resource reservation for queue
 	Reservation Reservation `json:"reservation,omitempty" protobuf:"bytes,7,opt,name=reservation"`
@@ -378,7 +378,7 @@ type Cluster struct {
 	// +optional
 	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	// +optional
-	Weight int32 `json:"weight,omitempty" protobuf:"bytes,2,opt,name=weight"`
+	Weight int32 `json:"weight,omitempty" protobuf:"varint,2,opt,name=weight"`
 	// +optional
 	Capacity v1.ResourceList `json:"capacity,omitempty" protobuf:"bytes,3,opt,name=capacity"`
 }
@@ -411,17 +411,17 @@ type NodeGroupAntiAffinity struct {
 // QueueSpec represents the template of Queue.
 type QueueSpec struct {
 	// +optional
-	Weight int32 `json:"weight,omitempty" protobuf:"bytes,1,opt,name=weight"`
+	Weight int32 `json:"weight,omitempty" protobuf:"varint,1,opt,name=weight"`
 	// +optional
 	Capability v1.ResourceList `json:"capability,omitempty" protobuf:"bytes,2,opt,name=capability"`
 
 	// Reclaimable indicate whether the queue can be reclaimed by other queue
 	// +optional
-	Reclaimable *bool `json:"reclaimable,omitempty" protobuf:"bytes,3,opt,name=reclaimable"`
+	Reclaimable *bool `json:"reclaimable,omitempty" protobuf:"varint,3,opt,name=reclaimable"`
 
 	// extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
 	// +optional
-	ExtendClusters []Cluster `json:"extendClusters,omitempty" protobuf:"bytes,4,opt,name=extendClusters"`
+	ExtendClusters []Cluster `json:"extendClusters,omitempty" protobuf:"bytes,4,rep,name=extendClusters"`
 
 	// Guarantee indicate configuration about resource reservation
 	// +optional
