@@ -66,7 +66,6 @@ type HttpGet struct {
 	// +kubebuilder:validation:MaxLength=253
 	// +optional
 	TaskName string `json:"taskName,omitempty"`
-	// +kubebuilder:validation:MaxLength=2048
 	// +optional
 	Path string `json:"path,omitempty"`
 	// +optional
