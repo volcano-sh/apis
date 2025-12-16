@@ -237,6 +237,7 @@ type SubGroupPolicySpec struct {
 
 	// SubGroupSize defines the number of pods in each sub-affinity group.
 	// Only when a subGroup of pods, with a size of "subGroupSize", can satisfy the network topology constraint then will the subGroup be scheduled.
+	// +kubebuilder:default:=1
 	// +kubebuilder:validation:Minimum=1
 	// +optional
 	SubGroupSize *int32 `json:"subGroupSize,omitempty" protobuf:"bytes,4,opt,name=subGroupSize"`
