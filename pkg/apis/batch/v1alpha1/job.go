@@ -86,6 +86,7 @@ type JobSpec struct {
 	RunningEstimate *metav1.Duration `json:"runningEstimate,omitempty" protobuf:"bytes,7,opt,name=runningEstimate"`
 
 	// Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+	// +kubebuilder:default:="default"
 	// +kubebuilder:validation:MaxLength=253
 	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
 	// +optional
@@ -110,6 +111,7 @@ type JobSpec struct {
 
 	// If specified, indicates the job's priority.
 	// +kubebuilder:validation:MaxLength=253
+	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
 	// +optional
 	PriorityClassName string `json:"priorityClassName,omitempty" protobuf:"bytes,11,opt,name=priorityClassName"`
 
@@ -150,6 +152,7 @@ type NetworkTopologySpec struct {
 	// HighestTierName specifies the highest tier name that a job allowed to cross when scheduling.
 	// HighestTierName and HighestTierAllowed cannot be set simultaneously.
 	// +kubebuilder:validation:MaxLength=253
+	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
 	// +optional
 	HighestTierName string `json:"highestTierName,omitempty" protobuf:"bytes,3,opt,name=highestTierName"`
 }
