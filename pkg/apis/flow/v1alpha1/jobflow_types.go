@@ -63,6 +63,7 @@ type Probe struct {
 }
 
 type HttpGet struct {
+	// +kubebuilder:validation:MaxLength=253
 	// +optional
 	TaskName string `json:"taskName,omitempty"`
 	// +optional
@@ -76,6 +77,7 @@ type HttpGet struct {
 }
 
 type TcpSocket struct {
+	// +kubebuilder:validation:MaxLength=253
 	// +optional
 	TaskName string `json:"taskName,omitempty"`
 	// +kubebuilder:validation:Minimum=0
@@ -85,8 +87,10 @@ type TcpSocket struct {
 }
 
 type TaskStatus struct {
+	// +kubebuilder:validation:MaxLength=253
 	// +optional
 	TaskName string `json:"taskName,omitempty"`
+	// +kubebuilder:validation:MaxLength=63
 	// +optional
 	Phase string `json:"phase,omitempty"`
 }
@@ -122,6 +126,7 @@ type JobStatus struct {
 	StartTimestamp metav1.Time `json:"startTimestamp,omitempty"`
 	// +optional
 	EndTimestamp metav1.Time `json:"endTimestamp,omitempty"`
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	RestartCount int32 `json:"restartCount,omitempty"`
 	// +optional
@@ -150,6 +155,7 @@ const (
 	Delete RetainPolicy = "delete"
 )
 
+// +kubebuilder:validation:Enum=Succeed;Terminating;Failed;Running;Pending
 type Phase string
 
 const (
