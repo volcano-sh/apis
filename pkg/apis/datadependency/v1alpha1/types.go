@@ -31,10 +31,10 @@ import (
 // It is a cluster-scoped resource.
 type DataSource struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataSourceSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
-	Status DataSourceStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	Spec   DataSourceSpec   `json:"spec,omitempty"`
+	Status DataSourceStatus `json:"status,omitempty"`
 }
 
 // DataSourceSpec defines the desired state of DataSource.
@@ -43,31 +43,31 @@ type DataSourceSpec struct {
 	// This provides context for the 'name' and 'attributes' fields.
 	// e.g., "hive", "s3", "hdfs".
 	// +required
-	System string `json:"system" protobuf:"bytes,1,opt,name=system"`
+	System string `json:"system"`
 
 	// Type specifies the category of the data source within the system.
 	// e.g., for system="hive", type could be "table", "view".
 	// e.g., for system="s3", type could be "bucket", "object", "prefix".
 	// +required
-	Type string `json:"type" protobuf:"bytes,2,opt,name=type"`
+	Type string `json:"type"`
 
 	// Name is the identifier of the data source, its format is interpreted
 	// in the context of the 'system' and 'type'.
 	// +required
-	Name string `json:"name" protobuf:"bytes,3,opt,name=name"`
+	Name string `json:"name"`
 
 	// Locality defines which clusters this data source is available on.
 	// +required
-	Locality *DataSourceLocality `json:"locality" protobuf:"bytes,4,opt,name=locality"`
+	Locality *DataSourceLocality `json:"locality"`
 
 	// Attributes provides extra, non-identifying metadata.
 	// +optional
-	Attributes map[string]string `json:"attributes,omitempty" protobuf:"bytes,5,rep,name=attributes"`
+	Attributes map[string]string `json:"attributes,omitempty"`
 
 	// ReclaimPolicy defines what happens to this DataSource when its last bound DataSourceClaim is deleted.
 	// Defaults to "Retain".
 	// +optional
-	ReclaimPolicy DataSourceReclaimPolicy `json:"reclaimPolicy,omitempty" protobuf:"bytes,6,opt,name=reclaimPolicy"`
+	ReclaimPolicy DataSourceReclaimPolicy `json:"reclaimPolicy,omitempty"`
 }
 
 // DataSourceLocality specifies the cached location information of the data source.
@@ -76,7 +76,7 @@ type DataSourceLocality struct {
 	// This provides a simple and direct way to specify cached data source location
 	// without interfering with user-defined ResourceBinding cluster affinity.
 	// +required
-	ClusterNames []string `json:"clusterNames" protobuf:"bytes,1,rep,name=clusterNames"`
+	ClusterNames []string `json:"clusterNames"`
 }
 
 // DataSourceStatus defines the observed state of DataSource.
@@ -84,17 +84,17 @@ type DataSourceStatus struct {
 	// ClaimRefs is a list of references to DataSourceClaims that are bound to this DataSource.
 	// The presence of items in this list indicates the DataSource is in use.
 	// +optional
-	ClaimRefs []corev1.ObjectReference `json:"claimRefs,omitempty" protobuf:"bytes,1,rep,name=claimRefs"`
+	ClaimRefs []corev1.ObjectReference `json:"claimRefs,omitempty"`
 
 	// BoundClaims counts the number of DataSourceClaims currently bound to this DataSource.
 	// This provides a quick summary of its usage.
 	// +optional
-	BoundClaims int32 `json:"boundClaims,omitempty" protobuf:"varint,2,opt,name=boundClaims"`
+	BoundClaims int32 `json:"boundClaims,omitempty"`
 
 	// Conditions store the available observations of the DataSource's state.
 	// This is more flexible than a single phase.
 	// +optional
-	Conditions []metav1.Condition `json:"conditions,omitempty" protobuf:"bytes,3,rep,name=conditions"`
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -102,8 +102,8 @@ type DataSourceStatus struct {
 // DataSourceList contains a list of DataSource.
 type DataSourceList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Items           []DataSource `json:"items" protobuf:"bytes,2,rep,name=items"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataSource `json:"items"`
 }
 
 type DataSourceReclaimPolicy string
@@ -123,10 +123,10 @@ const (
 // It is a namespaced resource.
 type DataSourceClaim struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DataSourceClaimSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
-	Status DataSourceClaimStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	Spec   DataSourceClaimSpec   `json:"spec,omitempty"`
+	Status DataSourceClaimStatus `json:"status,omitempty"`
 }
 
 // WorkloadRef defines a reference to a workload resource that can be used with Dynamic Client.
@@ -135,47 +135,47 @@ type WorkloadRef struct {
 	// APIVersion is the API version of the workload resource.
 	// e.g., "apps/v1", "batch.volcano.sh/v1alpha1"
 	// +required
-	APIVersion string `json:"apiVersion" protobuf:"bytes,1,opt,name=apiVersion"`
+	APIVersion string `json:"apiVersion"`
 
 	// Kind is the kind of the workload resource.
 	// e.g., "Deployment", "Job"
 	// +required
-	Kind string `json:"kind" protobuf:"bytes,2,opt,name=kind"`
+	Kind string `json:"kind"`
 
 	// Name is the name of the workload resource.
 	// +required
-	Name string `json:"name" protobuf:"bytes,3,opt,name=name"`
+	Name string `json:"name"`
 
 	// Namespace is the namespace of the workload resource.
 	// If empty, defaults to the namespace of the DataSourceClaim.
 	// +optional
-	Namespace string `json:"namespace,omitempty" protobuf:"bytes,4,opt,name=namespace"`
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // DataSourceClaimSpec defines the desired state of DataSourceClaim.
 type DataSourceClaimSpec struct {
 	// System is the required underlying data system of the data source.
 	// +required
-	System string `json:"system" protobuf:"bytes,1,opt,name=system"`
+	System string `json:"system"`
 
 	// DataSourceType is the required category of the data source within the system.
 	// +required
-	DataSourceType string `json:"dataSourceType" protobuf:"bytes,2,opt,name=dataSourceType"`
+	DataSourceType string `json:"dataSourceType"`
 
 	// DataSourceName specifies the logical name of the cached data source to claim.
 	// It will be matched against DataSource's spec.name field.
 	// +required
-	DataSourceName string `json:"dataSourceName" protobuf:"bytes,3,opt,name=dataSourceName"`
+	DataSourceName string `json:"dataSourceName"`
 
 	// Workload specifies the workload that this claim is associated with.
 	// This enables the controller to precisely identify and manage the workload
 	// using Dynamic Client without requiring complex selectors or UIDs.
 	// +required
-	Workload WorkloadRef `json:"workload" protobuf:"bytes,4,opt,name=workload"`
+	Workload WorkloadRef `json:"workload"`
 
 	// Attributes provides extra, non-identifying metadata.
 	// +optional
-	Attributes map[string]string `json:"attributes,omitempty" protobuf:"bytes,5,rep,name=attributes"`
+	Attributes map[string]string `json:"attributes,omitempty"`
 }
 
 // DataSourceClaimStatus defines the observed state of DataSourceClaim.
@@ -183,16 +183,16 @@ type DataSourceClaimStatus struct {
 	// Phase indicates the current lifecycle phase of the claim.
 	// +optional
 	// +default="Pending"
-	Phase DSCPhase `json:"phase" protobuf:"bytes,1,opt,name=phase"`
+	Phase DSCPhase `json:"phase"`
 
 	// BoundDataSource specifies the name of the DataSource object
 	// that is bound to this claim for scheduling.
 	// +optional
-	BoundDataSource string `json:"boundDataSource,omitempty" protobuf:"bytes,2,opt,name=boundDataSource"`
+	BoundDataSource string `json:"boundDataSource,omitempty"`
 
 	// Conditions store the available observations of the claim's state.
 	// +optional
-	Conditions []metav1.Condition `json:"conditions,omitempty" protobuf:"bytes,3,rep,name=conditions"`
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -200,8 +200,8 @@ type DataSourceClaimStatus struct {
 // DataSourceClaimList contains a list of DataSourceClaim.
 type DataSourceClaimList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Items           []DataSourceClaim `json:"items" protobuf:"bytes,2,rep,name=items"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataSourceClaim `json:"items"`
 }
 
 type DSCPhase string

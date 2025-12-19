@@ -24,13 +24,13 @@ import (
 // JobTemplateSpec defines the desired state of JobTemplate
 type JobTemplateSpec struct {
 	// JobSpec is the specification of the Job
-	v1alpha1.JobSpec `json:"jobSpec,omitempty" protobuf:"bytes,1,opt,name=jobSpec"`
+	v1alpha1.JobSpec `json:"jobSpec,omitempty"`
 }
 
 // JobTemplateStatus defines the observed state of JobTemplate
 type JobTemplateStatus struct {
 	// JobDependsOnList is the list of jobs that this job depends on
-	JobDependsOnList []string `json:"jobDependsOnList,omitempty" protobuf:"bytes,1,rep,name=jobDependsOnList"`
+	JobDependsOnList []string `json:"jobDependsOnList,omitempty"`
 }
 
 // +genclient
@@ -42,10 +42,10 @@ type JobTemplateStatus struct {
 // JobTemplate is the Schema for the jobtemplates API
 type JobTemplate struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   v1alpha1.JobSpec  `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
-	Status JobTemplateStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	Spec   v1alpha1.JobSpec  `json:"spec,omitempty"`
+	Status JobTemplateStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -54,6 +54,6 @@ type JobTemplate struct {
 // JobTemplateList contains a list of JobTemplate
 type JobTemplateList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Items           []JobTemplate `json:"items" protobuf:"bytes,2,rep,name=items"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []JobTemplate `json:"items"`
 }

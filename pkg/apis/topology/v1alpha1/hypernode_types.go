@@ -59,17 +59,14 @@ const (
 // HyperNodeSpec defines the desired state of a HyperNode.
 type HyperNodeSpec struct {
 	// Tier categorizes the performance level of the HyperNode.
-	// +kubebuilder:validation:Minimum=0
 	// +required
 	Tier int `json:"tier,omitempty"`
 
 	// TierName represents the level name of the HyperNode.
-	// +kubebuilder:validation:MaxLength=253
 	// +optional
 	TierName string `json:"tierName,omitempty"`
 
 	// Members defines a list of node groups or individual nodes included in the HyperNode.
-	// +kubebuilder:validation:MinItems=1
 	// +optional
 	Members []MemberSpec `json:"members,omitempty"`
 }
@@ -131,18 +128,14 @@ type MemberSelector struct {
 // ExactMatch represents the criteria for exact name matching.
 type ExactMatch struct {
 	// Name specifies the exact name of the node to match.
-	// +kubebuilder:validation:MinLength=1
-	// +kubebuilder:validation:MaxLength=253
-	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
-	// +required
+	// +optional
 	Name string `json:"name"`
 }
 
 // RegexMatch represents the criteria for regex-based matching.
 type RegexMatch struct {
 	// Pattern defines the regex pattern to match node names.
-	// +kubebuilder:validation:MinLength=1
-	// +required
+	// +optional
 	Pattern string `json:"pattern"`
 }
 
