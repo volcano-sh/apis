@@ -25,9 +25,11 @@ import (
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	batchv1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/apis/datadependency/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	shardv1alpha1 "volcano.sh/apis/pkg/apis/shard/v1alpha1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 )
 
@@ -37,9 +39,11 @@ var ParameterCodec = runtime.NewParameterCodec(Scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
 	batchv1alpha1.AddToScheme,
 	busv1alpha1.AddToScheme,
+	datadependencyv1alpha1.AddToScheme,
 	flowv1alpha1.AddToScheme,
 	nodeinfov1alpha1.AddToScheme,
 	schedulingv1beta1.AddToScheme,
+	shardv1alpha1.AddToScheme,
 	topologyv1alpha1.AddToScheme,
 }
 

@@ -24,9 +24,11 @@ import (
 	cache "k8s.io/client-go/tools/cache"
 	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/apis/bus/v1alpha1"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/apis/datadependency/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1"
 	v1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
+	shardv1alpha1 "volcano.sh/apis/pkg/apis/shard/v1alpha1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/apis/topology/v1alpha1"
 )
 
@@ -66,6 +68,12 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	case busv1alpha1.SchemeGroupVersion.WithResource("commands"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Bus().V1alpha1().Commands().Informer()}, nil
 
+		// Group=datadependency.volcano.sh, Version=v1alpha1
+	case datadependencyv1alpha1.SchemeGroupVersion.WithResource("datasources"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Datadependency().V1alpha1().DataSources().Informer()}, nil
+	case datadependencyv1alpha1.SchemeGroupVersion.WithResource("datasourceclaims"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Datadependency().V1alpha1().DataSourceClaims().Informer()}, nil
+
 		// Group=flow.volcano.sh, Version=v1alpha1
 	case flowv1alpha1.SchemeGroupVersion.WithResource("jobflows"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Flow().V1alpha1().JobFlows().Informer()}, nil
@@ -83,6 +91,10 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().Queues().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("reservations"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Scheduling().V1beta1().Reservations().Informer()}, nil
+
+		// Group=shard.volcano.sh, Version=v1alpha1
+	case shardv1alpha1.SchemeGroupVersion.WithResource("nodeshards"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Shard().V1alpha1().NodeShards().Informer()}, nil
 
 		// Group=topology.volcano.sh, Version=v1alpha1
 	case topologyv1alpha1.SchemeGroupVersion.WithResource("hypernodes"):

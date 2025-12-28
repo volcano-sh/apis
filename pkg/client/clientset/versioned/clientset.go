@@ -26,9 +26,11 @@ import (
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
 	batchv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/batch/v1alpha1"
 	busv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/datadependency/v1alpha1"
 	flowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
+	shardv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/shard/v1alpha1"
 	topologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1"
 )
 
@@ -36,21 +38,25 @@ type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface
 	BusV1alpha1() busv1alpha1.BusV1alpha1Interface
+	DatadependencyV1alpha1() datadependencyv1alpha1.DatadependencyV1alpha1Interface
 	FlowV1alpha1() flowv1alpha1.FlowV1alpha1Interface
 	NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interface
 	SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface
+	ShardV1alpha1() shardv1alpha1.ShardV1alpha1Interface
 	TopologyV1alpha1() topologyv1alpha1.TopologyV1alpha1Interface
 }
 
 // Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	batchV1alpha1     *batchv1alpha1.BatchV1alpha1Client
-	busV1alpha1       *busv1alpha1.BusV1alpha1Client
-	flowV1alpha1      *flowv1alpha1.FlowV1alpha1Client
-	nodeinfoV1alpha1  *nodeinfov1alpha1.NodeinfoV1alpha1Client
-	schedulingV1beta1 *schedulingv1beta1.SchedulingV1beta1Client
-	topologyV1alpha1  *topologyv1alpha1.TopologyV1alpha1Client
+	batchV1alpha1          *batchv1alpha1.BatchV1alpha1Client
+	busV1alpha1            *busv1alpha1.BusV1alpha1Client
+	datadependencyV1alpha1 *datadependencyv1alpha1.DatadependencyV1alpha1Client
+	flowV1alpha1           *flowv1alpha1.FlowV1alpha1Client
+	nodeinfoV1alpha1       *nodeinfov1alpha1.NodeinfoV1alpha1Client
+	schedulingV1beta1      *schedulingv1beta1.SchedulingV1beta1Client
+	shardV1alpha1          *shardv1alpha1.ShardV1alpha1Client
+	topologyV1alpha1       *topologyv1alpha1.TopologyV1alpha1Client
 }
 
 // BatchV1alpha1 retrieves the BatchV1alpha1Client
@@ -61,6 +67,11 @@ func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
 // BusV1alpha1 retrieves the BusV1alpha1Client
 func (c *Clientset) BusV1alpha1() busv1alpha1.BusV1alpha1Interface {
 	return c.busV1alpha1
+}
+
+// DatadependencyV1alpha1 retrieves the DatadependencyV1alpha1Client
+func (c *Clientset) DatadependencyV1alpha1() datadependencyv1alpha1.DatadependencyV1alpha1Interface {
+	return c.datadependencyV1alpha1
 }
 
 // FlowV1alpha1 retrieves the FlowV1alpha1Client
@@ -76,6 +87,11 @@ func (c *Clientset) NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interfac
 // SchedulingV1beta1 retrieves the SchedulingV1beta1Client
 func (c *Clientset) SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface {
 	return c.schedulingV1beta1
+}
+
+// ShardV1alpha1 retrieves the ShardV1alpha1Client
+func (c *Clientset) ShardV1alpha1() shardv1alpha1.ShardV1alpha1Interface {
+	return c.shardV1alpha1
 }
 
 // TopologyV1alpha1 retrieves the TopologyV1alpha1Client
@@ -135,6 +151,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.datadependencyV1alpha1, err = datadependencyv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.flowV1alpha1, err = flowv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -144,6 +164,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.schedulingV1beta1, err = schedulingv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.shardV1alpha1, err = shardv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -174,9 +198,11 @@ func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.batchV1alpha1 = batchv1alpha1.New(c)
 	cs.busV1alpha1 = busv1alpha1.New(c)
+	cs.datadependencyV1alpha1 = datadependencyv1alpha1.New(c)
 	cs.flowV1alpha1 = flowv1alpha1.New(c)
 	cs.nodeinfoV1alpha1 = nodeinfov1alpha1.New(c)
 	cs.schedulingV1beta1 = schedulingv1beta1.New(c)
+	cs.shardV1alpha1 = shardv1alpha1.New(c)
 	cs.topologyV1alpha1 = topologyv1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)

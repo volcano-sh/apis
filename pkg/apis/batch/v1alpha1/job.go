@@ -20,7 +20,6 @@ package v1alpha1
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
 	"volcano.sh/apis/pkg/apis/bus/v1alpha1"
 )
 
@@ -54,11 +53,13 @@ type Job struct {
 // JobSpec describes how the job execution will look like and when it will actually run.
 type JobSpec struct {
 	// SchedulerName is the default value of `tasks.template.spec.schedulerName`.
+	// +kubebuilder:validation:MaxLength=63
 	// +optional
 	SchedulerName string `json:"schedulerName,omitempty" protobuf:"bytes,1,opt,name=schedulerName"`
 
 	// The minimal available pods to run for this Job
 	// Defaults to the summary of tasks' replicas
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MinAvailable int32 `json:"minAvailable,omitempty" protobuf:"bytes,2,opt,name=minAvailable"`
 
@@ -67,6 +68,7 @@ type JobSpec struct {
 	Volumes []VolumeSpec `json:"volumes,omitempty" protobuf:"bytes,3,opt,name=volumes"`
 
 	// Tasks specifies the task specification of Job
+	// +kubebuilder:validation:MinItems=1
 	// +optional
 	Tasks []TaskSpec `json:"tasks,omitempty" protobuf:"bytes,4,opt,name=tasks"`
 
@@ -83,13 +85,17 @@ type JobSpec struct {
 	// Default to nil
 	RunningEstimate *metav1.Duration `json:"runningEstimate,omitempty" protobuf:"bytes,7,opt,name=runningEstimate"`
 
-	//Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+	// Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+	// +kubebuilder:default:="default"
+	// +kubebuilder:validation:MaxLength=253
+	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
 	// +optional
 	Queue string `json:"queue,omitempty" protobuf:"bytes,8,opt,name=queue"`
 
 	// Specifies the maximum number of retries before marking this Job failed.
 	// Defaults to 3.
 	// +kubebuilder:default:=3
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MaxRetry int32 `json:"maxRetry,omitempty" protobuf:"bytes,9,opt,name=maxRetry"`
 
@@ -99,10 +105,13 @@ type JobSpec struct {
 	// automatically deleted. If this field is unset,
 	// the Job won't be automatically deleted. If this field is set to zero,
 	// the Job becomes eligible to be deleted immediately after it finishes.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	TTLSecondsAfterFinished *int32 `json:"ttlSecondsAfterFinished,omitempty" protobuf:"varint,10,opt,name=ttlSecondsAfterFinished"`
 
 	// If specified, indicates the job's priority.
+	// +kubebuilder:validation:MaxLength=253
+	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
 	// +optional
 	PriorityClassName string `json:"priorityClassName,omitempty" protobuf:"bytes,11,opt,name=priorityClassName"`
 
@@ -136,18 +145,28 @@ type NetworkTopologySpec struct {
 	Mode NetworkTopologyMode `json:"mode,omitempty" protobuf:"bytes,1,opt,name=mode"`
 
 	// HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
-	// +kubebuilder:default=1
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	HighestTierAllowed *int `json:"highestTierAllowed,omitempty" protobuf:"bytes,2,opt,name=highestTierAllowed"`
+
+	// HighestTierName specifies the highest tier name that a job allowed to cross when scheduling.
+	// HighestTierName and HighestTierAllowed cannot be set simultaneously.
+	// +kubebuilder:validation:MaxLength=253
+	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
+	// +optional
+	HighestTierName string `json:"highestTierName,omitempty" protobuf:"bytes,3,opt,name=highestTierName"`
 }
 
 // VolumeSpec defines the specification of Volume, e.g. PVC.
 type VolumeSpec struct {
 	// Path within the container at which the volume should be mounted.  Must
 	// not contain ':'.
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Pattern=`^[^:]+$`
 	MountPath string `json:"mountPath" protobuf:"bytes,1,opt,name=mountPath"`
 
 	// defined the PVC name
+	// +kubebuilder:validation:MaxLength=253
 	// +optional
 	VolumeClaimName string `json:"volumeClaimName,omitempty" protobuf:"bytes,2,opt,name=volumeClaimName"`
 
@@ -219,15 +238,19 @@ const (
 // TaskSpec specifies the task specification of Job.
 type TaskSpec struct {
 	// Name specifies the name of tasks
+	// +kubebuilder:validation:MaxLength=63
+	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`
 	// +optional
 	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 
 	// Replicas specifies the replicas of this TaskSpec in Job
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Replicas int32 `json:"replicas,omitempty" protobuf:"bytes,2,opt,name=replicas"`
 
 	// The minimal available pods to run for this Task
 	// Defaults to the task replicas
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MinAvailable *int32 `json:"minAvailable,omitempty" protobuf:"bytes,3,opt,name=minAvailable"`
 
@@ -246,6 +269,7 @@ type TaskSpec struct {
 
 	// Specifies the maximum number of retries before marking this Task failed.
 	// Defaults to 3.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MaxRetry int32 `json:"maxRetry,omitempty" protobuf:"bytes,7,opt,name=maxRetry"`
 
@@ -253,10 +277,35 @@ type TaskSpec struct {
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
 
+	// PartitionPolicy defines the partition policy of a task.
+	// +optional
+	PartitionPolicy *PartitionPolicySpec `json:"partitionPolicy,omitempty" protobuf:"bytes,9,opt,name=partitionPolicy"`
+
 	// Specifies the node names of reservations that this task can be scheduled to.
 	// The scheduler will pick one from the list in the given order. If none of the specified nodes are available, the scheduler will choose a node based on its internal logic.
 	// +optional
-	ReservationNodeNames []string `json:"reservationNodeNames,omitempty" protobuf:"bytes,9,rep,name=reservationNodeNames"`
+	ReservationNodeNames []string `json:"reservationNodeNames,omitempty" protobuf:"bytes,10,rep,name=reservationNodeNames"`
+}
+
+type PartitionPolicySpec struct {
+	// TotalPartitions indicates how many groups a set of pods within a task is divided into.
+	// The product of TotalPartitions and PartitionSize should be equal to Replicas.
+	// +kubebuilder:validation:Minimum=1
+	TotalPartitions int32 `json:"totalPartitions" protobuf:"bytes,1,opt,name=totalPartitions"`
+
+	// PartitionSize is the number of pods included in each group.
+	// +kubebuilder:validation:Minimum=1
+	PartitionSize int32 `json:"partitionSize" protobuf:"bytes,2,opt,name=partitionSize"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,3,opt,name=networkTopology"`
+
+	// MinPartitions defines the minimum number of sub-affinity groups required.
+	// +kubebuilder:default:=0
+	// +kubebuilder:validation:Minimum=0
+	// +optional
+	MinPartitions int32 `json:"minPartitions,omitempty" protobuf:"bytes,4,opt,name=minPartitions"`
 }
 
 // JobPhase defines the phase of the job.
@@ -288,6 +337,7 @@ const (
 // JobState contains details for the current state of the job.
 type JobState struct {
 	// The phase of Job.
+	// +kubebuilder:validation:Enum=Pending;Aborting;Aborted;Running;Restarting;Completing;Completed;Terminating;Terminated;Failed
 	// +optional
 	Phase JobPhase `json:"phase,omitempty" protobuf:"bytes,1,opt,name=phase"`
 
@@ -318,6 +368,7 @@ type JobStatus struct {
 	State JobState `json:"state,omitempty" protobuf:"bytes,1,opt,name=state"`
 
 	// The minimal available pods to run for this Job
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MinAvailable int32 `json:"minAvailable,omitempty" protobuf:"bytes,2,opt,name=minAvailable"`
 
@@ -326,34 +377,42 @@ type JobStatus struct {
 	TaskStatusCount map[string]TaskState `json:"taskStatusCount,omitempty" protobuf:"bytes,21,opt,name=taskStatusCount"`
 
 	// The number of pending pods.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Pending int32 `json:"pending,omitempty" protobuf:"bytes,3,opt,name=pending"`
 
 	// The number of running pods.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Running int32 `json:"running,omitempty" protobuf:"bytes,4,opt,name=running"`
 
 	// The number of pods which reached phase Succeeded.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Succeeded int32 `json:"succeeded,omitempty" protobuf:"bytes,5,opt,name=succeeded"`
 
 	// The number of pods which reached phase Failed.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Failed int32 `json:"failed,omitempty" protobuf:"bytes,6,opt,name=failed"`
 
 	// The number of pods which reached phase Terminating.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Terminating int32 `json:"terminating,omitempty" protobuf:"bytes,7,opt,name=terminating"`
 
 	// The number of pods which reached phase Unknown.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Unknown int32 `json:"unknown,omitempty" protobuf:"bytes,8,opt,name=unknown"`
 
 	//Current version of job
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	Version int32 `json:"version,omitempty" protobuf:"bytes,9,opt,name=version"`
 
 	// The number of Job retries.
+	// +kubebuilder:validation:Minimum=0
 	// +optional
 	RetryCount int32 `json:"retryCount,omitempty" protobuf:"bytes,10,opt,name=retryCount"`
 

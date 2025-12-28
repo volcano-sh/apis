@@ -30,12 +30,16 @@ import (
 	fakebatchv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/batch/v1alpha1/fake"
 	busv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1"
 	fakebusv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/bus/v1alpha1/fake"
+	datadependencyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/datadependency/v1alpha1"
+	fakedatadependencyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/datadependency/v1alpha1/fake"
 	flowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1"
 	fakeflowv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/flow/v1alpha1/fake"
 	nodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1"
 	fakenodeinfov1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/nodeinfo/v1alpha1/fake"
 	schedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1"
 	fakeschedulingv1beta1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/scheduling/v1beta1/fake"
+	shardv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/shard/v1alpha1"
+	fakeshardv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/shard/v1alpha1/fake"
 	topologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1"
 	faketopologyv1alpha1 "volcano.sh/apis/pkg/client/clientset/versioned/typed/topology/v1alpha1/fake"
 )
@@ -114,8 +118,8 @@ func NewClientset(objects ...runtime.Object) *Clientset {
 	cs.AddReactor("*", "*", testing.ObjectReaction(o))
 	cs.AddWatchReactor("*", func(action testing.Action) (handled bool, ret watch.Interface, err error) {
 		var opts metav1.ListOptions
-		if watchActcion, ok := action.(testing.WatchActionImpl); ok {
-			opts = watchActcion.ListOptions
+		if watchAction, ok := action.(testing.WatchActionImpl); ok {
+			opts = watchAction.ListOptions
 		}
 		gvr := action.GetResource()
 		ns := action.GetNamespace()
@@ -144,6 +148,11 @@ func (c *Clientset) BusV1alpha1() busv1alpha1.BusV1alpha1Interface {
 	return &fakebusv1alpha1.FakeBusV1alpha1{Fake: &c.Fake}
 }
 
+// DatadependencyV1alpha1 retrieves the DatadependencyV1alpha1Client
+func (c *Clientset) DatadependencyV1alpha1() datadependencyv1alpha1.DatadependencyV1alpha1Interface {
+	return &fakedatadependencyv1alpha1.FakeDatadependencyV1alpha1{Fake: &c.Fake}
+}
+
 // FlowV1alpha1 retrieves the FlowV1alpha1Client
 func (c *Clientset) FlowV1alpha1() flowv1alpha1.FlowV1alpha1Interface {
 	return &fakeflowv1alpha1.FakeFlowV1alpha1{Fake: &c.Fake}
@@ -157,6 +166,11 @@ func (c *Clientset) NodeinfoV1alpha1() nodeinfov1alpha1.NodeinfoV1alpha1Interfac
 // SchedulingV1beta1 retrieves the SchedulingV1beta1Client
 func (c *Clientset) SchedulingV1beta1() schedulingv1beta1.SchedulingV1beta1Interface {
 	return &fakeschedulingv1beta1.FakeSchedulingV1beta1{Fake: &c.Fake}
+}
+
+// ShardV1alpha1 retrieves the ShardV1alpha1Client
+func (c *Clientset) ShardV1alpha1() shardv1alpha1.ShardV1alpha1Interface {
+	return &fakeshardv1alpha1.FakeShardV1alpha1{Fake: &c.Fake}
 }
 
 // TopologyV1alpha1 retrieves the TopologyV1alpha1Client
