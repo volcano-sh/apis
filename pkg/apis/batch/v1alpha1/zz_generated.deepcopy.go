@@ -510,6 +510,11 @@ func (in *TaskSpec) DeepCopyInto(out *TaskSpec) {
 		*out = new(PartitionPolicySpec)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ReservationNodeNames != nil {
+		in, out := &in.ReservationNodeNames, &out.ReservationNodeNames
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	return
 }
 

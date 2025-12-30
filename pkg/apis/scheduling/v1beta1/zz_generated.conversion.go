@@ -27,6 +27,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
+	v1alpha1 "volcano.sh/apis/pkg/apis/batch/v1alpha1"
 	scheduling "volcano.sh/apis/pkg/apis/scheduling"
 )
 
@@ -167,6 +168,16 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}); err != nil {
 		return err
 	}
+	if err := s.AddGeneratedConversionFunc((*QueueReservation)(nil), (*scheduling.QueueReservation)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_QueueReservation_To_scheduling_QueueReservation(a.(*QueueReservation), b.(*scheduling.QueueReservation), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.QueueReservation)(nil), (*QueueReservation)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_QueueReservation_To_v1beta1_QueueReservation(a.(*scheduling.QueueReservation), b.(*QueueReservation), scope)
+	}); err != nil {
+		return err
+	}
 	if err := s.AddGeneratedConversionFunc((*QueueSpec)(nil), (*scheduling.QueueSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_QueueSpec_To_scheduling_QueueSpec(a.(*QueueSpec), b.(*scheduling.QueueSpec), scope)
 	}); err != nil {
@@ -194,6 +205,66 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}
 	if err := s.AddGeneratedConversionFunc((*scheduling.Reservation)(nil), (*Reservation)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_scheduling_Reservation_To_v1beta1_Reservation(a.(*scheduling.Reservation), b.(*Reservation), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ReservationCondition)(nil), (*scheduling.ReservationCondition)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ReservationCondition_To_scheduling_ReservationCondition(a.(*ReservationCondition), b.(*scheduling.ReservationCondition), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.ReservationCondition)(nil), (*ReservationCondition)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_ReservationCondition_To_v1beta1_ReservationCondition(a.(*scheduling.ReservationCondition), b.(*ReservationCondition), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ReservationList)(nil), (*scheduling.ReservationList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ReservationList_To_scheduling_ReservationList(a.(*ReservationList), b.(*scheduling.ReservationList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.ReservationList)(nil), (*ReservationList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_ReservationList_To_v1beta1_ReservationList(a.(*scheduling.ReservationList), b.(*ReservationList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ReservationOwner)(nil), (*scheduling.ReservationOwner)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ReservationOwner_To_scheduling_ReservationOwner(a.(*ReservationOwner), b.(*scheduling.ReservationOwner), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.ReservationOwner)(nil), (*ReservationOwner)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_ReservationOwner_To_v1beta1_ReservationOwner(a.(*scheduling.ReservationOwner), b.(*ReservationOwner), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ReservationSpec)(nil), (*scheduling.ReservationSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ReservationSpec_To_scheduling_ReservationSpec(a.(*ReservationSpec), b.(*scheduling.ReservationSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.ReservationSpec)(nil), (*ReservationSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_ReservationSpec_To_v1beta1_ReservationSpec(a.(*scheduling.ReservationSpec), b.(*ReservationSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ReservationState)(nil), (*scheduling.ReservationState)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ReservationState_To_scheduling_ReservationState(a.(*ReservationState), b.(*scheduling.ReservationState), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.ReservationState)(nil), (*ReservationState)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_ReservationState_To_v1beta1_ReservationState(a.(*scheduling.ReservationState), b.(*ReservationState), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ReservationStatus)(nil), (*scheduling.ReservationStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ReservationStatus_To_scheduling_ReservationStatus(a.(*ReservationStatus), b.(*scheduling.ReservationStatus), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*scheduling.ReservationStatus)(nil), (*ReservationStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_scheduling_ReservationStatus_To_v1beta1_ReservationStatus(a.(*scheduling.ReservationStatus), b.(*ReservationStatus), scope)
 	}); err != nil {
 		return err
 	}
@@ -542,6 +613,28 @@ func Convert_scheduling_QueueList_To_v1beta1_QueueList(in *scheduling.QueueList,
 	return autoConvert_scheduling_QueueList_To_v1beta1_QueueList(in, out, s)
 }
 
+func autoConvert_v1beta1_QueueReservation_To_scheduling_QueueReservation(in *QueueReservation, out *scheduling.QueueReservation, s conversion.Scope) error {
+	out.Nodes = *(*[]string)(unsafe.Pointer(&in.Nodes))
+	out.Resource = *(*v1.ResourceList)(unsafe.Pointer(&in.Resource))
+	return nil
+}
+
+// Convert_v1beta1_QueueReservation_To_scheduling_QueueReservation is an autogenerated conversion function.
+func Convert_v1beta1_QueueReservation_To_scheduling_QueueReservation(in *QueueReservation, out *scheduling.QueueReservation, s conversion.Scope) error {
+	return autoConvert_v1beta1_QueueReservation_To_scheduling_QueueReservation(in, out, s)
+}
+
+func autoConvert_scheduling_QueueReservation_To_v1beta1_QueueReservation(in *scheduling.QueueReservation, out *QueueReservation, s conversion.Scope) error {
+	out.Nodes = *(*[]string)(unsafe.Pointer(&in.Nodes))
+	out.Resource = *(*v1.ResourceList)(unsafe.Pointer(&in.Resource))
+	return nil
+}
+
+// Convert_scheduling_QueueReservation_To_v1beta1_QueueReservation is an autogenerated conversion function.
+func Convert_scheduling_QueueReservation_To_v1beta1_QueueReservation(in *scheduling.QueueReservation, out *QueueReservation, s conversion.Scope) error {
+	return autoConvert_scheduling_QueueReservation_To_v1beta1_QueueReservation(in, out, s)
+}
+
 func autoConvert_v1beta1_QueueSpec_To_scheduling_QueueSpec(in *QueueSpec, out *scheduling.QueueSpec, s conversion.Scope) error {
 	out.Weight = in.Weight
 	out.Capability = *(*v1.ResourceList)(unsafe.Pointer(&in.Capability))
@@ -593,7 +686,7 @@ func autoConvert_v1beta1_QueueStatus_To_scheduling_QueueStatus(in *QueueStatus, 
 	out.Running = in.Running
 	out.Inqueue = in.Inqueue
 	out.Completed = in.Completed
-	if err := Convert_v1beta1_Reservation_To_scheduling_Reservation(&in.Reservation, &out.Reservation, s); err != nil {
+	if err := Convert_v1beta1_QueueReservation_To_scheduling_QueueReservation(&in.Reservation, &out.Reservation, s); err != nil {
 		return err
 	}
 	out.Allocated = *(*v1.ResourceList)(unsafe.Pointer(&in.Allocated))
@@ -612,7 +705,7 @@ func autoConvert_scheduling_QueueStatus_To_v1beta1_QueueStatus(in *scheduling.Qu
 	out.Running = in.Running
 	out.Inqueue = in.Inqueue
 	out.Completed = in.Completed
-	if err := Convert_scheduling_Reservation_To_v1beta1_Reservation(&in.Reservation, &out.Reservation, s); err != nil {
+	if err := Convert_scheduling_QueueReservation_To_v1beta1_QueueReservation(&in.Reservation, &out.Reservation, s); err != nil {
 		return err
 	}
 	out.Allocated = *(*v1.ResourceList)(unsafe.Pointer(&in.Allocated))
@@ -625,8 +718,13 @@ func Convert_scheduling_QueueStatus_To_v1beta1_QueueStatus(in *scheduling.QueueS
 }
 
 func autoConvert_v1beta1_Reservation_To_scheduling_Reservation(in *Reservation, out *scheduling.Reservation, s conversion.Scope) error {
-	out.Nodes = *(*[]string)(unsafe.Pointer(&in.Nodes))
-	out.Resource = *(*v1.ResourceList)(unsafe.Pointer(&in.Resource))
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_v1beta1_ReservationSpec_To_scheduling_ReservationSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	if err := Convert_v1beta1_ReservationStatus_To_scheduling_ReservationStatus(&in.Status, &out.Status, s); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -636,14 +734,187 @@ func Convert_v1beta1_Reservation_To_scheduling_Reservation(in *Reservation, out 
 }
 
 func autoConvert_scheduling_Reservation_To_v1beta1_Reservation(in *scheduling.Reservation, out *Reservation, s conversion.Scope) error {
-	out.Nodes = *(*[]string)(unsafe.Pointer(&in.Nodes))
-	out.Resource = *(*v1.ResourceList)(unsafe.Pointer(&in.Resource))
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_scheduling_ReservationSpec_To_v1beta1_ReservationSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	if err := Convert_scheduling_ReservationStatus_To_v1beta1_ReservationStatus(&in.Status, &out.Status, s); err != nil {
+		return err
+	}
 	return nil
 }
 
 // Convert_scheduling_Reservation_To_v1beta1_Reservation is an autogenerated conversion function.
 func Convert_scheduling_Reservation_To_v1beta1_Reservation(in *scheduling.Reservation, out *Reservation, s conversion.Scope) error {
 	return autoConvert_scheduling_Reservation_To_v1beta1_Reservation(in, out, s)
+}
+
+func autoConvert_v1beta1_ReservationCondition_To_scheduling_ReservationCondition(in *ReservationCondition, out *scheduling.ReservationCondition, s conversion.Scope) error {
+	out.Status = scheduling.ReservationPhase(in.Status)
+	out.LastTransitionTime = (*metav1.Time)(unsafe.Pointer(in.LastTransitionTime))
+	return nil
+}
+
+// Convert_v1beta1_ReservationCondition_To_scheduling_ReservationCondition is an autogenerated conversion function.
+func Convert_v1beta1_ReservationCondition_To_scheduling_ReservationCondition(in *ReservationCondition, out *scheduling.ReservationCondition, s conversion.Scope) error {
+	return autoConvert_v1beta1_ReservationCondition_To_scheduling_ReservationCondition(in, out, s)
+}
+
+func autoConvert_scheduling_ReservationCondition_To_v1beta1_ReservationCondition(in *scheduling.ReservationCondition, out *ReservationCondition, s conversion.Scope) error {
+	out.Status = ReservationPhase(in.Status)
+	out.LastTransitionTime = (*metav1.Time)(unsafe.Pointer(in.LastTransitionTime))
+	return nil
+}
+
+// Convert_scheduling_ReservationCondition_To_v1beta1_ReservationCondition is an autogenerated conversion function.
+func Convert_scheduling_ReservationCondition_To_v1beta1_ReservationCondition(in *scheduling.ReservationCondition, out *ReservationCondition, s conversion.Scope) error {
+	return autoConvert_scheduling_ReservationCondition_To_v1beta1_ReservationCondition(in, out, s)
+}
+
+func autoConvert_v1beta1_ReservationList_To_scheduling_ReservationList(in *ReservationList, out *scheduling.ReservationList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	out.Items = *(*[]scheduling.Reservation)(unsafe.Pointer(&in.Items))
+	return nil
+}
+
+// Convert_v1beta1_ReservationList_To_scheduling_ReservationList is an autogenerated conversion function.
+func Convert_v1beta1_ReservationList_To_scheduling_ReservationList(in *ReservationList, out *scheduling.ReservationList, s conversion.Scope) error {
+	return autoConvert_v1beta1_ReservationList_To_scheduling_ReservationList(in, out, s)
+}
+
+func autoConvert_scheduling_ReservationList_To_v1beta1_ReservationList(in *scheduling.ReservationList, out *ReservationList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	out.Items = *(*[]Reservation)(unsafe.Pointer(&in.Items))
+	return nil
+}
+
+// Convert_scheduling_ReservationList_To_v1beta1_ReservationList is an autogenerated conversion function.
+func Convert_scheduling_ReservationList_To_v1beta1_ReservationList(in *scheduling.ReservationList, out *ReservationList, s conversion.Scope) error {
+	return autoConvert_scheduling_ReservationList_To_v1beta1_ReservationList(in, out, s)
+}
+
+func autoConvert_v1beta1_ReservationOwner_To_scheduling_ReservationOwner(in *ReservationOwner, out *scheduling.ReservationOwner, s conversion.Scope) error {
+	out.Object = (*v1.ObjectReference)(unsafe.Pointer(in.Object))
+	out.LabelSelector = (*metav1.LabelSelector)(unsafe.Pointer(in.LabelSelector))
+	return nil
+}
+
+// Convert_v1beta1_ReservationOwner_To_scheduling_ReservationOwner is an autogenerated conversion function.
+func Convert_v1beta1_ReservationOwner_To_scheduling_ReservationOwner(in *ReservationOwner, out *scheduling.ReservationOwner, s conversion.Scope) error {
+	return autoConvert_v1beta1_ReservationOwner_To_scheduling_ReservationOwner(in, out, s)
+}
+
+func autoConvert_scheduling_ReservationOwner_To_v1beta1_ReservationOwner(in *scheduling.ReservationOwner, out *ReservationOwner, s conversion.Scope) error {
+	out.Object = (*v1.ObjectReference)(unsafe.Pointer(in.Object))
+	out.LabelSelector = (*metav1.LabelSelector)(unsafe.Pointer(in.LabelSelector))
+	return nil
+}
+
+// Convert_scheduling_ReservationOwner_To_v1beta1_ReservationOwner is an autogenerated conversion function.
+func Convert_scheduling_ReservationOwner_To_v1beta1_ReservationOwner(in *scheduling.ReservationOwner, out *ReservationOwner, s conversion.Scope) error {
+	return autoConvert_scheduling_ReservationOwner_To_v1beta1_ReservationOwner(in, out, s)
+}
+
+func autoConvert_v1beta1_ReservationSpec_To_scheduling_ReservationSpec(in *ReservationSpec, out *scheduling.ReservationSpec, s conversion.Scope) error {
+	out.SchedulerName = in.SchedulerName
+	out.MinAvailable = in.MinAvailable
+	out.Tasks = *(*[]v1alpha1.TaskSpec)(unsafe.Pointer(&in.Tasks))
+	out.Queue = in.Queue
+	out.Owners = *(*[]scheduling.ReservationOwner)(unsafe.Pointer(&in.Owners))
+	out.TTL = (*metav1.Duration)(unsafe.Pointer(in.TTL))
+	out.Expires = (*metav1.Time)(unsafe.Pointer(in.Expires))
+	return nil
+}
+
+// Convert_v1beta1_ReservationSpec_To_scheduling_ReservationSpec is an autogenerated conversion function.
+func Convert_v1beta1_ReservationSpec_To_scheduling_ReservationSpec(in *ReservationSpec, out *scheduling.ReservationSpec, s conversion.Scope) error {
+	return autoConvert_v1beta1_ReservationSpec_To_scheduling_ReservationSpec(in, out, s)
+}
+
+func autoConvert_scheduling_ReservationSpec_To_v1beta1_ReservationSpec(in *scheduling.ReservationSpec, out *ReservationSpec, s conversion.Scope) error {
+	out.SchedulerName = in.SchedulerName
+	out.MinAvailable = in.MinAvailable
+	out.Tasks = *(*[]v1alpha1.TaskSpec)(unsafe.Pointer(&in.Tasks))
+	out.Queue = in.Queue
+	out.Owners = *(*[]ReservationOwner)(unsafe.Pointer(&in.Owners))
+	out.TTL = (*metav1.Duration)(unsafe.Pointer(in.TTL))
+	out.Expires = (*metav1.Time)(unsafe.Pointer(in.Expires))
+	return nil
+}
+
+// Convert_scheduling_ReservationSpec_To_v1beta1_ReservationSpec is an autogenerated conversion function.
+func Convert_scheduling_ReservationSpec_To_v1beta1_ReservationSpec(in *scheduling.ReservationSpec, out *ReservationSpec, s conversion.Scope) error {
+	return autoConvert_scheduling_ReservationSpec_To_v1beta1_ReservationSpec(in, out, s)
+}
+
+func autoConvert_v1beta1_ReservationState_To_scheduling_ReservationState(in *ReservationState, out *scheduling.ReservationState, s conversion.Scope) error {
+	out.Phase = scheduling.ReservationPhase(in.Phase)
+	out.Reason = in.Reason
+	out.Message = in.Message
+	out.LastTransitionTime = in.LastTransitionTime
+	return nil
+}
+
+// Convert_v1beta1_ReservationState_To_scheduling_ReservationState is an autogenerated conversion function.
+func Convert_v1beta1_ReservationState_To_scheduling_ReservationState(in *ReservationState, out *scheduling.ReservationState, s conversion.Scope) error {
+	return autoConvert_v1beta1_ReservationState_To_scheduling_ReservationState(in, out, s)
+}
+
+func autoConvert_scheduling_ReservationState_To_v1beta1_ReservationState(in *scheduling.ReservationState, out *ReservationState, s conversion.Scope) error {
+	out.Phase = ReservationPhase(in.Phase)
+	out.Reason = in.Reason
+	out.Message = in.Message
+	out.LastTransitionTime = in.LastTransitionTime
+	return nil
+}
+
+// Convert_scheduling_ReservationState_To_v1beta1_ReservationState is an autogenerated conversion function.
+func Convert_scheduling_ReservationState_To_v1beta1_ReservationState(in *scheduling.ReservationState, out *ReservationState, s conversion.Scope) error {
+	return autoConvert_scheduling_ReservationState_To_v1beta1_ReservationState(in, out, s)
+}
+
+func autoConvert_v1beta1_ReservationStatus_To_scheduling_ReservationStatus(in *ReservationStatus, out *scheduling.ReservationStatus, s conversion.Scope) error {
+	if err := Convert_v1beta1_ReservationState_To_scheduling_ReservationState(&in.State, &out.State, s); err != nil {
+		return err
+	}
+	out.MinAvailable = in.MinAvailable
+	out.TaskStatusCount = *(*map[string]v1alpha1.TaskState)(unsafe.Pointer(&in.TaskStatusCount))
+	out.Pending = in.Pending
+	out.Available = in.Available
+	out.Succeeded = in.Succeeded
+	out.Failed = in.Failed
+	out.Conditions = *(*[]scheduling.ReservationCondition)(unsafe.Pointer(&in.Conditions))
+	out.CurrentOwner = in.CurrentOwner
+	out.Allocatable = *(*v1.ResourceList)(unsafe.Pointer(&in.Allocatable))
+	out.Allocated = *(*v1.ResourceList)(unsafe.Pointer(&in.Allocated))
+	return nil
+}
+
+// Convert_v1beta1_ReservationStatus_To_scheduling_ReservationStatus is an autogenerated conversion function.
+func Convert_v1beta1_ReservationStatus_To_scheduling_ReservationStatus(in *ReservationStatus, out *scheduling.ReservationStatus, s conversion.Scope) error {
+	return autoConvert_v1beta1_ReservationStatus_To_scheduling_ReservationStatus(in, out, s)
+}
+
+func autoConvert_scheduling_ReservationStatus_To_v1beta1_ReservationStatus(in *scheduling.ReservationStatus, out *ReservationStatus, s conversion.Scope) error {
+	if err := Convert_scheduling_ReservationState_To_v1beta1_ReservationState(&in.State, &out.State, s); err != nil {
+		return err
+	}
+	out.MinAvailable = in.MinAvailable
+	out.TaskStatusCount = *(*map[string]v1alpha1.TaskState)(unsafe.Pointer(&in.TaskStatusCount))
+	out.Pending = in.Pending
+	out.Available = in.Available
+	out.Succeeded = in.Succeeded
+	out.Failed = in.Failed
+	out.Conditions = *(*[]ReservationCondition)(unsafe.Pointer(&in.Conditions))
+	out.CurrentOwner = in.CurrentOwner
+	out.Allocatable = *(*v1.ResourceList)(unsafe.Pointer(&in.Allocatable))
+	out.Allocated = *(*v1.ResourceList)(unsafe.Pointer(&in.Allocated))
+	return nil
+}
+
+// Convert_scheduling_ReservationStatus_To_v1beta1_ReservationStatus is an autogenerated conversion function.
+func Convert_scheduling_ReservationStatus_To_v1beta1_ReservationStatus(in *scheduling.ReservationStatus, out *ReservationStatus, s conversion.Scope) error {
+	return autoConvert_scheduling_ReservationStatus_To_v1beta1_ReservationStatus(in, out, s)
 }
 
 func autoConvert_v1beta1_SubGroupPolicySpec_To_scheduling_SubGroupPolicySpec(in *SubGroupPolicySpec, out *scheduling.SubGroupPolicySpec, s conversion.Scope) error {

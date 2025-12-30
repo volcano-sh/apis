@@ -280,6 +280,11 @@ type TaskSpec struct {
 	// PartitionPolicy defines the partition policy of a task.
 	// +optional
 	PartitionPolicy *PartitionPolicySpec `json:"partitionPolicy,omitempty" protobuf:"bytes,9,opt,name=partitionPolicy"`
+
+	// Specifies the node names of reservations that this task can be scheduled to.
+	// The scheduler will pick one from the list in the given order. If none of the specified nodes are available, the scheduler will choose a node based on its internal logic.
+	// +optional
+	ReservationNodeNames []string `json:"reservationNodeNames,omitempty" protobuf:"bytes,10,rep,name=reservationNodeNames"`
 }
 
 type PartitionPolicySpec struct {

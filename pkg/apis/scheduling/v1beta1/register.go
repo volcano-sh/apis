@@ -51,6 +51,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&PodGroupList{},
 		&Queue{},
 		&QueueList{},
+		&Reservation{},
+		&ReservationList{},
 	)
 
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
