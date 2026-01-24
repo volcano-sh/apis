@@ -14,4 +14,4 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - run: ./hack/verify-codegen.sh
+      - run: bash hack/verify-codegen.sh
