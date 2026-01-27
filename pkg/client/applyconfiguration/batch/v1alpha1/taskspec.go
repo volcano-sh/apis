@@ -25,15 +25,16 @@ import (
 // TaskSpecApplyConfiguration represents a declarative configuration of the TaskSpec type for use
 // with apply.
 type TaskSpecApplyConfiguration struct {
-	Name            *string                                `json:"name,omitempty"`
-	Replicas        *int32                                 `json:"replicas,omitempty"`
-	MinAvailable    *int32                                 `json:"minAvailable,omitempty"`
-	Template        *v1.PodTemplateSpecApplyConfiguration  `json:"template,omitempty"`
-	Policies        []LifecyclePolicyApplyConfiguration    `json:"policies,omitempty"`
-	TopologyPolicy  *batchv1alpha1.NumaPolicy              `json:"topologyPolicy,omitempty"`
-	MaxRetry        *int32                                 `json:"maxRetry,omitempty"`
-	DependsOn       *DependsOnApplyConfiguration           `json:"dependsOn,omitempty"`
-	PartitionPolicy *PartitionPolicySpecApplyConfiguration `json:"partitionPolicy,omitempty"`
+	Name            		*string                                `json:"name,omitempty"`
+	Replicas        		*int32                                 `json:"replicas,omitempty"`
+	MinAvailable    		*int32                                 `json:"minAvailable,omitempty"`
+	Template        		*v1.PodTemplateSpecApplyConfiguration  `json:"template,omitempty"`
+	Policies        		[]LifecyclePolicyApplyConfiguration    `json:"policies,omitempty"`
+	TopologyPolicy  		*batchv1alpha1.NumaPolicy              `json:"topologyPolicy,omitempty"`
+	MaxRetry        		*int32                                 `json:"maxRetry,omitempty"`
+	DependsOn       		*DependsOnApplyConfiguration           `json:"dependsOn,omitempty"`
+	PartitionPolicy 		*PartitionPolicySpecApplyConfiguration `json:"partitionPolicy,omitempty"`
+	ReservationNodeNames 	[]string                               `json:"reservationNodeNames,omitempty"`
 }
 
 // TaskSpecApplyConfiguration constructs a declarative configuration of the TaskSpec type for use with
@@ -108,6 +109,16 @@ func (b *TaskSpecApplyConfiguration) WithMaxRetry(value int32) *TaskSpecApplyCon
 // If called multiple times, the DependsOn field is set to the value of the last call.
 func (b *TaskSpecApplyConfiguration) WithDependsOn(value *DependsOnApplyConfiguration) *TaskSpecApplyConfiguration {
 	b.DependsOn = value
+	return b
+}
+
+// WithReservationNodeNames adds the given value to the ReservationNodeNames field in the declarative configuration
+// and returns the receiver, so that objects can be build by chaining "With" function invocations.
+// If called multiple times, values provided by each call will be appended to the ReservationNodeNames field.
+func (b *TaskSpecApplyConfiguration) WithReservationNodeNames(values ...string) *TaskSpecApplyConfiguration {
+	for i := range values {
+		b.ReservationNodeNames = append(b.ReservationNodeNames, values[i])
+	}
 	return b
 }
 

@@ -183,12 +183,24 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &schedulingv1beta1.PodGroupStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Queue"):
 		return &schedulingv1beta1.QueueApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("QueueReservation"):
+		return &schedulingv1beta1.QueueReservationApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("QueueSpec"):
 		return &schedulingv1beta1.QueueSpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("QueueStatus"):
 		return &schedulingv1beta1.QueueStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Reservation"):
 		return &schedulingv1beta1.ReservationApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationCondition"):
+		return &schedulingv1beta1.ReservationConditionApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationOwner"):
+		return &schedulingv1beta1.ReservationOwnerApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationSpec"):
+		return &schedulingv1beta1.ReservationSpecApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationState"):
+		return &schedulingv1beta1.ReservationStateApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ReservationStatus"):
+		return &schedulingv1beta1.ReservationStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("SubGroupPolicySpec"):
 		return &schedulingv1beta1.SubGroupPolicySpecApplyConfiguration{}
 

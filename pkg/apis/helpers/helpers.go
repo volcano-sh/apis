@@ -60,8 +60,10 @@ const (
 )
 
 // JobKind creates job GroupVersionKind.
-// JobKind creates job GroupVersionKind.
 var JobKind = vcbatch.SchemeGroupVersion.WithKind("Job")
+
+// ReservationKind creates resource GroupVersionKind.
+var ReservationKind = vcbatch.SchemeGroupVersion.WithKind("Reservation")
 
 // CommandKind creates command GroupVersionKind.
 var CommandKind = vcbus.SchemeGroupVersion.WithKind("Command")

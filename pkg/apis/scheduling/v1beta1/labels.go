@@ -43,6 +43,15 @@ const VolcanoGroupMinMemberAnnotationKey = GroupName + "/group-min-member"
 // which PodGroup it belongs to.
 const VolcanoGroupMinResourcesAnnotationKey = GroupName + "/group-min-resources"
 
+// VolcanoGroupReservationOnlyAnnotationKey is the annotation key of PodGroup or Pod to identify
+// reserve for resource use only
+const VolcanoGroupReservationOnlyAnnotationKey = GroupName + "/reservation-only"
+
+// VolcanoGroupTargetReservationAnnotationKey is the annotation key used to indicate
+// the name of the Reservation that a Job or Pod intends to bind to.
+// This helps the scheduler select and match the desired Reservation resource.const VolcanoGroupTargetReservationAnnotationKey = GroupName + "/target-reservation"
+const VolcanoGroupTargetReservationAnnotationKey = GroupName + "/target-reservation"
+
 // QueueNameAnnotationKey is the annotation key of Pod to identify
 // which queue it belongs to.
 const QueueNameAnnotationKey = GroupName + "/queue-name"
