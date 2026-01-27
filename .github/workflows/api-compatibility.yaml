@@ -3,7 +3,7 @@ name: API Check
 on:
   pull_request:
     paths:
-      - "pkg/apis/**"
+      - 'pkg/apis/**'
 
 jobs:
   api-check:
@@ -11,24 +11,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: "go.mod"
-
+          go-version-file: 'go.mod'
+          
       - name: Run go vet
         run: go vet ./pkg/apis/...
-
+        
       - name: Check formatting
         run: test -z "$(gofmt -l pkg/apis/)"
-
+          
       - name: Install API linter
         run: go install sigs.k8s.io/kube-api-linter/cmd/golangci-lint-kube-api-linter@latest
-
+        
       - name: Run API linter
         run: ~/go/bin/golangci-lint-kube-api-linter run ./pkg/apis/...
         continue-on-error: true
-
+        
       - name: Install crdify
         run: go install sigs.k8s.io/crdify@latest
+        
+      - name: Fetch base branch for comparison
+        run: git fetch origin ${{ github.base_ref }} --depth=1
+        
+      - name: Validate API compatibility
+        run: ~/go/bin/crdify origin/${{ github.base_ref }} HEAD
+        continue-on-error: true
