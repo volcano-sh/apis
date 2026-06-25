@@ -62,6 +62,9 @@ const (
 type PodGroupConditionType string
 
 const (
+	// PodGroupUnenqueueable is Unenqueueable event type
+	PodGroupUnenqueueable PodGroupConditionType = "Unenqueueable"
+
 	// PodGroupUnschedulableType is Unschedulable event type
 	PodGroupUnschedulableType PodGroupConditionType = "Unschedulable"
 
@@ -117,6 +120,9 @@ const (
 
 	// NotEnoughPodsOfTaskReason is probed if there're not enough pods of task compared to `spec.minTaskMember`
 	NotEnoughPodsOfTaskReason string = "NotEnoughPodsOfTask"
+
+	// UnEnqueueableReason is probed if job is rejected to enqueue
+	UnEnqueueableReason string = "Unenqueueable"
 )
 
 // QueueEvent represent the phase of queue.
