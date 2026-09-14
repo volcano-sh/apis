@@ -1,4 +1,5 @@
 reviewers:
+  - hzxuzhonghu
   - k82cn
   - kevin-wangzefeng
   - william-wang
@@ -6,6 +7,7 @@ reviewers:
   - wpeng102
   - JesseStutler
 approvers:
+  - hzxuzhonghu
   - k82cn
   - kevin-wangzefeng
   - william-wang
