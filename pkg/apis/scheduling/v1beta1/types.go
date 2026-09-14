@@ -151,6 +151,7 @@ const (
 // +kubebuilder:printcolumn:name="RUNNINGS",type=integer,JSONPath=`.status.running`
 // +kubebuilder:printcolumn:name="AGE",type=date,JSONPath=`.metadata.creationTimestamp`
 // +kubebuilder:printcolumn:name="QUEUE",type=string,priority=1,JSONPath=`.spec.queue`
+// +kubebuilder:selectablefield:JSONPath=`.spec.queue`
 
 // PodGroup is a collection of Pod; used for batch workload.
 type PodGroup struct {
@@ -351,6 +352,7 @@ const (
 // +kubebuilder:metadata:annotations="helm.sh/resource-policy=keep"
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="PARENT",type=string,JSONPath=`.spec.parent`
+// +kubebuilder:selectablefield:JSONPath=`.spec.parent`
 
 // Queue is a queue of PodGroup.
 type Queue struct {
