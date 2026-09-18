@@ -303,6 +303,13 @@ type PartitionPolicySpec struct {
 	MinPartitions int32 `json:"minPartitions,omitempty" protobuf:"bytes,4,opt,name=minPartitions"`
 }
 
+// Default sets default values for TaskSpec fields.
+func (t *TaskSpec) Default() {
+	if t.MinAvailable == nil {
+		t.MinAvailable = &t.Replicas
+	}
+}
+
 // JobPhase defines the phase of the job.
 type JobPhase string
 
