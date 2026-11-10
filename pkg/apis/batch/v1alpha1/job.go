@@ -59,7 +59,7 @@ type JobSpec struct {
 	SchedulerName string `json:"schedulerName,omitempty" protobuf:"bytes,1,opt,name=schedulerName"`
 
 	// The minimal available pods to run for this Job
-	// Defaults to the summary of tasks' replicas
+	// Defaults to the sum of tasks' MinAvailable, or task replicas if MinAvailable is unset.
 	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MinAvailable int32 `json:"minAvailable,omitempty" protobuf:"bytes,2,opt,name=minAvailable"`
@@ -249,7 +249,7 @@ type TaskSpec struct {
 	Replicas int32 `json:"replicas,omitempty" protobuf:"bytes,2,opt,name=replicas"`
 
 	// The minimal available pods to run for this Task
-	// Defaults to the task replicas
+	// Defaults to the task replicas, or MinPartitions * PartitionSize when PartitionPolicy is configured with MinPartitions > 0.
 	// +kubebuilder:validation:Minimum=0
 	// +optional
 	MinAvailable *int32 `json:"minAvailable,omitempty" protobuf:"bytes,3,opt,name=minAvailable"`
